@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" font-family="Arial, PingFang SC, sans-serif">
+<title>便签工作坊 · RAG 架构图</title>
+<desc>原生可编辑示例。设计 Prompt 见 src/examples/prompts/notes.md。演示架构，非生产配置。</desc>
+<defs><marker id="notes-arrow-main" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#776d58"/></marker><marker id="notes-arrow-online" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#287b65"/></marker><marker id="notes-arrow-cross" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#635f50"/></marker></defs>
+<rect x="0" y="0" width="1200" height="800" fill="#f5f4ef" stroke="none" rx="0" stroke-width="1"/>
+<text x="60" y="100" font-size="44" fill="#38372f" font-weight="500" text-anchor="start">把知识，排成一条路</text>
+<text x="60" y="143" font-size="16" fill="#635f50" font-weight="400" text-anchor="start">RAG 工作坊 · 从文档整理到回答与引用</text>
+<line x1="60" y1="174" x2="1140" y2="174" stroke="#776d58" stroke-width="1"/>
+<text x="60" y="215" font-size="16" fill="#886127" font-weight="600" text-anchor="start">离线索引 / INDEXING</text>
+<text x="60" y="505" font-size="16" fill="#886127" font-weight="600" text-anchor="start">在线回答 / ANSWERING</text>
+<g id="notes-connections" data-label="连接线"><polyline id="notes-edge-docs-chunks" points="300,306.0 340,306.0" fill="none" stroke="#776d58" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#notes-arrow-main)" data-sf-start-node="#notes-node-docs" data-sf-end-node="#notes-node-chunks" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-dasharray="6 4"/>
+<polyline id="notes-edge-chunks-embed" points="580,306.0 620,306.0" fill="none" stroke="#776d58" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#notes-arrow-main)" data-sf-start-node="#notes-node-chunks" data-sf-end-node="#notes-node-embed" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-dasharray="6 4"/>
+<polyline id="notes-edge-embed-index" points="860,306.0 900,306.0" fill="none" stroke="#776d58" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#notes-arrow-main)" data-sf-start-node="#notes-node-embed" data-sf-end-node="#notes-node-index" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-dasharray="6 4"/>
+<polyline id="notes-edge-query-retrieve" points="220,606.0 290,606.0" fill="none" stroke="#776d58" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#notes-arrow-main)" data-sf-start-node="#notes-node-query" data-sf-end-node="#notes-node-retrieve" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-dasharray="6 4"/>
+<polyline id="notes-edge-retrieve-context" points="450,606.0 520,606.0" fill="none" stroke="#776d58" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#notes-arrow-main)" data-sf-start-node="#notes-node-retrieve" data-sf-end-node="#notes-node-context" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-dasharray="6 4"/>
+<polyline id="notes-edge-context-llm" points="680,606.0 750,606.0" fill="none" stroke="#776d58" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#notes-arrow-main)" data-sf-start-node="#notes-node-context" data-sf-end-node="#notes-node-llm" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-dasharray="6 4"/>
+<polyline id="notes-edge-llm-answer" points="910,606.0 980,606.0" fill="none" stroke="#776d58" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#notes-arrow-main)" data-sf-start-node="#notes-node-llm" data-sf-end-node="#notes-node-answer" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-dasharray="6 4"/>
+<polyline id="notes-edge-index-retrieve" points="1020.0,362 1020.0,440 370.0,440 370.0,550" fill="none" stroke="#776d58" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#notes-arrow-main)" data-sf-start-node="#notes-node-index" data-sf-end-node="#notes-node-retrieve" data-sf-start-anchor=".5 1 0 0" data-sf-end-anchor=".5 0 0 0" stroke-dasharray="6 4"/></g>
+<g id="notes-node-docs" data-label="Documents / 文档与知识库" data-node="true"><rect x="60" y="250" width="240" height="112" fill="#fff0b7" stroke="#776d58" rx="0" stroke-width="1"/>
+<polygon points="284,250 300,266 300,250" fill="#f5f4ef"/>
+<polyline points="284,250 284,266 300,266" fill="none" stroke="#776d58"/>
+<text x="74" y="274" font-size="11" fill="#635f50" font-weight="400" text-anchor="start">01 / RAG</text>
+<text x="74" y="309" font-size="23" fill="#38372f" font-weight="600" text-anchor="start">Documents</text>
+<text x="74" y="338" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">文档与知识库</text></g>
+<g id="notes-node-chunks" data-label="Chunking / 解析与切分" data-node="true"><rect x="340" y="250" width="240" height="112" fill="#e3f1de" stroke="#776d58" rx="0" stroke-width="1"/>
+<polygon points="564,250 580,266 580,250" fill="#f5f4ef"/>
+<polyline points="564,250 564,266 580,266" fill="none" stroke="#776d58"/>
+<text x="354" y="274" font-size="11" fill="#635f50" font-weight="400" text-anchor="start">02 / RAG</text>
+<text x="354" y="309" font-size="23" fill="#38372f" font-weight="600" text-anchor="start">Chunking</text>
+<text x="354" y="338" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">解析与切分</text></g>
+<g id="notes-node-embed" data-label="Embeddings / 向量编码" data-node="true"><rect x="620" y="250" width="240" height="112" fill="#fbe0d3" stroke="#776d58" rx="0" stroke-width="1"/>
+<polygon points="844,250 860,266 860,250" fill="#f5f4ef"/>
+<polyline points="844,250 844,266 860,266" fill="none" stroke="#776d58"/>
+<text x="634" y="274" font-size="11" fill="#635f50" font-weight="400" text-anchor="start">03 / RAG</text>
+<text x="634" y="309" font-size="23" fill="#38372f" font-weight="600" text-anchor="start">Embeddings</text>
+<text x="634" y="338" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">向量编码</text></g>
+<g id="notes-node-index" data-label="Vector index / 向量索引" data-node="true"><rect x="900" y="250" width="240" height="112" fill="#ece4f7" stroke="#776d58" rx="0" stroke-width="1"/>
+<polygon points="1124,250 1140,266 1140,250" fill="#f5f4ef"/>
+<polyline points="1124,250 1124,266 1140,266" fill="none" stroke="#776d58"/>
+<text x="914" y="274" font-size="11" fill="#635f50" font-weight="400" text-anchor="start">04 / RAG</text>
+<text x="914" y="309" font-size="23" fill="#38372f" font-weight="600" text-anchor="start">Vector index</text>
+<text x="914" y="338" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">向量索引</text></g>
+<g id="notes-node-query" data-label="User query / 用户问题" data-node="true"><rect x="60" y="550" width="160" height="112" fill="#fff0b7" stroke="#776d58" rx="0" stroke-width="1"/>
+<polygon points="204,550 220,566 220,550" fill="#f5f4ef"/>
+<polyline points="204,550 204,566 220,566" fill="none" stroke="#776d58"/>
+<text x="74" y="574" font-size="11" fill="#635f50" font-weight="400" text-anchor="start">05 / RAG</text>
+<text x="74" y="609" font-size="19" fill="#38372f" font-weight="600" text-anchor="start">User query</text>
+<text x="74" y="638" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">用户问题</text></g>
+<g id="notes-node-retrieve" data-label="Retriever / 相似度检索" data-node="true"><rect x="290" y="550" width="160" height="112" fill="#e3f1de" stroke="#776d58" rx="0" stroke-width="1"/>
+<polygon points="434,550 450,566 450,550" fill="#f5f4ef"/>
+<polyline points="434,550 434,566 450,566" fill="none" stroke="#776d58"/>
+<text x="304" y="574" font-size="11" fill="#635f50" font-weight="400" text-anchor="start">06 / RAG</text>
+<text x="304" y="609" font-size="19" fill="#38372f" font-weight="600" text-anchor="start">Retriever</text>
+<text x="304" y="638" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">相似度检索</text></g>
+<g id="notes-node-context" data-label="Context / 上下文构建" data-node="true"><rect x="520" y="550" width="160" height="112" fill="#fbe0d3" stroke="#776d58" rx="0" stroke-width="1"/>
+<polygon points="664,550 680,566 680,550" fill="#f5f4ef"/>
+<polyline points="664,550 664,566 680,566" fill="none" stroke="#776d58"/>
+<text x="534" y="574" font-size="11" fill="#635f50" font-weight="400" text-anchor="start">07 / RAG</text>
+<text x="534" y="609" font-size="19" fill="#38372f" font-weight="600" text-anchor="start">Context</text>
+<text x="534" y="638" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">上下文构建</text></g>
+<g id="notes-node-llm" data-label="LLM / 生成模型" data-node="true"><rect x="750" y="550" width="160" height="112" fill="#ece4f7" stroke="#776d58" rx="0" stroke-width="1"/>
+<polygon points="894,550 910,566 910,550" fill="#f5f4ef"/>
+<polyline points="894,550 894,566 910,566" fill="none" stroke="#776d58"/>
+<text x="764" y="574" font-size="11" fill="#635f50" font-weight="400" text-anchor="start">08 / RAG</text>
+<text x="764" y="609" font-size="19" fill="#38372f" font-weight="600" text-anchor="start">LLM</text>
+<text x="764" y="638" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">生成模型</text></g>
+<g id="notes-node-answer" data-label="Answer / 回答与引用" data-node="true"><rect x="980" y="550" width="160" height="112" fill="#fff0b7" stroke="#776d58" rx="0" stroke-width="1"/>
+<polygon points="1124,550 1140,566 1140,550" fill="#f5f4ef"/>
+<polyline points="1124,550 1124,566 1140,566" fill="none" stroke="#776d58"/>
+<text x="994" y="574" font-size="11" fill="#635f50" font-weight="400" text-anchor="start">09 / RAG</text>
+<text x="994" y="609" font-size="19" fill="#38372f" font-weight="600" text-anchor="start">Answer</text>
+<text x="994" y="638" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">回答与引用</text></g>
+<line x1="60" y1="715" x2="1140" y2="715" stroke="#776d58" stroke-width="0.7"/>
+<text x="60" y="748" font-size="14" fill="#635f50" font-weight="400" text-anchor="start">RAG / Retrieval-augmented generation</text>
+<text x="60" y="776" font-size="12" fill="#635f50" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">演示架构 · 可编辑节点与文字 · 非生产配置</text>
+</svg>

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" font-family="Arial, PingFang SC, sans-serif">
+<title>极简线性 · RAG 架构图</title>
+<desc>原生可编辑示例。设计 Prompt 见 src/examples/prompts/minimal.md。演示架构，非生产配置。</desc>
+<defs><marker id="minimal-arrow-main" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#80909e"/></marker><marker id="minimal-arrow-online" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#287b65"/></marker><marker id="minimal-arrow-cross" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#576574"/></marker></defs>
+<rect x="0" y="0" width="1200" height="800" fill="#ffffff" stroke="none" rx="0" stroke-width="1"/>
+<text x="60" y="100" font-size="44" fill="#202c37" font-weight="500" text-anchor="start">从知识到回答</text>
+<text x="60" y="143" font-size="16" fill="#576574" font-weight="400" text-anchor="start">RAG · 清晰的结构，足够的留白</text>
+<line x1="60" y1="174" x2="1140" y2="174" stroke="#80909e" stroke-width="1"/>
+<text x="60" y="215" font-size="16" fill="#354b60" font-weight="600" text-anchor="start">离线索引 / INDEXING</text>
+<text x="60" y="505" font-size="16" fill="#354b60" font-weight="600" text-anchor="start">在线回答 / ANSWERING</text>
+<g id="minimal-connections" data-label="连接线"><polyline id="minimal-edge-docs-chunks" points="300,306.0 340,306.0" fill="none" stroke="#80909e" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#minimal-arrow-main)" data-sf-start-node="#minimal-node-docs" data-sf-end-node="#minimal-node-chunks" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="minimal-edge-chunks-embed" points="580,306.0 620,306.0" fill="none" stroke="#80909e" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#minimal-arrow-main)" data-sf-start-node="#minimal-node-chunks" data-sf-end-node="#minimal-node-embed" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="minimal-edge-embed-index" points="860,306.0 900,306.0" fill="none" stroke="#80909e" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#minimal-arrow-main)" data-sf-start-node="#minimal-node-embed" data-sf-end-node="#minimal-node-index" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="minimal-edge-query-retrieve" points="220,606.0 290,606.0" fill="none" stroke="#80909e" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#minimal-arrow-main)" data-sf-start-node="#minimal-node-query" data-sf-end-node="#minimal-node-retrieve" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="minimal-edge-retrieve-context" points="450,606.0 520,606.0" fill="none" stroke="#80909e" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#minimal-arrow-main)" data-sf-start-node="#minimal-node-retrieve" data-sf-end-node="#minimal-node-context" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="minimal-edge-context-llm" points="680,606.0 750,606.0" fill="none" stroke="#80909e" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#minimal-arrow-main)" data-sf-start-node="#minimal-node-context" data-sf-end-node="#minimal-node-llm" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="minimal-edge-llm-answer" points="910,606.0 980,606.0" fill="none" stroke="#80909e" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#minimal-arrow-main)" data-sf-start-node="#minimal-node-llm" data-sf-end-node="#minimal-node-answer" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="minimal-edge-index-retrieve" points="1020.0,362 1020.0,440 370.0,440 370.0,550" fill="none" stroke="#80909e" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#minimal-arrow-main)" data-sf-start-node="#minimal-node-index" data-sf-end-node="#minimal-node-retrieve" data-sf-start-anchor=".5 1 0 0" data-sf-end-anchor=".5 0 0 0" stroke-dasharray="6 4"/></g>
+<g id="minimal-node-docs" data-label="Documents / 文档与知识库" data-node="true"><rect x="60" y="250" width="240" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<text x="180.0" y="293" font-size="24" fill="#202c37" font-weight="500" text-anchor="middle">Documents</text>
+<text x="180.0" y="327" font-size="14" fill="#576574" font-weight="400" text-anchor="middle">文档与知识库</text>
+<line x1="82" y1="346" x2="278" y2="346" stroke="#80909e" stroke-width="0.8"/></g>
+<g id="minimal-node-chunks" data-label="Chunking / 解析与切分" data-node="true"><rect x="340" y="250" width="240" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<text x="460.0" y="293" font-size="24" fill="#202c37" font-weight="500" text-anchor="middle">Chunking</text>
+<text x="460.0" y="327" font-size="14" fill="#576574" font-weight="400" text-anchor="middle">解析与切分</text>
+<line x1="362" y1="346" x2="558" y2="346" stroke="#80909e" stroke-width="0.8"/></g>
+<g id="minimal-node-embed" data-label="Embeddings / 向量编码" data-node="true"><rect x="620" y="250" width="240" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<text x="740.0" y="293" font-size="24" fill="#202c37" font-weight="500" text-anchor="middle">Embeddings</text>
+<text x="740.0" y="327" font-size="14" fill="#576574" font-weight="400" text-anchor="middle">向量编码</text>
+<line x1="642" y1="346" x2="838" y2="346" stroke="#80909e" stroke-width="0.8"/></g>
+<g id="minimal-node-index" data-label="Vector index / 向量索引" data-node="true"><rect x="900" y="250" width="240" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<text x="1020.0" y="293" font-size="24" fill="#202c37" font-weight="500" text-anchor="middle">Vector index</text>
+<text x="1020.0" y="327" font-size="14" fill="#576574" font-weight="400" text-anchor="middle">向量索引</text>
+<line x1="922" y1="346" x2="1118" y2="346" stroke="#80909e" stroke-width="0.8"/></g>
+<g id="minimal-node-query" data-label="User query / 用户问题" data-node="true"><rect x="60" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<text x="140.0" y="593" font-size="20" fill="#202c37" font-weight="500" text-anchor="middle">User query</text>
+<text x="140.0" y="627" font-size="14" fill="#576574" font-weight="400" text-anchor="middle">用户问题</text>
+<line x1="82" y1="646" x2="198" y2="646" stroke="#80909e" stroke-width="0.8"/></g>
+<g id="minimal-node-retrieve" data-label="Retriever / 相似度检索" data-node="true"><rect x="290" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<text x="370.0" y="593" font-size="20" fill="#202c37" font-weight="500" text-anchor="middle">Retriever</text>
+<text x="370.0" y="627" font-size="14" fill="#576574" font-weight="400" text-anchor="middle">相似度检索</text>
+<line x1="312" y1="646" x2="428" y2="646" stroke="#80909e" stroke-width="0.8"/></g>
+<g id="minimal-node-context" data-label="Context / 上下文构建" data-node="true"><rect x="520" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<text x="600.0" y="593" font-size="20" fill="#202c37" font-weight="500" text-anchor="middle">Context</text>
+<text x="600.0" y="627" font-size="14" fill="#576574" font-weight="400" text-anchor="middle">上下文构建</text>
+<line x1="542" y1="646" x2="658" y2="646" stroke="#80909e" stroke-width="0.8"/></g>
+<g id="minimal-node-llm" data-label="LLM / 生成模型" data-node="true"><rect x="750" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<text x="830.0" y="593" font-size="20" fill="#202c37" font-weight="500" text-anchor="middle">LLM</text>
+<text x="830.0" y="627" font-size="14" fill="#576574" font-weight="400" text-anchor="middle">生成模型</text>
+<line x1="772" y1="646" x2="888" y2="646" stroke="#80909e" stroke-width="0.8"/></g>
+<g id="minimal-node-answer" data-label="Answer / 回答与引用" data-node="true"><rect x="980" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<text x="1060.0" y="593" font-size="20" fill="#202c37" font-weight="500" text-anchor="middle">Answer</text>
+<text x="1060.0" y="627" font-size="14" fill="#576574" font-weight="400" text-anchor="middle">回答与引用</text>
+<line x1="1002" y1="646" x2="1118" y2="646" stroke="#80909e" stroke-width="0.8"/></g>
+<line x1="60" y1="715" x2="1140" y2="715" stroke="#80909e" stroke-width="0.7"/>
+<text x="60" y="748" font-size="14" fill="#576574" font-weight="400" text-anchor="start">RAG / Retrieval-augmented generation</text>
+<text x="60" y="776" font-size="12" fill="#576574" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">演示架构 · 可编辑节点与文字 · 非生产配置</text>
+</svg>

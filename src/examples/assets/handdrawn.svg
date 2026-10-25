@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" font-family="Comic Sans MS, Chalkboard SE, Kaiti SC, KaiTi, cursive" stroke-linecap="round" stroke-linejoin="round">
+<title>手绘草图 · RAG 架构图</title>
+<desc>原生可编辑示例。设计 Prompt 见 src/examples/prompts/handdrawn.md。演示架构，非生产配置。</desc>
+<defs><marker id="handdrawn-arrow-main" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L.6 9 M1.6 .8L8.6 5.2L1.1 9.2" fill="none" stroke="#555c50" stroke-width="0.85" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="handdrawn-arrow-online" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L.6 9 M1.6 .8L8.6 5.2L1.1 9.2" fill="none" stroke="#287b65" stroke-width="0.85" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="handdrawn-arrow-cross" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L.6 9 M1.6 .8L8.6 5.2L1.1 9.2" fill="none" stroke="#606151" stroke-width="0.85" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="0" y="0" width="1200" height="800" fill="#fffdf7" stroke="none" rx="0" stroke-width="1"/>
+<text x="60" y="100" font-size="44" fill="#34352e" font-weight="500" text-anchor="start">把知识，画明白</text>
+<text x="60" y="143" font-size="16" fill="#606151" font-weight="400" text-anchor="start">RAG 草图 · 一笔一笔，连接知识与回答</text>
+<path d="M60 174 Q600.0 175.6 1140 174" fill="none" stroke="#555c50" stroke-width="1" stroke-linecap="round"/>
+<text x="60" y="215" font-size="16" fill="#466950" font-weight="600" text-anchor="start">离线索引 / INDEXING</text>
+<text x="60" y="505" font-size="16" fill="#466950" font-weight="600" text-anchor="start">在线回答 / ANSWERING</text>
+<g id="handdrawn-connections" data-label="连接线"><polyline id="handdrawn-edge-docs-chunks" points="300,306.0 320.0,307.1 340,306.0" fill="none" stroke="#555c50" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#handdrawn-arrow-main)" data-sf-start-node="#handdrawn-node-docs" data-sf-end-node="#handdrawn-node-chunks" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-linecap="round"/>
+<polyline id="handdrawn-edge-chunks-embed" points="580,306.0 600.0,307.1 620,306.0" fill="none" stroke="#555c50" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#handdrawn-arrow-main)" data-sf-start-node="#handdrawn-node-chunks" data-sf-end-node="#handdrawn-node-embed" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-linecap="round"/>
+<polyline id="handdrawn-edge-embed-index" points="860,306.0 880.0,307.1 900,306.0" fill="none" stroke="#555c50" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#handdrawn-arrow-main)" data-sf-start-node="#handdrawn-node-embed" data-sf-end-node="#handdrawn-node-index" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-linecap="round"/>
+<polyline id="handdrawn-edge-query-retrieve" points="220,606.0 255.0,607.1 290,606.0" fill="none" stroke="#555c50" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#handdrawn-arrow-main)" data-sf-start-node="#handdrawn-node-query" data-sf-end-node="#handdrawn-node-retrieve" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-linecap="round"/>
+<polyline id="handdrawn-edge-retrieve-context" points="450,606.0 485.0,607.1 520,606.0" fill="none" stroke="#555c50" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#handdrawn-arrow-main)" data-sf-start-node="#handdrawn-node-retrieve" data-sf-end-node="#handdrawn-node-context" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-linecap="round"/>
+<polyline id="handdrawn-edge-context-llm" points="680,606.0 715.0,607.1 750,606.0" fill="none" stroke="#555c50" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#handdrawn-arrow-main)" data-sf-start-node="#handdrawn-node-context" data-sf-end-node="#handdrawn-node-llm" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-linecap="round"/>
+<polyline id="handdrawn-edge-llm-answer" points="910,606.0 945.0,607.1 980,606.0" fill="none" stroke="#555c50" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#handdrawn-arrow-main)" data-sf-start-node="#handdrawn-node-llm" data-sf-end-node="#handdrawn-node-answer" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0" stroke-linecap="round"/>
+<polyline id="handdrawn-edge-index-retrieve" points="1020.0,362 1021.1,401.0 1020.0,440 695.0,441.1 370.0,440 371.1,495.0 370.0,550" fill="none" stroke="#555c50" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#handdrawn-arrow-main)" data-sf-start-node="#handdrawn-node-index" data-sf-end-node="#handdrawn-node-retrieve" data-sf-start-anchor=".5 1 0 0" data-sf-end-anchor=".5 0 0 0" stroke-dasharray="6 4" stroke-linecap="round"/></g>
+<g id="handdrawn-node-docs" data-label="Documents / 文档与知识库" data-node="true"><rect x="60" y="250" width="240" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<path d="M61 251 Q175.2 249 299 251 Q301 301.52 299 361 Q175.2 363 61 361 Q59 308.24 61 251Z" fill="#fbf0c9" stroke="#555c50" stroke-width="1.6"/>
+<path d="M63 252 Q189.60000000000002 250.2 298 253 Q299.8 306.0 298 360 Q180.0 361.7 62 360 Q60.2 303.76 63 252" fill="none" stroke="#555c50" stroke-width="0.8" opacity="0.55"/>
+<text x="74" y="307" font-size="24" fill="#34352e" font-weight="500" text-anchor="start">Documents</text>
+<text x="74" y="336" font-size="14" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">文档与知识库</text>
+<path d="M263 352 Q265.5 350.6 268 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M271 352 Q273.5 350.6 276 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M279 352 Q281.5 350.6 284 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/></g>
+<g id="handdrawn-node-chunks" data-label="Chunking / 解析与切分" data-node="true"><rect x="340" y="250" width="240" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<path d="M341 251 Q455.2 249 579 251 Q581 301.52 579 361 Q455.2 363 341 361 Q339 308.24 341 251Z" fill="#e8f1de" stroke="#555c50" stroke-width="1.6"/>
+<path d="M343 252 Q469.6 250.2 578 253 Q579.8 306.0 578 360 Q460.0 361.7 342 360 Q340.2 303.76 343 252" fill="none" stroke="#555c50" stroke-width="0.8" opacity="0.55"/>
+<text x="354" y="307" font-size="24" fill="#34352e" font-weight="500" text-anchor="start">Chunking</text>
+<text x="354" y="336" font-size="14" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">解析与切分</text>
+<path d="M543 352 Q545.5 350.6 548 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M551 352 Q553.5 350.6 556 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M559 352 Q561.5 350.6 564 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/></g>
+<g id="handdrawn-node-embed" data-label="Embeddings / 向量编码" data-node="true"><rect x="620" y="250" width="240" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<path d="M621 251 Q735.2 249 859 251 Q861 301.52 859 361 Q735.2 363 621 361 Q619 308.24 621 251Z" fill="#e6eef7" stroke="#555c50" stroke-width="1.6"/>
+<path d="M623 252 Q749.6 250.2 858 253 Q859.8 306.0 858 360 Q740.0 361.7 622 360 Q620.2 303.76 623 252" fill="none" stroke="#555c50" stroke-width="0.8" opacity="0.55"/>
+<text x="634" y="307" font-size="24" fill="#34352e" font-weight="500" text-anchor="start">Embeddings</text>
+<text x="634" y="336" font-size="14" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">向量编码</text>
+<path d="M823 352 Q825.5 350.6 828 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M831 352 Q833.5 350.6 836 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M839 352 Q841.5 350.6 844 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/></g>
+<g id="handdrawn-node-index" data-label="Vector index / 向量索引" data-node="true"><rect x="900" y="250" width="240" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<path d="M901 251 Q1015.2 249 1139 251 Q1141 301.52 1139 361 Q1015.2 363 901 361 Q899 308.24 901 251Z" fill="#f6e7dc" stroke="#555c50" stroke-width="1.6"/>
+<path d="M903 252 Q1029.6 250.2 1138 253 Q1139.8 306.0 1138 360 Q1020.0 361.7 902 360 Q900.2 303.76 903 252" fill="none" stroke="#555c50" stroke-width="0.8" opacity="0.55"/>
+<text x="914" y="307" font-size="24" fill="#34352e" font-weight="500" text-anchor="start">Vector index</text>
+<text x="914" y="336" font-size="14" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">向量索引</text>
+<path d="M1103 352 Q1105.5 350.6 1108 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M1111 352 Q1113.5 350.6 1116 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M1119 352 Q1121.5 350.6 1124 346" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/></g>
+<g id="handdrawn-node-query" data-label="User query / 用户问题" data-node="true"><rect x="60" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<path d="M61 551 Q136.8 549 219 551 Q221 601.52 219 661 Q136.8 663 61 661 Q59 608.24 61 551Z" fill="#fbf0c9" stroke="#555c50" stroke-width="1.6"/>
+<path d="M63 552 Q146.4 550.2 218 553 Q219.8 606.0 218 660 Q140.0 661.7 62 660 Q60.2 603.76 63 552" fill="none" stroke="#555c50" stroke-width="0.8" opacity="0.55"/>
+<text x="74" y="607" font-size="19" fill="#34352e" font-weight="500" text-anchor="start">User query</text>
+<text x="74" y="636" font-size="14" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">用户问题</text>
+<path d="M183 652 Q185.5 650.6 188 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M191 652 Q193.5 650.6 196 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M199 652 Q201.5 650.6 204 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/></g>
+<g id="handdrawn-node-retrieve" data-label="Retriever / 相似度检索" data-node="true"><rect x="290" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<path d="M291 551 Q366.8 549 449 551 Q451 601.52 449 661 Q366.8 663 291 661 Q289 608.24 291 551Z" fill="#e8f1de" stroke="#555c50" stroke-width="1.6"/>
+<path d="M293 552 Q376.4 550.2 448 553 Q449.8 606.0 448 660 Q370.0 661.7 292 660 Q290.2 603.76 293 552" fill="none" stroke="#555c50" stroke-width="0.8" opacity="0.55"/>
+<text x="304" y="607" font-size="19" fill="#34352e" font-weight="500" text-anchor="start">Retriever</text>
+<text x="304" y="636" font-size="14" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">相似度检索</text>
+<path d="M413 652 Q415.5 650.6 418 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M421 652 Q423.5 650.6 426 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M429 652 Q431.5 650.6 434 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/></g>
+<g id="handdrawn-node-context" data-label="Context / 上下文构建" data-node="true"><rect x="520" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<path d="M521 551 Q596.8 549 679 551 Q681 601.52 679 661 Q596.8 663 521 661 Q519 608.24 521 551Z" fill="#e6eef7" stroke="#555c50" stroke-width="1.6"/>
+<path d="M523 552 Q606.4 550.2 678 553 Q679.8 606.0 678 660 Q600.0 661.7 522 660 Q520.2 603.76 523 552" fill="none" stroke="#555c50" stroke-width="0.8" opacity="0.55"/>
+<text x="534" y="607" font-size="19" fill="#34352e" font-weight="500" text-anchor="start">Context</text>
+<text x="534" y="636" font-size="14" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">上下文构建</text>
+<path d="M643 652 Q645.5 650.6 648 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M651 652 Q653.5 650.6 656 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M659 652 Q661.5 650.6 664 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/></g>
+<g id="handdrawn-node-llm" data-label="LLM / 生成模型" data-node="true"><rect x="750" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<path d="M751 551 Q826.8 549 909 551 Q911 601.52 909 661 Q826.8 663 751 661 Q749 608.24 751 551Z" fill="#f6e7dc" stroke="#555c50" stroke-width="1.6"/>
+<path d="M753 552 Q836.4 550.2 908 553 Q909.8 606.0 908 660 Q830.0 661.7 752 660 Q750.2 603.76 753 552" fill="none" stroke="#555c50" stroke-width="0.8" opacity="0.55"/>
+<text x="764" y="607" font-size="19" fill="#34352e" font-weight="500" text-anchor="start">LLM</text>
+<text x="764" y="636" font-size="14" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">生成模型</text>
+<path d="M873 652 Q875.5 650.6 878 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M881 652 Q883.5 650.6 886 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M889 652 Q891.5 650.6 894 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/></g>
+<g id="handdrawn-node-answer" data-label="Answer / 回答与引用" data-node="true"><rect x="980" y="550" width="160" height="112" fill="none" stroke="none" rx="0" stroke-width="1"/>
+<path d="M981 551 Q1056.8 549 1139 551 Q1141 601.52 1139 661 Q1056.8 663 981 661 Q979 608.24 981 551Z" fill="#fbf0c9" stroke="#555c50" stroke-width="1.6"/>
+<path d="M983 552 Q1066.4 550.2 1138 553 Q1139.8 606.0 1138 660 Q1060.0 661.7 982 660 Q980.2 603.76 983 552" fill="none" stroke="#555c50" stroke-width="0.8" opacity="0.55"/>
+<text x="994" y="607" font-size="19" fill="#34352e" font-weight="500" text-anchor="start">Answer</text>
+<text x="994" y="636" font-size="14" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">回答与引用</text>
+<path d="M1103 652 Q1105.5 650.6 1108 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M1111 652 Q1113.5 650.6 1116 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/>
+<path d="M1119 652 Q1121.5 650.6 1124 646" fill="none" stroke="#606151" stroke-width="0.8" stroke-linecap="round"/></g>
+<path d="M60 715 Q600.0 716.6 1140 715" fill="none" stroke="#555c50" stroke-width="0.7" stroke-linecap="round"/>
+<text x="60" y="748" font-size="14" fill="#606151" font-weight="400" text-anchor="start">RAG / Retrieval-augmented generation</text>
+<text x="60" y="776" font-size="12" fill="#606151" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">演示架构 · 可编辑节点与文字 · 非生产配置</text>
+</svg>

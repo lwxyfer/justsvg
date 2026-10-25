@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" font-family="ui-monospace, SFMono-Regular, Consolas, monospace">
+<title>电路布线 · RAG 架构图</title>
+<desc>原生可编辑示例。设计 Prompt 见 src/examples/prompts/circuit.md。演示架构，非生产配置。</desc>
+<defs><marker id="circuit-arrow-main" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#72d4d2"/></marker><marker id="circuit-arrow-online" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#287b65"/></marker><marker id="circuit-arrow-cross" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#aec7d2"/></marker></defs>
+<rect x="0" y="0" width="1200" height="800" fill="#102330" stroke="none" rx="0" stroke-width="1"/>
+<text x="60" y="100" font-size="36" fill="#e4f5f9" font-weight="500" text-anchor="start">RAG / SIGNAL ROUTING</text>
+<text x="60" y="143" font-size="16" fill="#aec7d2" font-weight="400" text-anchor="start">LOGICAL CIRCUIT · INDEX → RETRIEVE → GENERATE</text>
+<line x1="60" y1="172" x2="1120" y2="172" stroke="#72d4d2" stroke-width="1.2"/>
+<circle cx="1130" cy="172" r="5" fill="#72d4d2" stroke="#72d4d2" stroke-width="1"/>
+<text x="60" y="215" font-size="16" fill="#72d4d2" font-weight="600" text-anchor="start">离线索引 / INDEXING</text>
+<text x="60" y="505" font-size="16" fill="#72d4d2" font-weight="600" text-anchor="start">在线回答 / ANSWERING</text>
+<g id="circuit-connections" data-label="连接线"><polyline id="circuit-edge-docs-chunks" points="300,306.0 340,306.0" fill="none" stroke="#72d4d2" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#circuit-arrow-main)" data-sf-start-node="#circuit-node-docs" data-sf-end-node="#circuit-node-chunks" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="circuit-edge-chunks-embed" points="580,306.0 620,306.0" fill="none" stroke="#72d4d2" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#circuit-arrow-main)" data-sf-start-node="#circuit-node-chunks" data-sf-end-node="#circuit-node-embed" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="circuit-edge-embed-index" points="860,306.0 900,306.0" fill="none" stroke="#72d4d2" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#circuit-arrow-main)" data-sf-start-node="#circuit-node-embed" data-sf-end-node="#circuit-node-index" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="circuit-edge-query-retrieve" points="220,606.0 290,606.0" fill="none" stroke="#72d4d2" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#circuit-arrow-main)" data-sf-start-node="#circuit-node-query" data-sf-end-node="#circuit-node-retrieve" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="circuit-edge-retrieve-context" points="450,606.0 520,606.0" fill="none" stroke="#72d4d2" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#circuit-arrow-main)" data-sf-start-node="#circuit-node-retrieve" data-sf-end-node="#circuit-node-context" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="circuit-edge-context-llm" points="680,606.0 750,606.0" fill="none" stroke="#72d4d2" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#circuit-arrow-main)" data-sf-start-node="#circuit-node-context" data-sf-end-node="#circuit-node-llm" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="circuit-edge-llm-answer" points="910,606.0 980,606.0" fill="none" stroke="#72d4d2" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#circuit-arrow-main)" data-sf-start-node="#circuit-node-llm" data-sf-end-node="#circuit-node-answer" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="circuit-edge-index-retrieve" points="1020.0,362 1020.0,440 370.0,440 370.0,550" fill="none" stroke="#72d4d2" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#circuit-arrow-main)" data-sf-start-node="#circuit-node-index" data-sf-end-node="#circuit-node-retrieve" data-sf-start-anchor=".5 1 0 0" data-sf-end-anchor=".5 0 0 0" stroke-dasharray="6 4"/></g>
+<g id="circuit-node-docs" data-label="Documents / 文档与知识库" data-node="true"><rect x="60" y="250" width="240" height="112" fill="#173340" stroke="none" rx="0" stroke-width="1"/>
+<polyline points="70,250 290,250 300,260 300,352 290,362 70,362 60,352 60,260 70,250" fill="none" stroke="#72d4d2" stroke-width="1.5"/>
+<text x="76" y="272" font-size="11" fill="#aec7d2" font-weight="400" text-anchor="start">IC 01</text>
+<text x="76" y="305" font-size="20" fill="#e4f5f9" font-weight="600" text-anchor="start">Documents</text>
+<text x="76" y="334" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">文档与知识库</text>
+<circle cx="60" cy="306" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<circle cx="300" cy="306" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<line x1="100" y1="244" x2="100" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="100" y1="362" x2="100" y2="368" stroke="#72d4d2" stroke-width="1"/>
+<line x1="112" y1="244" x2="112" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="112" y1="362" x2="112" y2="368" stroke="#72d4d2" stroke-width="1"/>
+<line x1="124" y1="244" x2="124" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="124" y1="362" x2="124" y2="368" stroke="#72d4d2" stroke-width="1"/></g>
+<g id="circuit-node-chunks" data-label="Chunking / 解析与切分" data-node="true"><rect x="340" y="250" width="240" height="112" fill="#173340" stroke="none" rx="0" stroke-width="1"/>
+<polyline points="350,250 570,250 580,260 580,352 570,362 350,362 340,352 340,260 350,250" fill="none" stroke="#72d4d2" stroke-width="1.5"/>
+<text x="356" y="272" font-size="11" fill="#aec7d2" font-weight="400" text-anchor="start">IC 02</text>
+<text x="356" y="305" font-size="20" fill="#e4f5f9" font-weight="600" text-anchor="start">Chunking</text>
+<text x="356" y="334" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">解析与切分</text>
+<circle cx="340" cy="306" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<circle cx="580" cy="306" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<line x1="380" y1="244" x2="380" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="380" y1="362" x2="380" y2="368" stroke="#72d4d2" stroke-width="1"/>
+<line x1="392" y1="244" x2="392" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="392" y1="362" x2="392" y2="368" stroke="#72d4d2" stroke-width="1"/>
+<line x1="404" y1="244" x2="404" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="404" y1="362" x2="404" y2="368" stroke="#72d4d2" stroke-width="1"/></g>
+<g id="circuit-node-embed" data-label="Embeddings / 向量编码" data-node="true"><rect x="620" y="250" width="240" height="112" fill="#173340" stroke="none" rx="0" stroke-width="1"/>
+<polyline points="630,250 850,250 860,260 860,352 850,362 630,362 620,352 620,260 630,250" fill="none" stroke="#72d4d2" stroke-width="1.5"/>
+<text x="636" y="272" font-size="11" fill="#aec7d2" font-weight="400" text-anchor="start">IC 03</text>
+<text x="636" y="305" font-size="20" fill="#e4f5f9" font-weight="600" text-anchor="start">Embeddings</text>
+<text x="636" y="334" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">向量编码</text>
+<circle cx="620" cy="306" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<circle cx="860" cy="306" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<line x1="660" y1="244" x2="660" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="660" y1="362" x2="660" y2="368" stroke="#72d4d2" stroke-width="1"/>
+<line x1="672" y1="244" x2="672" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="672" y1="362" x2="672" y2="368" stroke="#72d4d2" stroke-width="1"/>
+<line x1="684" y1="244" x2="684" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="684" y1="362" x2="684" y2="368" stroke="#72d4d2" stroke-width="1"/></g>
+<g id="circuit-node-index" data-label="Vector index / 向量索引" data-node="true"><rect x="900" y="250" width="240" height="112" fill="#173340" stroke="none" rx="0" stroke-width="1"/>
+<polyline points="910,250 1130,250 1140,260 1140,352 1130,362 910,362 900,352 900,260 910,250" fill="none" stroke="#72d4d2" stroke-width="1.5"/>
+<text x="916" y="272" font-size="11" fill="#aec7d2" font-weight="400" text-anchor="start">IC 04</text>
+<text x="916" y="305" font-size="20" fill="#e4f5f9" font-weight="600" text-anchor="start">Vector index</text>
+<text x="916" y="334" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">向量索引</text>
+<circle cx="900" cy="306" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<circle cx="1140" cy="306" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<line x1="940" y1="244" x2="940" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="940" y1="362" x2="940" y2="368" stroke="#72d4d2" stroke-width="1"/>
+<line x1="952" y1="244" x2="952" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="952" y1="362" x2="952" y2="368" stroke="#72d4d2" stroke-width="1"/>
+<line x1="964" y1="244" x2="964" y2="250" stroke="#72d4d2" stroke-width="1"/>
+<line x1="964" y1="362" x2="964" y2="368" stroke="#72d4d2" stroke-width="1"/></g>
+<g id="circuit-node-query" data-label="User query / 用户问题" data-node="true"><rect x="60" y="550" width="160" height="112" fill="#173340" stroke="none" rx="0" stroke-width="1"/>
+<polyline points="70,550 210,550 220,560 220,652 210,662 70,662 60,652 60,560 70,550" fill="none" stroke="#72d4d2" stroke-width="1.5"/>
+<text x="76" y="572" font-size="11" fill="#aec7d2" font-weight="400" text-anchor="start">IC 05</text>
+<text x="76" y="605" font-size="16" fill="#e4f5f9" font-weight="600" text-anchor="start">User query</text>
+<text x="76" y="634" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">用户问题</text>
+<circle cx="60" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<circle cx="220" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<line x1="100" y1="544" x2="100" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="100" y1="662" x2="100" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="112" y1="544" x2="112" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="112" y1="662" x2="112" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="124" y1="544" x2="124" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="124" y1="662" x2="124" y2="668" stroke="#72d4d2" stroke-width="1"/></g>
+<g id="circuit-node-retrieve" data-label="Retriever / 相似度检索" data-node="true"><rect x="290" y="550" width="160" height="112" fill="#173340" stroke="none" rx="0" stroke-width="1"/>
+<polyline points="300,550 440,550 450,560 450,652 440,662 300,662 290,652 290,560 300,550" fill="none" stroke="#72d4d2" stroke-width="1.5"/>
+<text x="306" y="572" font-size="11" fill="#aec7d2" font-weight="400" text-anchor="start">IC 06</text>
+<text x="306" y="605" font-size="16" fill="#e4f5f9" font-weight="600" text-anchor="start">Retriever</text>
+<text x="306" y="634" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">相似度检索</text>
+<circle cx="290" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<circle cx="450" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<line x1="330" y1="544" x2="330" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="330" y1="662" x2="330" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="342" y1="544" x2="342" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="342" y1="662" x2="342" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="354" y1="544" x2="354" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="354" y1="662" x2="354" y2="668" stroke="#72d4d2" stroke-width="1"/></g>
+<g id="circuit-node-context" data-label="Context / 上下文构建" data-node="true"><rect x="520" y="550" width="160" height="112" fill="#173340" stroke="none" rx="0" stroke-width="1"/>
+<polyline points="530,550 670,550 680,560 680,652 670,662 530,662 520,652 520,560 530,550" fill="none" stroke="#72d4d2" stroke-width="1.5"/>
+<text x="536" y="572" font-size="11" fill="#aec7d2" font-weight="400" text-anchor="start">IC 07</text>
+<text x="536" y="605" font-size="16" fill="#e4f5f9" font-weight="600" text-anchor="start">Context</text>
+<text x="536" y="634" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">上下文构建</text>
+<circle cx="520" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<circle cx="680" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<line x1="560" y1="544" x2="560" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="560" y1="662" x2="560" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="572" y1="544" x2="572" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="572" y1="662" x2="572" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="584" y1="544" x2="584" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="584" y1="662" x2="584" y2="668" stroke="#72d4d2" stroke-width="1"/></g>
+<g id="circuit-node-llm" data-label="LLM / 生成模型" data-node="true"><rect x="750" y="550" width="160" height="112" fill="#173340" stroke="none" rx="0" stroke-width="1"/>
+<polyline points="760,550 900,550 910,560 910,652 900,662 760,662 750,652 750,560 760,550" fill="none" stroke="#72d4d2" stroke-width="1.5"/>
+<text x="766" y="572" font-size="11" fill="#aec7d2" font-weight="400" text-anchor="start">IC 08</text>
+<text x="766" y="605" font-size="16" fill="#e4f5f9" font-weight="600" text-anchor="start">LLM</text>
+<text x="766" y="634" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">生成模型</text>
+<circle cx="750" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<circle cx="910" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<line x1="790" y1="544" x2="790" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="790" y1="662" x2="790" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="802" y1="544" x2="802" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="802" y1="662" x2="802" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="814" y1="544" x2="814" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="814" y1="662" x2="814" y2="668" stroke="#72d4d2" stroke-width="1"/></g>
+<g id="circuit-node-answer" data-label="Answer / 回答与引用" data-node="true"><rect x="980" y="550" width="160" height="112" fill="#173340" stroke="none" rx="0" stroke-width="1"/>
+<polyline points="990,550 1130,550 1140,560 1140,652 1130,662 990,662 980,652 980,560 990,550" fill="none" stroke="#72d4d2" stroke-width="1.5"/>
+<text x="996" y="572" font-size="11" fill="#aec7d2" font-weight="400" text-anchor="start">IC 09</text>
+<text x="996" y="605" font-size="16" fill="#e4f5f9" font-weight="600" text-anchor="start">Answer</text>
+<text x="996" y="634" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">回答与引用</text>
+<circle cx="980" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<circle cx="1140" cy="606" r="4" fill="#102330" stroke="#72d4d2" stroke-width="1.5"/>
+<line x1="1020" y1="544" x2="1020" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="1020" y1="662" x2="1020" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="1032" y1="544" x2="1032" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="1032" y1="662" x2="1032" y2="668" stroke="#72d4d2" stroke-width="1"/>
+<line x1="1044" y1="544" x2="1044" y2="550" stroke="#72d4d2" stroke-width="1"/>
+<line x1="1044" y1="662" x2="1044" y2="668" stroke="#72d4d2" stroke-width="1"/></g>
+<line x1="60" y1="715" x2="1140" y2="715" stroke="#72d4d2" stroke-width="0.7"/>
+<text x="60" y="748" font-size="14" fill="#aec7d2" font-weight="400" text-anchor="start">RAG / Retrieval-augmented generation</text>
+<text x="60" y="776" font-size="12" fill="#aec7d2" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">演示架构 · 可编辑节点与文字 · 非生产配置</text>
+</svg>

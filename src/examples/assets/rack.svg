@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" font-family="Arial, PingFang SC, sans-serif">
+<title>服务器机架 · RAG 架构图</title>
+<desc>原生可编辑示例。设计 Prompt 见 src/examples/prompts/rack.md。演示架构，非生产配置。</desc>
+<defs><marker id="rack-arrow-main" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#658197"/></marker><marker id="rack-arrow-online" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#287b65"/></marker><marker id="rack-arrow-cross" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#516476"/></marker></defs>
+<rect x="0" y="0" width="1200" height="800" fill="#edf1f4" stroke="none" rx="0" stroke-width="1"/>
+<text x="60" y="100" font-size="44" fill="#243342" font-weight="500" text-anchor="start">RAG / 系统模块</text>
+<text x="60" y="143" font-size="16" fill="#516476" font-weight="400" text-anchor="start">从知识接入到回答输出的模块连接示意</text>
+<line x1="60" y1="174" x2="1140" y2="174" stroke="#658197" stroke-width="1"/>
+<text x="60" y="215" font-size="16" fill="#315b7c" font-weight="600" text-anchor="start">离线索引 / INDEXING</text>
+<text x="60" y="505" font-size="16" fill="#315b7c" font-weight="600" text-anchor="start">在线回答 / ANSWERING</text>
+<g id="rack-connections" data-label="连接线"><polyline id="rack-edge-docs-chunks" points="300,306.0 340,306.0" fill="none" stroke="#658197" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#rack-arrow-main)" data-sf-start-node="#rack-node-docs" data-sf-end-node="#rack-node-chunks" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="rack-edge-chunks-embed" points="580,306.0 620,306.0" fill="none" stroke="#658197" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#rack-arrow-main)" data-sf-start-node="#rack-node-chunks" data-sf-end-node="#rack-node-embed" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="rack-edge-embed-index" points="860,306.0 900,306.0" fill="none" stroke="#658197" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#rack-arrow-main)" data-sf-start-node="#rack-node-embed" data-sf-end-node="#rack-node-index" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="rack-edge-query-retrieve" points="220,606.0 290,606.0" fill="none" stroke="#658197" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#rack-arrow-main)" data-sf-start-node="#rack-node-query" data-sf-end-node="#rack-node-retrieve" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="rack-edge-retrieve-context" points="450,606.0 520,606.0" fill="none" stroke="#658197" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#rack-arrow-main)" data-sf-start-node="#rack-node-retrieve" data-sf-end-node="#rack-node-context" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="rack-edge-context-llm" points="680,606.0 750,606.0" fill="none" stroke="#658197" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#rack-arrow-main)" data-sf-start-node="#rack-node-context" data-sf-end-node="#rack-node-llm" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="rack-edge-llm-answer" points="910,606.0 980,606.0" fill="none" stroke="#658197" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#rack-arrow-main)" data-sf-start-node="#rack-node-llm" data-sf-end-node="#rack-node-answer" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="rack-edge-index-retrieve" points="1020.0,362 1020.0,440 370.0,440 370.0,550" fill="none" stroke="#658197" stroke-width="1.5" stroke-linejoin="miter" marker-end="url(#rack-arrow-main)" data-sf-start-node="#rack-node-index" data-sf-end-node="#rack-node-retrieve" data-sf-start-anchor=".5 1 0 0" data-sf-end-anchor=".5 0 0 0" stroke-dasharray="6 4"/></g>
+<g id="rack-node-docs" data-label="Documents / 文档与知识库" data-node="true"><rect x="60" y="250" width="240" height="112" fill="#f8fafb" stroke="#658197" rx="0" stroke-width="1"/>
+<circle cx="67" cy="257" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="293" cy="257" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="67" cy="355" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="293" cy="355" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<line x1="72" y1="281" x2="82" y2="281" stroke="#658197" stroke-width="2"/>
+<line x1="72" y1="290" x2="82" y2="290" stroke="#658197" stroke-width="2"/>
+<line x1="72" y1="299" x2="82" y2="299" stroke="#658197" stroke-width="2"/>
+<text x="90" y="297" font-size="22" fill="#243342" font-weight="600" text-anchor="start">Documents</text>
+<text x="90" y="328" font-size="14" fill="#516476" font-weight="400" text-anchor="start">文档与知识库</text>
+<rect x="267" y="341" width="20" height="8" fill="none" stroke="#658197" rx="0" stroke-width="1"/>
+<line x1="90" y1="341" x2="256" y2="341" stroke="#658197" stroke-width="1"/></g>
+<g id="rack-node-chunks" data-label="Chunking / 解析与切分" data-node="true"><rect x="340" y="250" width="240" height="112" fill="#f8fafb" stroke="#658197" rx="0" stroke-width="1"/>
+<circle cx="347" cy="257" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="573" cy="257" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="347" cy="355" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="573" cy="355" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<line x1="352" y1="281" x2="362" y2="281" stroke="#658197" stroke-width="2"/>
+<line x1="352" y1="290" x2="362" y2="290" stroke="#658197" stroke-width="2"/>
+<line x1="352" y1="299" x2="362" y2="299" stroke="#658197" stroke-width="2"/>
+<text x="370" y="297" font-size="22" fill="#243342" font-weight="600" text-anchor="start">Chunking</text>
+<text x="370" y="328" font-size="14" fill="#516476" font-weight="400" text-anchor="start">解析与切分</text>
+<rect x="547" y="341" width="20" height="8" fill="none" stroke="#658197" rx="0" stroke-width="1"/>
+<line x1="370" y1="341" x2="536" y2="341" stroke="#658197" stroke-width="1"/></g>
+<g id="rack-node-embed" data-label="Embeddings / 向量编码" data-node="true"><rect x="620" y="250" width="240" height="112" fill="#f8fafb" stroke="#658197" rx="0" stroke-width="1"/>
+<circle cx="627" cy="257" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="853" cy="257" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="627" cy="355" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="853" cy="355" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<line x1="632" y1="281" x2="642" y2="281" stroke="#658197" stroke-width="2"/>
+<line x1="632" y1="290" x2="642" y2="290" stroke="#658197" stroke-width="2"/>
+<line x1="632" y1="299" x2="642" y2="299" stroke="#658197" stroke-width="2"/>
+<text x="650" y="297" font-size="22" fill="#243342" font-weight="600" text-anchor="start">Embeddings</text>
+<text x="650" y="328" font-size="14" fill="#516476" font-weight="400" text-anchor="start">向量编码</text>
+<rect x="827" y="341" width="20" height="8" fill="none" stroke="#658197" rx="0" stroke-width="1"/>
+<line x1="650" y1="341" x2="816" y2="341" stroke="#658197" stroke-width="1"/></g>
+<g id="rack-node-index" data-label="Vector index / 向量索引" data-node="true"><rect x="900" y="250" width="240" height="112" fill="#f8fafb" stroke="#658197" rx="0" stroke-width="1"/>
+<circle cx="907" cy="257" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="1133" cy="257" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="907" cy="355" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="1133" cy="355" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<line x1="912" y1="281" x2="922" y2="281" stroke="#658197" stroke-width="2"/>
+<line x1="912" y1="290" x2="922" y2="290" stroke="#658197" stroke-width="2"/>
+<line x1="912" y1="299" x2="922" y2="299" stroke="#658197" stroke-width="2"/>
+<text x="930" y="297" font-size="22" fill="#243342" font-weight="600" text-anchor="start">Vector index</text>
+<text x="930" y="328" font-size="14" fill="#516476" font-weight="400" text-anchor="start">向量索引</text>
+<rect x="1107" y="341" width="20" height="8" fill="none" stroke="#658197" rx="0" stroke-width="1"/>
+<line x1="930" y1="341" x2="1096" y2="341" stroke="#658197" stroke-width="1"/></g>
+<g id="rack-node-query" data-label="User query / 用户问题" data-node="true"><rect x="60" y="550" width="160" height="112" fill="#f8fafb" stroke="#658197" rx="0" stroke-width="1"/>
+<circle cx="67" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="213" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="67" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="213" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<line x1="72" y1="581" x2="82" y2="581" stroke="#658197" stroke-width="2"/>
+<line x1="72" y1="590" x2="82" y2="590" stroke="#658197" stroke-width="2"/>
+<line x1="72" y1="599" x2="82" y2="599" stroke="#658197" stroke-width="2"/>
+<text x="90" y="597" font-size="17" fill="#243342" font-weight="600" text-anchor="start">User query</text>
+<text x="90" y="628" font-size="14" fill="#516476" font-weight="400" text-anchor="start">用户问题</text>
+<rect x="187" y="641" width="20" height="8" fill="none" stroke="#658197" rx="0" stroke-width="1"/>
+<line x1="90" y1="641" x2="176" y2="641" stroke="#658197" stroke-width="1"/></g>
+<g id="rack-node-retrieve" data-label="Retriever / 相似度检索" data-node="true"><rect x="290" y="550" width="160" height="112" fill="#f8fafb" stroke="#658197" rx="0" stroke-width="1"/>
+<circle cx="297" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="443" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="297" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="443" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<line x1="302" y1="581" x2="312" y2="581" stroke="#658197" stroke-width="2"/>
+<line x1="302" y1="590" x2="312" y2="590" stroke="#658197" stroke-width="2"/>
+<line x1="302" y1="599" x2="312" y2="599" stroke="#658197" stroke-width="2"/>
+<text x="320" y="597" font-size="17" fill="#243342" font-weight="600" text-anchor="start">Retriever</text>
+<text x="320" y="628" font-size="14" fill="#516476" font-weight="400" text-anchor="start">相似度检索</text>
+<rect x="417" y="641" width="20" height="8" fill="none" stroke="#658197" rx="0" stroke-width="1"/>
+<line x1="320" y1="641" x2="406" y2="641" stroke="#658197" stroke-width="1"/></g>
+<g id="rack-node-context" data-label="Context / 上下文构建" data-node="true"><rect x="520" y="550" width="160" height="112" fill="#f8fafb" stroke="#658197" rx="0" stroke-width="1"/>
+<circle cx="527" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="673" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="527" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="673" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<line x1="532" y1="581" x2="542" y2="581" stroke="#658197" stroke-width="2"/>
+<line x1="532" y1="590" x2="542" y2="590" stroke="#658197" stroke-width="2"/>
+<line x1="532" y1="599" x2="542" y2="599" stroke="#658197" stroke-width="2"/>
+<text x="550" y="597" font-size="17" fill="#243342" font-weight="600" text-anchor="start">Context</text>
+<text x="550" y="628" font-size="14" fill="#516476" font-weight="400" text-anchor="start">上下文构建</text>
+<rect x="647" y="641" width="20" height="8" fill="none" stroke="#658197" rx="0" stroke-width="1"/>
+<line x1="550" y1="641" x2="636" y2="641" stroke="#658197" stroke-width="1"/></g>
+<g id="rack-node-llm" data-label="LLM / 生成模型" data-node="true"><rect x="750" y="550" width="160" height="112" fill="#f8fafb" stroke="#658197" rx="0" stroke-width="1"/>
+<circle cx="757" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="903" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="757" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="903" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<line x1="762" y1="581" x2="772" y2="581" stroke="#658197" stroke-width="2"/>
+<line x1="762" y1="590" x2="772" y2="590" stroke="#658197" stroke-width="2"/>
+<line x1="762" y1="599" x2="772" y2="599" stroke="#658197" stroke-width="2"/>
+<text x="780" y="597" font-size="17" fill="#243342" font-weight="600" text-anchor="start">LLM</text>
+<text x="780" y="628" font-size="14" fill="#516476" font-weight="400" text-anchor="start">生成模型</text>
+<rect x="877" y="641" width="20" height="8" fill="none" stroke="#658197" rx="0" stroke-width="1"/>
+<line x1="780" y1="641" x2="866" y2="641" stroke="#658197" stroke-width="1"/></g>
+<g id="rack-node-answer" data-label="Answer / 回答与引用" data-node="true"><rect x="980" y="550" width="160" height="112" fill="#f8fafb" stroke="#658197" rx="0" stroke-width="1"/>
+<circle cx="987" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="1133" cy="557" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="987" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<circle cx="1133" cy="655" r="1.8" fill="#516476" stroke="#516476" stroke-width="1"/>
+<line x1="992" y1="581" x2="1002" y2="581" stroke="#658197" stroke-width="2"/>
+<line x1="992" y1="590" x2="1002" y2="590" stroke="#658197" stroke-width="2"/>
+<line x1="992" y1="599" x2="1002" y2="599" stroke="#658197" stroke-width="2"/>
+<text x="1010" y="597" font-size="17" fill="#243342" font-weight="600" text-anchor="start">Answer</text>
+<text x="1010" y="628" font-size="14" fill="#516476" font-weight="400" text-anchor="start">回答与引用</text>
+<rect x="1107" y="641" width="20" height="8" fill="none" stroke="#658197" rx="0" stroke-width="1"/>
+<line x1="1010" y1="641" x2="1096" y2="641" stroke="#658197" stroke-width="1"/></g>
+<line x1="60" y1="715" x2="1140" y2="715" stroke="#658197" stroke-width="0.7"/>
+<text x="60" y="748" font-size="14" fill="#516476" font-weight="400" text-anchor="start">RAG / Retrieval-augmented generation</text>
+<text x="60" y="776" font-size="12" fill="#516476" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">演示架构 · 可编辑节点与文字 · 非生产配置</text>
+</svg>

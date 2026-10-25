@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="ui-monospace, SFMono-Regular, Consolas, monospace">
+<title>终端控制台 · RAG 架构图</title>
+<desc>设计 Prompt 见 src/examples/prompts/terminal.md。原生可编辑 SVG，演示结构。</desc>
+<defs><marker id="terminal-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#578877"/></marker></defs>
+<rect x="0" y="0" width="1200" height="800" fill="#101b1c" stroke="none" rx="0" stroke-width="1"/>
+<rect x="28" y="28" width="1144" height="756" fill="#101b1c" stroke="#578877" rx="8" stroke-width="1"/>
+<line x1="28" y1="68" x2="1172" y2="68" stroke="#578877" stroke-width="1"/>
+<circle cx="52" cy="48" r="4" fill="#d28677"/>
+<circle cx="71" cy="48" r="4" fill="#d8bd76"/>
+<circle cx="90" cy="48" r="4" fill="#77b99c"/>
+<text x="134" y="53" fill="#a7c5ba" font-size="13" font-weight="400">rag-system.svg  —  topology / local</text>
+<text x="60" y="122" fill="#7ee4ba" font-size="32" font-weight="400">$ inspect rag --topology</text>
+<text x="60" y="157" fill="#a7c5ba" font-size="14" font-weight="400">native SVG · 9 nodes · offline indexing + online answering</text>
+<text x="60" y="215" fill="#7ee4ba" font-size="16" font-weight="600">INDEXING</text>
+<text x="60" y="505" fill="#7ee4ba" font-size="16" font-weight="600">ANSWERING</text>
+<g id="terminal-connections" data-label="连接线"><polyline id="terminal-edge-docs-chunks" points="300,306.0 340,306.0" fill="none" stroke="#578877" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#terminal-arrow)" data-sf-start-node="#terminal-node-docs" data-sf-end-node="#terminal-node-chunks" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="terminal-edge-chunks-embed" points="580,306.0 620,306.0" fill="none" stroke="#578877" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#terminal-arrow)" data-sf-start-node="#terminal-node-chunks" data-sf-end-node="#terminal-node-embed" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="terminal-edge-embed-index" points="860,306.0 900,306.0" fill="none" stroke="#578877" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#terminal-arrow)" data-sf-start-node="#terminal-node-embed" data-sf-end-node="#terminal-node-index" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="terminal-edge-query-retrieve" points="220,606.0 290,606.0" fill="none" stroke="#578877" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#terminal-arrow)" data-sf-start-node="#terminal-node-query" data-sf-end-node="#terminal-node-retrieve" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="terminal-edge-retrieve-context" points="450,606.0 520,606.0" fill="none" stroke="#578877" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#terminal-arrow)" data-sf-start-node="#terminal-node-retrieve" data-sf-end-node="#terminal-node-context" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="terminal-edge-context-llm" points="680,606.0 750,606.0" fill="none" stroke="#578877" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#terminal-arrow)" data-sf-start-node="#terminal-node-context" data-sf-end-node="#terminal-node-llm" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="terminal-edge-llm-answer" points="910,606.0 980,606.0" fill="none" stroke="#578877" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#terminal-arrow)" data-sf-start-node="#terminal-node-llm" data-sf-end-node="#terminal-node-answer" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="terminal-edge-index-retrieve" points="1020,362 1020,440 370,440 370,550" fill="none" stroke="#578877" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#terminal-arrow)" data-sf-start-node="#terminal-node-index" data-sf-end-node="#terminal-node-retrieve" data-sf-start-anchor=".5 1 0 0" data-sf-end-anchor=".5 0 0 0" stroke-dasharray="7 5"/></g>
+<g id="terminal-node-docs" data-label="Documents / 文档与知识库" data-node="true"><rect x="60" y="250" width="240" height="112" fill="#172827" stroke="#578877" rx="3" stroke-width="1.5"/>
+<text x="72" y="273" fill="#7ee4ba" font-size="12" font-weight="400">[docs]</text>
+<text x="72" y="304" fill="#ddf5ec" font-size="20" font-weight="500">Documents</text>
+<text x="72" y="328" fill="#a7c5ba" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">文档与知识库</text>
+<circle cx="76" cy="347" r="2.5" fill="#7ee4ba"/>
+<text x="86" y="351" fill="#7ee4ba" font-size="10" font-weight="400">ready</text></g>
+<g id="terminal-node-chunks" data-label="Chunking / 解析与切分" data-node="true"><rect x="340" y="250" width="240" height="112" fill="#172827" stroke="#578877" rx="3" stroke-width="1.5"/>
+<text x="352" y="273" fill="#7ee4ba" font-size="12" font-weight="400">[chunks]</text>
+<text x="352" y="304" fill="#ddf5ec" font-size="20" font-weight="500">Chunking</text>
+<text x="352" y="328" fill="#a7c5ba" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">解析与切分</text>
+<circle cx="356" cy="347" r="2.5" fill="#7ee4ba"/>
+<text x="366" y="351" fill="#7ee4ba" font-size="10" font-weight="400">ready</text></g>
+<g id="terminal-node-embed" data-label="Embeddings / 向量编码" data-node="true"><rect x="620" y="250" width="240" height="112" fill="#172827" stroke="#578877" rx="3" stroke-width="1.5"/>
+<text x="632" y="273" fill="#7ee4ba" font-size="12" font-weight="400">[embed]</text>
+<text x="632" y="304" fill="#ddf5ec" font-size="20" font-weight="500">Embeddings</text>
+<text x="632" y="328" fill="#a7c5ba" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">向量编码</text>
+<circle cx="636" cy="347" r="2.5" fill="#7ee4ba"/>
+<text x="646" y="351" fill="#7ee4ba" font-size="10" font-weight="400">ready</text></g>
+<g id="terminal-node-index" data-label="Vector index / 向量索引" data-node="true"><rect x="900" y="250" width="240" height="112" fill="#172827" stroke="#578877" rx="3" stroke-width="1.5"/>
+<text x="912" y="273" fill="#7ee4ba" font-size="12" font-weight="400">[index]</text>
+<text x="912" y="304" fill="#ddf5ec" font-size="20" font-weight="500">Vector index</text>
+<text x="912" y="328" fill="#a7c5ba" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">向量索引</text>
+<circle cx="916" cy="347" r="2.5" fill="#7ee4ba"/>
+<text x="926" y="351" fill="#7ee4ba" font-size="10" font-weight="400">ready</text></g>
+<g id="terminal-node-query" data-label="User query / 用户问题" data-node="true"><rect x="60" y="550" width="160" height="112" fill="#172827" stroke="#578877" rx="3" stroke-width="1.5"/>
+<text x="72" y="573" fill="#7ee4ba" font-size="12" font-weight="400">[query]</text>
+<text x="72" y="604" fill="#ddf5ec" font-size="16" font-weight="500">User query</text>
+<text x="72" y="628" fill="#a7c5ba" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">用户问题</text>
+<circle cx="76" cy="647" r="2.5" fill="#7ee4ba"/>
+<text x="86" y="651" fill="#7ee4ba" font-size="10" font-weight="400">ready</text></g>
+<g id="terminal-node-retrieve" data-label="Retriever / 相似度检索" data-node="true"><rect x="290" y="550" width="160" height="112" fill="#172827" stroke="#578877" rx="3" stroke-width="1.5"/>
+<text x="302" y="573" fill="#7ee4ba" font-size="12" font-weight="400">[retrieve]</text>
+<text x="302" y="604" fill="#ddf5ec" font-size="16" font-weight="500">Retriever</text>
+<text x="302" y="628" fill="#a7c5ba" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">相似度检索</text>
+<circle cx="306" cy="647" r="2.5" fill="#7ee4ba"/>
+<text x="316" y="651" fill="#7ee4ba" font-size="10" font-weight="400">ready</text></g>
+<g id="terminal-node-context" data-label="Context / 上下文构建" data-node="true"><rect x="520" y="550" width="160" height="112" fill="#172827" stroke="#578877" rx="3" stroke-width="1.5"/>
+<text x="532" y="573" fill="#7ee4ba" font-size="12" font-weight="400">[context]</text>
+<text x="532" y="604" fill="#ddf5ec" font-size="16" font-weight="500">Context</text>
+<text x="532" y="628" fill="#a7c5ba" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">上下文构建</text>
+<circle cx="536" cy="647" r="2.5" fill="#7ee4ba"/>
+<text x="546" y="651" fill="#7ee4ba" font-size="10" font-weight="400">ready</text></g>
+<g id="terminal-node-llm" data-label="LLM / 生成模型" data-node="true"><rect x="750" y="550" width="160" height="112" fill="#172827" stroke="#578877" rx="3" stroke-width="1.5"/>
+<text x="762" y="573" fill="#7ee4ba" font-size="12" font-weight="400">[llm]</text>
+<text x="762" y="604" fill="#ddf5ec" font-size="16" font-weight="500">LLM</text>
+<text x="762" y="628" fill="#a7c5ba" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">生成模型</text>
+<circle cx="766" cy="647" r="2.5" fill="#7ee4ba"/>
+<text x="776" y="651" fill="#7ee4ba" font-size="10" font-weight="400">ready</text></g>
+<g id="terminal-node-answer" data-label="Answer / 回答与引用" data-node="true"><rect x="980" y="550" width="160" height="112" fill="#172827" stroke="#578877" rx="3" stroke-width="1.5"/>
+<text x="992" y="573" fill="#7ee4ba" font-size="12" font-weight="400">[answer]</text>
+<text x="992" y="604" fill="#ddf5ec" font-size="16" font-weight="500">Answer</text>
+<text x="992" y="628" fill="#a7c5ba" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">回答与引用</text>
+<circle cx="996" cy="647" r="2.5" fill="#7ee4ba"/>
+<text x="1006" y="651" fill="#7ee4ba" font-size="10" font-weight="400">ready</text></g>
+<line x1="60" y1="714" x2="1140" y2="714" stroke="#578877" stroke-width="1"/>
+<text x="60" y="747" fill="#a7c5ba" font-size="14" font-weight="400">RAG  /  Retrieval-augmented generation</text>
+<text x="60" y="767" fill="#a7c5ba" font-size="12" font-weight="400" font-family="Arial, PingFang SC, sans-serif">演示架构 · 可编辑节点与文字 · 非生产配置</text>
+</svg>

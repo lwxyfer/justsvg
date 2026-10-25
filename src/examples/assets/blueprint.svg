@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="ui-monospace, SFMono-Regular, Consolas, monospace">
+<title>工程蓝图 · RAG 架构图</title>
+<desc>设计 Prompt 见 src/examples/prompts/blueprint.md。原生可编辑 SVG，演示结构。</desc>
+<defs><marker id="blueprint-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#83bce0"/></marker><pattern id="blueprint-grid" width="32" height="32" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="32" height="32" fill="#102f54" stroke="none" rx="0" stroke-width="1"/><path d="M32 0H0V32" fill="none" stroke="#284b70" stroke-width="0.6"/></pattern></defs>
+<rect x="0" y="0" width="1200" height="800" fill="url(#blueprint-grid)" stroke="none" rx="0" stroke-width="1"/>
+<text x="60" y="100" fill="#eef7ff" font-size="38" font-weight="600">RAG / RETRIEVAL SYSTEM</text>
+<text x="60" y="138" fill="#afcde5" font-size="15" font-weight="400">ARCHITECTURE DRAWING  ·  INDEX → RETRIEVE → GENERATE</text>
+<line x1="60" y1="167" x2="1140" y2="167" stroke="#83bce0" stroke-width="1"/>
+<line x1="60" y1="190" x2="1140" y2="190" stroke="#83bce0" stroke-width="0.8"/>
+<line x1="60" y1="184" x2="60" y2="196" stroke="#83bce0" stroke-width="1"/>
+<line x1="1140" y1="184" x2="1140" y2="196" stroke="#83bce0" stroke-width="1"/>
+<text x="820" y="184" fill="#afcde5" font-size="12" font-weight="400">1200 × 800 / LOGICAL VIEW</text>
+<text x="60" y="215" fill="#74d8ff" font-size="16" font-weight="600">INDEXING</text>
+<text x="60" y="505" fill="#74d8ff" font-size="16" font-weight="600">ANSWERING</text>
+<g id="blueprint-connections" data-label="连接线"><polyline id="blueprint-edge-docs-chunks" points="300,306.0 340,306.0" fill="none" stroke="#83bce0" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blueprint-arrow)" data-sf-start-node="#blueprint-node-docs" data-sf-end-node="#blueprint-node-chunks" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="blueprint-edge-chunks-embed" points="580,306.0 620,306.0" fill="none" stroke="#83bce0" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blueprint-arrow)" data-sf-start-node="#blueprint-node-chunks" data-sf-end-node="#blueprint-node-embed" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="blueprint-edge-embed-index" points="860,306.0 900,306.0" fill="none" stroke="#83bce0" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blueprint-arrow)" data-sf-start-node="#blueprint-node-embed" data-sf-end-node="#blueprint-node-index" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="blueprint-edge-query-retrieve" points="220,606.0 290,606.0" fill="none" stroke="#83bce0" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blueprint-arrow)" data-sf-start-node="#blueprint-node-query" data-sf-end-node="#blueprint-node-retrieve" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="blueprint-edge-retrieve-context" points="450,606.0 520,606.0" fill="none" stroke="#83bce0" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blueprint-arrow)" data-sf-start-node="#blueprint-node-retrieve" data-sf-end-node="#blueprint-node-context" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="blueprint-edge-context-llm" points="680,606.0 750,606.0" fill="none" stroke="#83bce0" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blueprint-arrow)" data-sf-start-node="#blueprint-node-context" data-sf-end-node="#blueprint-node-llm" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="blueprint-edge-llm-answer" points="910,606.0 980,606.0" fill="none" stroke="#83bce0" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blueprint-arrow)" data-sf-start-node="#blueprint-node-llm" data-sf-end-node="#blueprint-node-answer" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="blueprint-edge-index-retrieve" points="1020,362 1020,440 370,440 370,550" fill="none" stroke="#83bce0" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blueprint-arrow)" data-sf-start-node="#blueprint-node-index" data-sf-end-node="#blueprint-node-retrieve" data-sf-start-anchor=".5 1 0 0" data-sf-end-anchor=".5 0 0 0" stroke-dasharray="7 5"/></g>
+<g id="blueprint-node-docs" data-label="Documents / 文档与知识库" data-node="true"><rect x="60" y="250" width="240" height="112" fill="#173e67" stroke="#83bce0" rx="0" stroke-width="1.6"/>
+<rect x="65" y="255" width="230" height="102" fill="none" stroke="#83bce0" rx="0" stroke-width="0.6"/>
+<line x1="55" y1="250" x2="65" y2="250" stroke="#74d8ff" stroke-width="1"/>
+<line x1="60" y1="245" x2="60" y2="255" stroke="#74d8ff" stroke-width="1"/>
+<line x1="295" y1="250" x2="305" y2="250" stroke="#74d8ff" stroke-width="1"/>
+<line x1="300" y1="245" x2="300" y2="255" stroke="#74d8ff" stroke-width="1"/>
+<line x1="55" y1="362" x2="65" y2="362" stroke="#74d8ff" stroke-width="1"/>
+<line x1="60" y1="357" x2="60" y2="367" stroke="#74d8ff" stroke-width="1"/>
+<line x1="295" y1="362" x2="305" y2="362" stroke="#74d8ff" stroke-width="1"/>
+<line x1="300" y1="357" x2="300" y2="367" stroke="#74d8ff" stroke-width="1"/>
+<text x="76" y="272" fill="#afcde5" font-size="11" font-weight="400">N01</text>
+<text x="76" y="305" fill="#eef7ff" font-size="20" font-weight="600">DOCUMENTS</text>
+<text x="76" y="334" fill="#afcde5" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">文档与知识库</text></g>
+<g id="blueprint-node-chunks" data-label="Chunking / 解析与切分" data-node="true"><rect x="340" y="250" width="240" height="112" fill="#173e67" stroke="#83bce0" rx="0" stroke-width="1.6"/>
+<rect x="345" y="255" width="230" height="102" fill="none" stroke="#83bce0" rx="0" stroke-width="0.6"/>
+<line x1="335" y1="250" x2="345" y2="250" stroke="#74d8ff" stroke-width="1"/>
+<line x1="340" y1="245" x2="340" y2="255" stroke="#74d8ff" stroke-width="1"/>
+<line x1="575" y1="250" x2="585" y2="250" stroke="#74d8ff" stroke-width="1"/>
+<line x1="580" y1="245" x2="580" y2="255" stroke="#74d8ff" stroke-width="1"/>
+<line x1="335" y1="362" x2="345" y2="362" stroke="#74d8ff" stroke-width="1"/>
+<line x1="340" y1="357" x2="340" y2="367" stroke="#74d8ff" stroke-width="1"/>
+<line x1="575" y1="362" x2="585" y2="362" stroke="#74d8ff" stroke-width="1"/>
+<line x1="580" y1="357" x2="580" y2="367" stroke="#74d8ff" stroke-width="1"/>
+<text x="356" y="272" fill="#afcde5" font-size="11" font-weight="400">N02</text>
+<text x="356" y="305" fill="#eef7ff" font-size="20" font-weight="600">CHUNKING</text>
+<text x="356" y="334" fill="#afcde5" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">解析与切分</text></g>
+<g id="blueprint-node-embed" data-label="Embeddings / 向量编码" data-node="true"><rect x="620" y="250" width="240" height="112" fill="#173e67" stroke="#83bce0" rx="0" stroke-width="1.6"/>
+<rect x="625" y="255" width="230" height="102" fill="none" stroke="#83bce0" rx="0" stroke-width="0.6"/>
+<line x1="615" y1="250" x2="625" y2="250" stroke="#74d8ff" stroke-width="1"/>
+<line x1="620" y1="245" x2="620" y2="255" stroke="#74d8ff" stroke-width="1"/>
+<line x1="855" y1="250" x2="865" y2="250" stroke="#74d8ff" stroke-width="1"/>
+<line x1="860" y1="245" x2="860" y2="255" stroke="#74d8ff" stroke-width="1"/>
+<line x1="615" y1="362" x2="625" y2="362" stroke="#74d8ff" stroke-width="1"/>
+<line x1="620" y1="357" x2="620" y2="367" stroke="#74d8ff" stroke-width="1"/>
+<line x1="855" y1="362" x2="865" y2="362" stroke="#74d8ff" stroke-width="1"/>
+<line x1="860" y1="357" x2="860" y2="367" stroke="#74d8ff" stroke-width="1"/>
+<text x="636" y="272" fill="#afcde5" font-size="11" font-weight="400">N03</text>
+<text x="636" y="305" fill="#eef7ff" font-size="20" font-weight="600">EMBEDDINGS</text>
+<text x="636" y="334" fill="#afcde5" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">向量编码</text></g>
+<g id="blueprint-node-index" data-label="Vector index / 向量索引" data-node="true"><rect x="900" y="250" width="240" height="112" fill="#173e67" stroke="#83bce0" rx="0" stroke-width="1.6"/>
+<rect x="905" y="255" width="230" height="102" fill="none" stroke="#83bce0" rx="0" stroke-width="0.6"/>
+<line x1="895" y1="250" x2="905" y2="250" stroke="#74d8ff" stroke-width="1"/>
+<line x1="900" y1="245" x2="900" y2="255" stroke="#74d8ff" stroke-width="1"/>
+<line x1="1135" y1="250" x2="1145" y2="250" stroke="#74d8ff" stroke-width="1"/>
+<line x1="1140" y1="245" x2="1140" y2="255" stroke="#74d8ff" stroke-width="1"/>
+<line x1="895" y1="362" x2="905" y2="362" stroke="#74d8ff" stroke-width="1"/>
+<line x1="900" y1="357" x2="900" y2="367" stroke="#74d8ff" stroke-width="1"/>
+<line x1="1135" y1="362" x2="1145" y2="362" stroke="#74d8ff" stroke-width="1"/>
+<line x1="1140" y1="357" x2="1140" y2="367" stroke="#74d8ff" stroke-width="1"/>
+<text x="916" y="272" fill="#afcde5" font-size="11" font-weight="400">N04</text>
+<text x="916" y="305" fill="#eef7ff" font-size="20" font-weight="600">VECTOR INDEX</text>
+<text x="916" y="334" fill="#afcde5" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">向量索引</text></g>
+<g id="blueprint-node-query" data-label="User query / 用户问题" data-node="true"><rect x="60" y="550" width="160" height="112" fill="#173e67" stroke="#83bce0" rx="0" stroke-width="1.6"/>
+<rect x="65" y="555" width="150" height="102" fill="none" stroke="#83bce0" rx="0" stroke-width="0.6"/>
+<line x1="55" y1="550" x2="65" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="60" y1="545" x2="60" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="215" y1="550" x2="225" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="220" y1="545" x2="220" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="55" y1="662" x2="65" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="60" y1="657" x2="60" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<line x1="215" y1="662" x2="225" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="220" y1="657" x2="220" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<text x="76" y="572" fill="#afcde5" font-size="11" font-weight="400">N05</text>
+<text x="76" y="605" fill="#eef7ff" font-size="16" font-weight="600">USER QUERY</text>
+<text x="76" y="634" fill="#afcde5" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">用户问题</text></g>
+<g id="blueprint-node-retrieve" data-label="Retriever / 相似度检索" data-node="true"><rect x="290" y="550" width="160" height="112" fill="#173e67" stroke="#83bce0" rx="0" stroke-width="1.6"/>
+<rect x="295" y="555" width="150" height="102" fill="none" stroke="#83bce0" rx="0" stroke-width="0.6"/>
+<line x1="285" y1="550" x2="295" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="290" y1="545" x2="290" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="445" y1="550" x2="455" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="450" y1="545" x2="450" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="285" y1="662" x2="295" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="290" y1="657" x2="290" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<line x1="445" y1="662" x2="455" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="450" y1="657" x2="450" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<text x="306" y="572" fill="#afcde5" font-size="11" font-weight="400">N06</text>
+<text x="306" y="605" fill="#eef7ff" font-size="16" font-weight="600">RETRIEVER</text>
+<text x="306" y="634" fill="#afcde5" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">相似度检索</text></g>
+<g id="blueprint-node-context" data-label="Context / 上下文构建" data-node="true"><rect x="520" y="550" width="160" height="112" fill="#173e67" stroke="#83bce0" rx="0" stroke-width="1.6"/>
+<rect x="525" y="555" width="150" height="102" fill="none" stroke="#83bce0" rx="0" stroke-width="0.6"/>
+<line x1="515" y1="550" x2="525" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="520" y1="545" x2="520" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="675" y1="550" x2="685" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="680" y1="545" x2="680" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="515" y1="662" x2="525" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="520" y1="657" x2="520" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<line x1="675" y1="662" x2="685" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="680" y1="657" x2="680" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<text x="536" y="572" fill="#afcde5" font-size="11" font-weight="400">N07</text>
+<text x="536" y="605" fill="#eef7ff" font-size="16" font-weight="600">CONTEXT</text>
+<text x="536" y="634" fill="#afcde5" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">上下文构建</text></g>
+<g id="blueprint-node-llm" data-label="LLM / 生成模型" data-node="true"><rect x="750" y="550" width="160" height="112" fill="#173e67" stroke="#83bce0" rx="0" stroke-width="1.6"/>
+<rect x="755" y="555" width="150" height="102" fill="none" stroke="#83bce0" rx="0" stroke-width="0.6"/>
+<line x1="745" y1="550" x2="755" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="750" y1="545" x2="750" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="905" y1="550" x2="915" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="910" y1="545" x2="910" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="745" y1="662" x2="755" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="750" y1="657" x2="750" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<line x1="905" y1="662" x2="915" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="910" y1="657" x2="910" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<text x="766" y="572" fill="#afcde5" font-size="11" font-weight="400">N08</text>
+<text x="766" y="605" fill="#eef7ff" font-size="16" font-weight="600">LLM</text>
+<text x="766" y="634" fill="#afcde5" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">生成模型</text></g>
+<g id="blueprint-node-answer" data-label="Answer / 回答与引用" data-node="true"><rect x="980" y="550" width="160" height="112" fill="#173e67" stroke="#83bce0" rx="0" stroke-width="1.6"/>
+<rect x="985" y="555" width="150" height="102" fill="none" stroke="#83bce0" rx="0" stroke-width="0.6"/>
+<line x1="975" y1="550" x2="985" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="980" y1="545" x2="980" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="1135" y1="550" x2="1145" y2="550" stroke="#74d8ff" stroke-width="1"/>
+<line x1="1140" y1="545" x2="1140" y2="555" stroke="#74d8ff" stroke-width="1"/>
+<line x1="975" y1="662" x2="985" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="980" y1="657" x2="980" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<line x1="1135" y1="662" x2="1145" y2="662" stroke="#74d8ff" stroke-width="1"/>
+<line x1="1140" y1="657" x2="1140" y2="667" stroke="#74d8ff" stroke-width="1"/>
+<text x="996" y="572" fill="#afcde5" font-size="11" font-weight="400">N09</text>
+<text x="996" y="605" fill="#eef7ff" font-size="16" font-weight="600">ANSWER</text>
+<text x="996" y="634" fill="#afcde5" font-size="14" font-weight="400" font-family="Arial, PingFang SC, sans-serif">回答与引用</text></g>
+<line x1="60" y1="714" x2="1140" y2="714" stroke="#83bce0" stroke-width="1"/>
+<text x="60" y="747" fill="#afcde5" font-size="14" font-weight="400">RAG  /  Retrieval-augmented generation</text>
+<text x="60" y="775" fill="#afcde5" font-size="12" font-weight="400" font-family="Arial, PingFang SC, sans-serif">演示架构 · 可编辑节点与文字 · 非生产配置</text>
+</svg>

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" font-family="Arial, PingFang SC, sans-serif">
+<title>包豪斯几何 · RAG 架构图</title>
+<desc>原生可编辑示例。设计 Prompt 见 src/examples/prompts/bauhaus.md。演示架构，非生产配置。</desc>
+<defs><marker id="bauhaus-arrow-main" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#242424"/></marker><marker id="bauhaus-arrow-online" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#287b65"/></marker><marker id="bauhaus-arrow-cross" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#515047"/></marker></defs>
+<rect x="0" y="0" width="1200" height="800" fill="#f7f2e5" stroke="none" rx="0" stroke-width="1"/>
+<text x="60" y="100" font-size="44" fill="#202020" font-weight="700" text-anchor="start">知识，经过设计。</text>
+<text x="60" y="143" font-size="16" fill="#515047" font-weight="400" text-anchor="start">RAG · STRUCTURE / RETRIEVAL / RESPONSE</text>
+<circle cx="1090" cy="97" r="29" fill="#d2432e" stroke="#202020" stroke-width="2"/>
+<rect x="1020" y="125" width="30" height="30" fill="#275a9b" stroke="none" rx="0" stroke-width="1"/>
+<polygon points="1080,157 1110,157 1095,131" fill="#e2b72b"/>
+<text x="60" y="215" font-size="16" fill="#c83d2b" font-weight="600" text-anchor="start">离线索引 / INDEXING</text>
+<text x="60" y="505" font-size="16" fill="#c83d2b" font-weight="600" text-anchor="start">在线回答 / ANSWERING</text>
+<g id="bauhaus-connections" data-label="连接线"><polyline id="bauhaus-edge-docs-chunks" points="300,306.0 340,306.0" fill="none" stroke="#242424" stroke-width="2" stroke-linejoin="miter" marker-end="url(#bauhaus-arrow-main)" data-sf-start-node="#bauhaus-node-docs" data-sf-end-node="#bauhaus-node-chunks" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="bauhaus-edge-chunks-embed" points="580,306.0 620,306.0" fill="none" stroke="#242424" stroke-width="2" stroke-linejoin="miter" marker-end="url(#bauhaus-arrow-main)" data-sf-start-node="#bauhaus-node-chunks" data-sf-end-node="#bauhaus-node-embed" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="bauhaus-edge-embed-index" points="860,306.0 900,306.0" fill="none" stroke="#242424" stroke-width="2" stroke-linejoin="miter" marker-end="url(#bauhaus-arrow-main)" data-sf-start-node="#bauhaus-node-embed" data-sf-end-node="#bauhaus-node-index" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="bauhaus-edge-query-retrieve" points="220,606.0 290,606.0" fill="none" stroke="#242424" stroke-width="2" stroke-linejoin="miter" marker-end="url(#bauhaus-arrow-main)" data-sf-start-node="#bauhaus-node-query" data-sf-end-node="#bauhaus-node-retrieve" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="bauhaus-edge-retrieve-context" points="450,606.0 520,606.0" fill="none" stroke="#242424" stroke-width="2" stroke-linejoin="miter" marker-end="url(#bauhaus-arrow-main)" data-sf-start-node="#bauhaus-node-retrieve" data-sf-end-node="#bauhaus-node-context" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="bauhaus-edge-context-llm" points="680,606.0 750,606.0" fill="none" stroke="#242424" stroke-width="2" stroke-linejoin="miter" marker-end="url(#bauhaus-arrow-main)" data-sf-start-node="#bauhaus-node-context" data-sf-end-node="#bauhaus-node-llm" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="bauhaus-edge-llm-answer" points="910,606.0 980,606.0" fill="none" stroke="#242424" stroke-width="2" stroke-linejoin="miter" marker-end="url(#bauhaus-arrow-main)" data-sf-start-node="#bauhaus-node-llm" data-sf-end-node="#bauhaus-node-answer" data-sf-start-anchor="1 .5 0 0" data-sf-end-anchor="0 .5 0 0"/>
+<polyline id="bauhaus-edge-index-retrieve" points="1020.0,362 1020.0,440 370.0,440 370.0,550" fill="none" stroke="#242424" stroke-width="2" stroke-linejoin="miter" marker-end="url(#bauhaus-arrow-main)" data-sf-start-node="#bauhaus-node-index" data-sf-end-node="#bauhaus-node-retrieve" data-sf-start-anchor=".5 1 0 0" data-sf-end-anchor=".5 0 0 0" stroke-dasharray="6 4"/></g>
+<g id="bauhaus-node-docs" data-label="Documents / 文档与知识库" data-node="true"><rect x="60" y="250" width="240" height="112" fill="#fffdf5" stroke="#242424" rx="0" stroke-width="2"/>
+<circle cx="86" cy="276" r="10" fill="#c83d2b" stroke="#c83d2b" stroke-width="1"/>
+<text x="272" y="280" font-size="13" fill="#515047" font-weight="600" text-anchor="start">01</text>
+<text x="74" y="314" font-size="24" fill="#202020" font-weight="700" text-anchor="start">Documents</text>
+<text x="74" y="342" font-size="14" fill="#515047" font-weight="400" text-anchor="start">文档与知识库</text></g>
+<g id="bauhaus-node-chunks" data-label="Chunking / 解析与切分" data-node="true"><rect x="340" y="250" width="240" height="112" fill="#fffdf5" stroke="#242424" rx="0" stroke-width="2"/>
+<circle cx="366" cy="276" r="10" fill="#e4bc38" stroke="#e4bc38" stroke-width="1"/>
+<text x="552" y="280" font-size="13" fill="#515047" font-weight="600" text-anchor="start">02</text>
+<text x="354" y="314" font-size="24" fill="#202020" font-weight="700" text-anchor="start">Chunking</text>
+<text x="354" y="342" font-size="14" fill="#515047" font-weight="400" text-anchor="start">解析与切分</text></g>
+<g id="bauhaus-node-embed" data-label="Embeddings / 向量编码" data-node="true"><rect x="620" y="250" width="240" height="112" fill="#fffdf5" stroke="#242424" rx="0" stroke-width="2"/>
+<circle cx="646" cy="276" r="10" fill="#275a9b" stroke="#275a9b" stroke-width="1"/>
+<text x="832" y="280" font-size="13" fill="#515047" font-weight="600" text-anchor="start">03</text>
+<text x="634" y="314" font-size="24" fill="#202020" font-weight="700" text-anchor="start">Embeddings</text>
+<text x="634" y="342" font-size="14" fill="#515047" font-weight="400" text-anchor="start">向量编码</text></g>
+<g id="bauhaus-node-index" data-label="Vector index / 向量索引" data-node="true"><rect x="900" y="250" width="240" height="112" fill="#fffdf5" stroke="#242424" rx="0" stroke-width="2"/>
+<circle cx="926" cy="276" r="10" fill="#c83d2b" stroke="#c83d2b" stroke-width="1"/>
+<text x="1112" y="280" font-size="13" fill="#515047" font-weight="600" text-anchor="start">04</text>
+<text x="914" y="314" font-size="24" fill="#202020" font-weight="700" text-anchor="start">Vector index</text>
+<text x="914" y="342" font-size="14" fill="#515047" font-weight="400" text-anchor="start">向量索引</text></g>
+<g id="bauhaus-node-query" data-label="User query / 用户问题" data-node="true"><rect x="60" y="550" width="160" height="112" fill="#fffdf5" stroke="#242424" rx="0" stroke-width="2"/>
+<circle cx="86" cy="576" r="10" fill="#e4bc38" stroke="#e4bc38" stroke-width="1"/>
+<text x="192" y="580" font-size="13" fill="#515047" font-weight="600" text-anchor="start">05</text>
+<text x="74" y="614" font-size="19" fill="#202020" font-weight="700" text-anchor="start">User query</text>
+<text x="74" y="642" font-size="14" fill="#515047" font-weight="400" text-anchor="start">用户问题</text></g>
+<g id="bauhaus-node-retrieve" data-label="Retriever / 相似度检索" data-node="true"><rect x="290" y="550" width="160" height="112" fill="#fffdf5" stroke="#242424" rx="0" stroke-width="2"/>
+<circle cx="316" cy="576" r="10" fill="#275a9b" stroke="#275a9b" stroke-width="1"/>
+<text x="422" y="580" font-size="13" fill="#515047" font-weight="600" text-anchor="start">06</text>
+<text x="304" y="614" font-size="19" fill="#202020" font-weight="700" text-anchor="start">Retriever</text>
+<text x="304" y="642" font-size="14" fill="#515047" font-weight="400" text-anchor="start">相似度检索</text></g>
+<g id="bauhaus-node-context" data-label="Context / 上下文构建" data-node="true"><rect x="520" y="550" width="160" height="112" fill="#fffdf5" stroke="#242424" rx="0" stroke-width="2"/>
+<circle cx="546" cy="576" r="10" fill="#c83d2b" stroke="#c83d2b" stroke-width="1"/>
+<text x="652" y="580" font-size="13" fill="#515047" font-weight="600" text-anchor="start">07</text>
+<text x="534" y="614" font-size="19" fill="#202020" font-weight="700" text-anchor="start">Context</text>
+<text x="534" y="642" font-size="14" fill="#515047" font-weight="400" text-anchor="start">上下文构建</text></g>
+<g id="bauhaus-node-llm" data-label="LLM / 生成模型" data-node="true"><rect x="750" y="550" width="160" height="112" fill="#fffdf5" stroke="#242424" rx="0" stroke-width="2"/>
+<circle cx="776" cy="576" r="10" fill="#e4bc38" stroke="#e4bc38" stroke-width="1"/>
+<text x="882" y="580" font-size="13" fill="#515047" font-weight="600" text-anchor="start">08</text>
+<text x="764" y="614" font-size="19" fill="#202020" font-weight="700" text-anchor="start">LLM</text>
+<text x="764" y="642" font-size="14" fill="#515047" font-weight="400" text-anchor="start">生成模型</text></g>
+<g id="bauhaus-node-answer" data-label="Answer / 回答与引用" data-node="true"><rect x="980" y="550" width="160" height="112" fill="#fffdf5" stroke="#242424" rx="0" stroke-width="2"/>
+<circle cx="1006" cy="576" r="10" fill="#275a9b" stroke="#275a9b" stroke-width="1"/>
+<text x="1112" y="580" font-size="13" fill="#515047" font-weight="600" text-anchor="start">09</text>
+<text x="994" y="614" font-size="19" fill="#202020" font-weight="700" text-anchor="start">Answer</text>
+<text x="994" y="642" font-size="14" fill="#515047" font-weight="400" text-anchor="start">回答与引用</text></g>
+<line x1="60" y1="715" x2="1140" y2="715" stroke="#242424" stroke-width="0.7"/>
+<text x="60" y="748" font-size="14" fill="#515047" font-weight="400" text-anchor="start">RAG / Retrieval-augmented generation</text>
+<text x="60" y="776" font-size="12" fill="#515047" font-weight="400" text-anchor="start" font-family="Arial, PingFang SC, sans-serif">演示架构 · 可编辑节点与文字 · 非生产配置</text>
+</svg>
