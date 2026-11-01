@@ -1,5 +1,9 @@
 // Brand-specific art direction. Only serialization and semantic content are shared.
 import { extraBrandThemes } from './brand-scenes/extra-themes.mjs';
+import { moreBrandThemes } from './brand-scenes/more-themes.mjs';
+import { nextBrandThemes } from './brand-scenes/next-themes.mjs';
+import { communityChinaThemes } from './brand-scenes/community-china-themes.mjs';
+import { aiBrandThemes } from './brand-scenes/ai-themes.mjs';
 export const brandThemes = {
   apple: {
     name: 'Apple',
@@ -123,6 +127,10 @@ export const brandThemes = {
       '用户已明确选择Notion官网品牌视觉。参考官方Projects页纸墨插画的有分量黑线、纸张与格窗对象和少量黄色；据此创作知识链、勾选清单、稿纸与展开的知识册对象。图中不再模拟数据库和编辑器控件，不使用官方标志或真实产品数据；这是原生SVG品牌风格转译，不是官方插画原稿。',
   },
   ...extraBrandThemes,
+  ...moreBrandThemes,
+  ...nextBrandThemes,
+  ...communityChinaThemes,
+  ...aiBrandThemes,
 };
 
 // Optical details belong to each visual language, independently of connector weight.

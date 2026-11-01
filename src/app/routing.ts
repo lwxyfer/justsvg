@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 const base = import.meta.env.BASE_URL;
-export const editorHref = base;
+export const homeHref = base;
+export const editorHref = `${base}editor`;
 export const examplesHref = `${base}examples`;
 const changed = () => window.dispatchEvent(new PopStateEvent('popstate'));
 export function navigate(href: string, replace = false) {

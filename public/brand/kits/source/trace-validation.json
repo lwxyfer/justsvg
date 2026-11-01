@@ -1,0 +1,26 @@
+[
+  {
+    "mark": "layers",
+    "sourceBox": [
+      73,
+      34,
+      251,
+      251
+    ],
+    "maskIoU": 0.9991611129235215,
+    "differingPixels": 18,
+    "totalSourcePixels": 63001
+  },
+  {
+    "mark": "modules",
+    "sourceBox": [
+      472,
+      34,
+      229,
+      229
+    ],
+    "maskIoU": 0.9979020979020979,
+    "differingPixels": 48,
+    "totalSourcePixels": 52441
+  }
+]

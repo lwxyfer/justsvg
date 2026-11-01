@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 const bridge = '/tests/e2e/bridge.ts';
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/editor');
   await expect(page.getByRole('complementary', { name: '插入面板' })).toBeVisible();
 });
 

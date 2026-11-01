@@ -1,5 +1,11 @@
+import {
+  chooseContent,
+  downloadExampleFromEditor,
+  selectExampleOption,
+  expectExampleOptionCount,
+  expectFullPagePreview,
+} from './example-navigation';
 import { test, expect } from '@playwright/test';
-import { readFile } from 'node:fs/promises';
 const variations = [
   {
     id: 'base-dense-platform',
@@ -54,7 +60,11 @@ test('base variations preserve readable native geometry, clear connectors and st
     await page.goto(`/examples?example=${example.id}`);
     const svg = page.locator('.example-artboard').locator('svg');
     await expect(svg).toBeVisible();
-    await expect(page.getByRole('heading', { name: example.style, exact: true })).toBeVisible();
+    await expect(
+      page
+        .getByRole('combobox', { name: '选择视觉风格', exact: true })
+        .filter({ hasText: example.style }),
+    ).toBeVisible();
     const geometry = await svg.evaluate((root) => {
       const errors: string[] = [],
         overlaps = new Set<string>();
@@ -111,11 +121,8 @@ test('base variations preserve readable native geometry, clear connectors and st
       errors: [],
       overlaps: [],
     });
-    const waiting = page.waitForEvent('download');
-    await page.getByRole('button', { name: '下载 SVG', exact: true }).click();
-    const download = await waiting,
-      xml = await readFile((await download.path())!, 'utf8');
-    expect(download.suggestedFilename()).toBe(`${example.id}.svg`);
+    const { filename, xml } = await downloadExampleFromEditor(page);
+    expect(filename).toBe(`${example.id}-finished.svg`);
     expect(xml).not.toContain('example-artboard');
     const standalone = await page.context().newPage();
     await standalone.setViewportSize({ width: example.width, height: example.height });
@@ -196,19 +203,19 @@ test('base variations open as new documents, move linked nodes, edit text and re
   }
 });
 
-test('base variations are discoverable, fit all viewport sizes and retain native 100 percent inspection', async ({
+test('base variations are discoverable, fit all viewport sizes and retain full-page inspection', async ({
   page,
 }) => {
   await page.goto('/examples?example=factory-rag');
-  await page
-    .getByRole('navigation', { name: '推荐风格', exact: true })
-    .getByRole('button', { name: '基础风格', exact: true })
-    .click();
-  await expect(page.getByLabel('选择示例')).toHaveValue('base-dense-platform');
-  await expect(page.getByLabel('选择示例').locator('option')).toHaveCount(28);
-  await page.getByLabel('选择示例').selectOption('base-layered-platform');
+  await chooseContent(page, 'base-dense-platform');
+  await expect(page.getByLabel('选择视觉风格')).toHaveAttribute(
+    'data-value',
+    'base-dense-platform',
+  );
+  await expectExampleOptionCount(page, '选择视觉风格', 5);
+  await chooseContent(page, 'base-layered-platform');
   await expect(page).toHaveURL(/example=base-layered-platform$/);
-  await page.getByLabel('选择示例').selectOption('base-dense-platform');
+  await chooseContent(page, 'base-dense-platform');
   for (const viewport of [
     { width: 1600, height: 1000, name: 'desktop' },
     { width: 1024, height: 768, name: 'compact' },
@@ -221,13 +228,17 @@ test('base variations are discoverable, fit all viewport sizes and retain native
         page.locator('.example-preview-scroll').evaluate((el) => {
           const box = el.querySelector('.example-artboard')!.getBoundingClientRect(),
             outer = el.getBoundingClientRect(),
-            button = el.parentElement!.querySelector('.example-fit')!.getBoundingClientRect();
+            button = el
+              .closest('.image-detail')!
+              .querySelector('.example-fit')!
+              .getBoundingClientRect();
           return (
             box.left >= outer.left &&
             box.right <= outer.right + 1 &&
             box.top >= outer.top &&
             box.bottom <= outer.bottom + 1 &&
-            box.bottom <= button.top &&
+            button.top >= outer.top &&
+            button.right <= outer.right &&
             Math.abs(box.width / box.height - 1600 / 1100) < 0.01 &&
             el.scrollWidth <= el.clientWidth + 1 &&
             el.scrollHeight <= el.clientHeight + 1
@@ -237,18 +248,16 @@ test('base variations are discoverable, fit all viewport sizes and retain native
       .toBe(true);
     await page.screenshot({ path: `tests/base-dense-${viewport.name}.png`, fullPage: true });
   }
-  await page.getByRole('button', { name: '100% 查看', exact: true }).click();
-  expect(
-    await page.locator('.example-artboard').evaluate((el) => ({
-      width: el.getBoundingClientRect().width,
-      height: el.getBoundingClientRect().height,
-    })),
-  ).toEqual({ width: 1600, height: 1100 });
-  await page.getByRole('button', { name: '适应预览', exact: true }).click();
-  await page.getByLabel('选择示例').selectOption('base-release-flow');
-  await expect(page.getByLabel('选择示例')).toHaveValue('base-release-flow');
-  await page.getByLabel('选择示例').selectOption('base-request-observability');
-  await expect(page.getByLabel('选择示例')).toHaveValue('base-request-observability');
+  await page.getByRole('button', { name: '全屏预览', exact: true }).click();
+  await expectFullPagePreview(page, 1600 / 1100);
+  await page.getByRole('button', { name: '退出全屏', exact: true }).click();
+  await chooseContent(page, 'base-release-flow');
+  await expect(page.getByLabel('选择视觉风格')).toHaveAttribute('data-value', 'base-release-flow');
+  await chooseContent(page, 'base-request-observability');
+  await expect(page.getByLabel('选择视觉风格')).toHaveAttribute(
+    'data-value',
+    'base-request-observability',
+  );
 });
 
 test('visual variants keep the same content and inspection view while changing the visual grammar', async ({
@@ -275,13 +284,16 @@ test('visual variants keep the same content and inspection view while changing t
   for (const source of variations) {
     await page.goto(`/examples?example=${source.id}`);
     const baseline = await signature();
-    const switcher = page.getByRole('navigation', { name: '同图风格', exact: true });
-    await expect(switcher.getByRole('button')).toHaveCount(5);
+    await expectExampleOptionCount(page, '选择视觉风格', 5);
     const presentations = [];
-    for (const [style, label] of choices) {
-      await switcher.getByRole('button', { name: label, exact: true }).click();
+    for (const [style] of choices) {
+      await selectExampleOption(
+        page,
+        '选择视觉风格',
+        style === 'base' ? source.id : source.id.replace('base-', `${style}-`),
+      );
       const id = style === 'base' ? source.id : source.id.replace('base-', `${style}-`);
-      await expect(page.getByLabel('选择示例')).toHaveValue(id);
+      await expect(page.getByLabel('选择视觉风格')).toHaveAttribute('data-value', id);
       expect(await signature(), id).toEqual(baseline);
       presentations.push(
         await page
@@ -300,38 +312,25 @@ test('visual variants keep the same content and inspection view while changing t
     }
     expect(new Set(presentations).size).toBe(5);
     // Sidebar changes must retain the chosen scene, not silently substitute the dense architecture.
-    await page.getByRole('button', { name: '选择基础·黑白线框', exact: true }).click();
-    await expect(page.getByLabel('选择示例')).toHaveValue(source.id.replace('base-', 'base-wire-'));
+    await selectExampleOption(page, '选择视觉风格', source.id.replace('base-', 'base-wire-'));
+    await expect(page.getByLabel('选择视觉风格')).toHaveAttribute(
+      'data-value',
+      source.id.replace('base-', 'base-wire-'),
+    );
   }
   await page.goto('/examples?example=base-night-dense-platform');
-  await page.getByRole('button', { name: '100% 查看', exact: true }).click();
-  const scroll = page.locator('.example-preview-scroll');
-  await scroll.evaluate((el) => {
-    el.scrollLeft = 160;
-    el.scrollTop = 90;
-  });
-  const before = await scroll.evaluate((el) => [el.scrollLeft, el.scrollTop]);
-  await page
-    .getByRole('navigation', { name: '同图风格', exact: true })
-    .getByRole('button', { name: '分区白卡', exact: true })
-    .click();
-  await expect(page.getByRole('button', { name: '适应预览', exact: true })).toHaveAttribute(
+  await page.getByRole('button', { name: '全屏预览', exact: true }).click();
+  await expectFullPagePreview(page, 1600 / 1100);
+  await selectExampleOption(page, '选择视觉风格', { label: '基础·分区白卡' });
+  await expect(page.getByRole('button', { name: '退出全屏', exact: true })).toHaveAttribute(
     'aria-pressed',
     'true',
   );
-  expect(await scroll.evaluate((el) => [el.scrollLeft, el.scrollTop])).toEqual(before);
-  expect(
-    await page
-      .locator('.example-artboard')
-      .evaluate((el) => [el.getBoundingClientRect().width, el.getBoundingClientRect().height]),
-  ).toEqual([1600, 1100]);
-  await page.getByRole('button', { name: '适应预览', exact: true }).click();
+  await expectFullPagePreview(page, 1600 / 1100);
+  await page.getByRole('button', { name: '退出全屏', exact: true }).click();
   await page.setViewportSize({ width: 633, height: 879 });
   await page.screenshot({ path: 'tests/base-style-user-633.png', fullPage: true });
-  await page
-    .getByRole('navigation', { name: '同图风格', exact: true })
-    .getByRole('button', { name: '深色工程', exact: true })
-    .click();
+  await selectExampleOption(page, '选择视觉风格', { label: '基础·深色工程' });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({ path: 'tests/base-style-mobile.png', fullPage: true });
 });

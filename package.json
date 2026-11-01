@@ -14,8 +14,10 @@
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "css-tree": "^3.2.1",
     "dompurify": "^3.4.17",
+    "gsap": "^3.15.0",
     "lucide-react": "^1.61.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

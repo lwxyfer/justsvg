@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 const bridge = '/tests/e2e/bridge.ts';
 const connections = '/src/editor/document/connections.ts';
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/editor');
   await expect(page.locator('[data-svg-host] > svg')).toBeVisible();
 });
 
@@ -76,7 +76,7 @@ test('template associations and labels follow node resize, copy independently an
 }) => {
   await page.getByRole('tab', { name: '组合图', exact: true }).click();
   await page.getByLabel('搜索素材').fill('双节点');
-  await page.getByRole('button', { name: '插入双节点连接', exact: true }).click();
+  await page.getByRole('button', { name: /^插入\s*双节点连接$/, exact: true }).click();
   const result = await page.evaluate(
     async ({ bridge, connections }) => {
       const { engine } = await import(/* @vite-ignore */ bridge);
@@ -155,7 +155,11 @@ test('manual ports follow transformed nodes across coordinate systems and remain
       const line = engine.root!.querySelector('#edge') as SVGGraphicsElement;
       const start = connectionPoints(line)![0],
         actual = new DOMPoint(start.x, start.y).matrixTransform(line.getScreenCTM()!);
-      const expected = new DOMPoint(140, 40).matrixTransform(a.getScreenCTM()!);
+      const frame = a.querySelector('rect')!;
+      const expected = new DOMPoint(
+        Number(frame.getAttribute('width')),
+        Number(frame.getAttribute('height')) / 2,
+      ).matrixTransform(a.getScreenCTM()!);
       return { distance: Math.hypot(actual.x - expected.x, actual.y - expected.y) };
     },
     { bridge, connections },

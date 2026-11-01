@@ -1,0 +1,362 @@
+[
+  {
+    "id": "work-standard-commerce",
+    "sourceId": "work-commerce",
+    "style": "base",
+    "name": "电商业务系统架构",
+    "diagramType": "系统架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-standard-deployment",
+    "sourceId": "work-deployment",
+    "style": "base",
+    "name": "双可用区云端部署",
+    "diagramType": "部署架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-standard-swimlane",
+    "sourceId": "work-swimlane",
+    "style": "base",
+    "name": "需求到上线 · 跨团队泳道",
+    "diagramType": "泳道图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-standard-sequence",
+    "sourceId": "work-sequence",
+    "style": "base",
+    "name": "支付请求 · 时序与异步回调",
+    "diagramType": "时序图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-standard-entity",
+    "sourceId": "work-entity",
+    "style": "base",
+    "name": "订单领域 · 实体关系",
+    "diagramType": "实体关系图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-standard-infographic",
+    "sourceId": "work-infographic",
+    "style": "base",
+    "name": "增长漏斗 · 转化与流失",
+    "diagramType": "信息图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-standard-lineage",
+    "sourceId": "work-lineage",
+    "style": "base",
+    "name": "数据平台 · 批流与血缘",
+    "diagramType": "数据流图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-standard-roadmap",
+    "sourceId": "work-roadmap",
+    "style": "base",
+    "name": "产品路线图 · 季度交付",
+    "diagramType": "路线图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-wire-commerce",
+    "sourceId": "work-commerce",
+    "style": "base-wire",
+    "name": "电商业务系统架构",
+    "diagramType": "系统架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-wire-deployment",
+    "sourceId": "work-deployment",
+    "style": "base-wire",
+    "name": "双可用区云端部署",
+    "diagramType": "部署架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-wire-swimlane",
+    "sourceId": "work-swimlane",
+    "style": "base-wire",
+    "name": "需求到上线 · 跨团队泳道",
+    "diagramType": "泳道图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-wire-sequence",
+    "sourceId": "work-sequence",
+    "style": "base-wire",
+    "name": "支付请求 · 时序与异步回调",
+    "diagramType": "时序图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-wire-entity",
+    "sourceId": "work-entity",
+    "style": "base-wire",
+    "name": "订单领域 · 实体关系",
+    "diagramType": "实体关系图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-wire-infographic",
+    "sourceId": "work-infographic",
+    "style": "base-wire",
+    "name": "增长漏斗 · 转化与流失",
+    "diagramType": "信息图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-wire-lineage",
+    "sourceId": "work-lineage",
+    "style": "base-wire",
+    "name": "数据平台 · 批流与血缘",
+    "diagramType": "数据流图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-wire-roadmap",
+    "sourceId": "work-roadmap",
+    "style": "base-wire",
+    "name": "产品路线图 · 季度交付",
+    "diagramType": "路线图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-zone-commerce",
+    "sourceId": "work-commerce",
+    "style": "base-zone",
+    "name": "电商业务系统架构",
+    "diagramType": "系统架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-zone-deployment",
+    "sourceId": "work-deployment",
+    "style": "base-zone",
+    "name": "双可用区云端部署",
+    "diagramType": "部署架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-zone-swimlane",
+    "sourceId": "work-swimlane",
+    "style": "base-zone",
+    "name": "需求到上线 · 跨团队泳道",
+    "diagramType": "泳道图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-zone-sequence",
+    "sourceId": "work-sequence",
+    "style": "base-zone",
+    "name": "支付请求 · 时序与异步回调",
+    "diagramType": "时序图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-zone-entity",
+    "sourceId": "work-entity",
+    "style": "base-zone",
+    "name": "订单领域 · 实体关系",
+    "diagramType": "实体关系图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-zone-infographic",
+    "sourceId": "work-infographic",
+    "style": "base-zone",
+    "name": "增长漏斗 · 转化与流失",
+    "diagramType": "信息图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-zone-lineage",
+    "sourceId": "work-lineage",
+    "style": "base-zone",
+    "name": "数据平台 · 批流与血缘",
+    "diagramType": "数据流图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-zone-roadmap",
+    "sourceId": "work-roadmap",
+    "style": "base-zone",
+    "name": "产品路线图 · 季度交付",
+    "diagramType": "路线图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-night-commerce",
+    "sourceId": "work-commerce",
+    "style": "base-night",
+    "name": "电商业务系统架构",
+    "diagramType": "系统架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-night-deployment",
+    "sourceId": "work-deployment",
+    "style": "base-night",
+    "name": "双可用区云端部署",
+    "diagramType": "部署架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-night-swimlane",
+    "sourceId": "work-swimlane",
+    "style": "base-night",
+    "name": "需求到上线 · 跨团队泳道",
+    "diagramType": "泳道图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-night-sequence",
+    "sourceId": "work-sequence",
+    "style": "base-night",
+    "name": "支付请求 · 时序与异步回调",
+    "diagramType": "时序图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-night-entity",
+    "sourceId": "work-entity",
+    "style": "base-night",
+    "name": "订单领域 · 实体关系",
+    "diagramType": "实体关系图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-night-infographic",
+    "sourceId": "work-infographic",
+    "style": "base-night",
+    "name": "增长漏斗 · 转化与流失",
+    "diagramType": "信息图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-night-lineage",
+    "sourceId": "work-lineage",
+    "style": "base-night",
+    "name": "数据平台 · 批流与血缘",
+    "diagramType": "数据流图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-night-roadmap",
+    "sourceId": "work-roadmap",
+    "style": "base-night",
+    "name": "产品路线图 · 季度交付",
+    "diagramType": "路线图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-reference-commerce",
+    "sourceId": "work-commerce",
+    "style": "base-reference",
+    "name": "电商业务系统架构",
+    "diagramType": "系统架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-reference-deployment",
+    "sourceId": "work-deployment",
+    "style": "base-reference",
+    "name": "双可用区云端部署",
+    "diagramType": "部署架构",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-reference-swimlane",
+    "sourceId": "work-swimlane",
+    "style": "base-reference",
+    "name": "需求到上线 · 跨团队泳道",
+    "diagramType": "泳道图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-reference-sequence",
+    "sourceId": "work-sequence",
+    "style": "base-reference",
+    "name": "支付请求 · 时序与异步回调",
+    "diagramType": "时序图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-reference-entity",
+    "sourceId": "work-entity",
+    "style": "base-reference",
+    "name": "订单领域 · 实体关系",
+    "diagramType": "实体关系图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-reference-infographic",
+    "sourceId": "work-infographic",
+    "style": "base-reference",
+    "name": "增长漏斗 · 转化与流失",
+    "diagramType": "信息图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-reference-lineage",
+    "sourceId": "work-lineage",
+    "style": "base-reference",
+    "name": "数据平台 · 批流与血缘",
+    "diagramType": "数据流图",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "id": "work-reference-roadmap",
+    "sourceId": "work-roadmap",
+    "style": "base-reference",
+    "name": "产品路线图 · 季度交付",
+    "diagramType": "路线图",
+    "width": 1600,
+    "height": 1000
+  }
+]

@@ -43,6 +43,7 @@ export function useKeyboard(enabled = true) {
         ui.importOpen ||
         ui.sourceOpen ||
         ui.helpOpen ||
+        ui.settingsOpen ||
         ui.pendingImport ||
         ui.textEdit
       )
@@ -103,6 +104,7 @@ export function useKeyboard(enabled = true) {
         ui.importOpen ||
         ui.sourceOpen ||
         ui.helpOpen ||
+        ui.settingsOpen ||
         ui.pendingImport ||
         ui.textEdit
       )

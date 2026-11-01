@@ -1,0 +1,420 @@
+{
+  "brand": "modules",
+  "fileCountIncludingManifest": 60,
+  "sourceLogoUnchanged": true,
+  "canonicalColorSpace": "sRGB",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1667,
+      "sha256": "d758113de3306b7362ad501bfe04afc7daf9061fa670884282003c5862bc5e31"
+    },
+    {
+      "path": "applications/brand-overview.png",
+      "bytes": 163644,
+      "sha256": "481f7e1346b5c31fd17d790d3a533090b9202f3963596cebaa45cdec42fd9128",
+      "dimensions": [
+        1280,
+        1560
+      ]
+    },
+    {
+      "path": "applications/editor.png",
+      "bytes": 140243,
+      "sha256": "71fba39bcf2fa18335a0b910601acecdda902453efec37e5f144f266254fc40b",
+      "dimensions": [
+        1440,
+        820
+      ]
+    },
+    {
+      "path": "applications/home.png",
+      "bytes": 123777,
+      "sha256": "16275706607022219970da02ad8227875b9bda153dcd6d7c1773d2dd166e21cd",
+      "dimensions": [
+        1440,
+        820
+      ]
+    },
+    {
+      "path": "brand-book.pdf",
+      "bytes": 1395771,
+      "sha256": "c98e2ef3dca7d29ded6a83c10be060918954edd5593e48245b94fd4b30f9e4d2"
+    },
+    {
+      "path": "brand.json",
+      "bytes": 1431,
+      "sha256": "8ab57910d56539490d26dffe82119ddecbb1096fa42f2be709cde396ec2c7cd6"
+    },
+    {
+      "path": "fonts/OFL.txt",
+      "bytes": 4388,
+      "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9"
+    },
+    {
+      "path": "fonts/justsvg-sans.woff",
+      "bytes": 147540,
+      "sha256": "40a9c0ce33a17a5c0eb844477fdd80255442160d37ab452e5a887c1ccbf402dc"
+    },
+    {
+      "path": "icons/app-icon-accent-1024.png",
+      "bytes": 39053,
+      "sha256": "f245b450aa4d1b2a8cf3b684b56ef286cce65d658f28c72e5b7819c071ea3e40",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "icons/app-icon-accent-180.png",
+      "bytes": 3512,
+      "sha256": "fc45076c46ea1660341b819d01f146f02ff0b3b41706749329b2006f029ca28a",
+      "dimensions": [
+        180,
+        180
+      ]
+    },
+    {
+      "path": "icons/app-icon-accent-192.png",
+      "bytes": 3687,
+      "sha256": "63490ae82a5d2f1c86f4be18c76a0982a1ced861e32d626ecb53b22818815c3c",
+      "dimensions": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "icons/app-icon-accent-512.png",
+      "bytes": 14019,
+      "sha256": "42ec5f5a6ac279433a815f83f88852fdec1a9e7a223c03939d238e85c0eed3f5",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "icons/app-icon-dark-1024.png",
+      "bytes": 38917,
+      "sha256": "1269963d4d0dd4cb76248deaa12a01205581c70e601203d515ec9fb4ce2a75ab",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "icons/app-icon-light-1024.png",
+      "bytes": 37054,
+      "sha256": "2df3b6f8c8ad7b3acf8de5783768e43ae113f8e939d4ceb7f4ce8350739d7dcd",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "icons/favicon-128.png",
+      "bytes": 1738,
+      "sha256": "9e61b84d296a23f7b46c44b0d38e65c4f39767bca3cd0625854703b2de53a77e",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "path": "icons/favicon-16.png",
+      "bytes": 261,
+      "sha256": "8c0d4681ae077cac7ae9ff0effc325bb586f47c370ca8ac55cf75b280e5d6dae",
+      "dimensions": [
+        16,
+        16
+      ]
+    },
+    {
+      "path": "icons/favicon-24.png",
+      "bytes": 375,
+      "sha256": "bee67ac912df232b8ab27b27e2ea98948732cc3a7cb938f445b02f461b09c177",
+      "dimensions": [
+        24,
+        24
+      ]
+    },
+    {
+      "path": "icons/favicon-32.png",
+      "bytes": 443,
+      "sha256": "bda8df367752479307de32bbdf658cc5d0068857839a2d0b1855d03c585ed6d1",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "path": "icons/favicon-48.png",
+      "bytes": 625,
+      "sha256": "6a121e3976d9461af328950605426cb8083e2a405dfb0bd9838354ec09f8e91f",
+      "dimensions": [
+        48,
+        48
+      ]
+    },
+    {
+      "path": "icons/favicon-64.png",
+      "bytes": 840,
+      "sha256": "282727bd1c56768519efac61c510e5c9dfd688ef73e6365b1efa5d6a2c4594b2",
+      "dimensions": [
+        64,
+        64
+      ]
+    },
+    {
+      "path": "icons/favicon.ico",
+      "bytes": 465,
+      "sha256": "e2fb137a1ff0ff4464a0c8cc5af1712521c8513777c82d062558b8e6dbae00ec"
+    },
+    {
+      "path": "index.html",
+      "bytes": 89791,
+      "sha256": "60ed2f8752175b01d50720bd6aff5c64ddc3d7b212b5be147d54a1c85fd4cf8a"
+    },
+    {
+      "path": "png/docs-cover-720x960.png",
+      "bytes": 40570,
+      "sha256": "fc13fd4cf97ccc68ce049725ac2269ffe99ecebff6a9ba37077a180e7be4b1e2",
+      "dimensions": [
+        720,
+        960
+      ]
+    },
+    {
+      "path": "png/lockup-horizontal-ink-1024.png",
+      "bytes": 18406,
+      "sha256": "c8880760a94d2b216b91bd4511eb7ee9c2e0709655f97d7102dc0fed4a2c29e7",
+      "dimensions": [
+        1024,
+        308
+      ]
+    },
+    {
+      "path": "png/lockup-horizontal-white-1024.png",
+      "bytes": 18366,
+      "sha256": "e17f3ac43e7f9f9847721990386a73259058609082edffadd3522337282e395e",
+      "dimensions": [
+        1024,
+        308
+      ]
+    },
+    {
+      "path": "png/lockup-stacked-ink.png",
+      "bytes": 19550,
+      "sha256": "a1c43fcac8b4c133a4e5afea43459bd064124847c06b7ee88a095f5220c1a17b",
+      "dimensions": [
+        660,
+        630
+      ]
+    },
+    {
+      "path": "png/mark-accent-1024.png",
+      "bytes": 32378,
+      "sha256": "1a23eb330b2ef5f961bede5bc2bbfcbe8373bc72d63af8c61fddb1e283de587b",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "png/mark-accent-256.png",
+      "bytes": 4278,
+      "sha256": "c97e8f759662fb9f8addbeab51afd58c5f2fcf599d147a359ef4aec9b43fdb53",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "png/mark-accent-512.png",
+      "bytes": 11043,
+      "sha256": "f6d521822a49dcba9f3fe76d7935146c9e32e8724dbd8431acf139b78e9ae178",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "png/mark-black-512.png",
+      "bytes": 10671,
+      "sha256": "9fefbb6baa5eb60852bf5b4295df7e76a753764a9e8499337f2d5bf9a02c0c7a",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "png/mark-ink-1024.png",
+      "bytes": 32369,
+      "sha256": "c8a1476b96757aae2cf59c9828e95ae9132ea39ccb3335274896cc922a2dcd0d",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "png/mark-ink-256.png",
+      "bytes": 4275,
+      "sha256": "77e88a7e1b26b1530f9eacbbe0e5be8d8f61ec029184ca76cc82ade182c6b62e",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "png/mark-ink-512.png",
+      "bytes": 11035,
+      "sha256": "3df8cd7b55507c2ea2e500f5a6cd8b1cd17887d8da539826783c53bbf33efcad",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "png/mark-white-512.png",
+      "bytes": 10949,
+      "sha256": "4435d93e8c8f72bd4eeec566ce329b415210fec5dac9220dc059110b93d36312",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "png/social-cover-1200x630.png",
+      "bytes": 55421,
+      "sha256": "7453327a309fb57cd73d8d28b98d0716eab1c589d79a45e2beab528a832d308c",
+      "dimensions": [
+        1200,
+        630
+      ]
+    },
+    {
+      "path": "source/source-notes.json",
+      "bytes": 584,
+      "sha256": "e174923742aece5379d1748c4a99b9ee4d1f15e3335ae94356c0534a2ebd9ec0"
+    },
+    {
+      "path": "source/traced-mark.json",
+      "bytes": 2568,
+      "sha256": "227da2158cf8f295e49c4e0b0ab53ac9b069f66b2187b9a08fdb8c9df566018c"
+    },
+    {
+      "path": "source/uploaded-two-logos.png",
+      "bytes": 16117,
+      "sha256": "a14b9e5bde8eb83bfa48575c8f578cd26839cf33f42d42d9cc0600763d906596",
+      "dimensions": [
+        788,
+        312
+      ]
+    },
+    {
+      "path": "svg/app-icon-accent.svg",
+      "bytes": 2778,
+      "sha256": "377cdda4d4cd344c776a33024259ef82c9cdd66e9ed5d466209586e57157bcbd"
+    },
+    {
+      "path": "svg/app-icon-dark.svg",
+      "bytes": 2778,
+      "sha256": "b2fe75a7a8f467ccee8a96cd0bcf7db854310814c6129b8eac402fb80eb428a1"
+    },
+    {
+      "path": "svg/app-icon-light.svg",
+      "bytes": 2778,
+      "sha256": "929ec8b0cb48fac2a282517cd35006fee4a68dc35d41991dc7470046d18e2fa8"
+    },
+    {
+      "path": "svg/diagram-example.svg",
+      "bytes": 3896,
+      "sha256": "cc3b8926259c55d12cbeaa125521d7190beefb76ca25c455abd01f426185567f"
+    },
+    {
+      "path": "svg/docs-cover.svg",
+      "bytes": 15466,
+      "sha256": "665e36dd008a66b4f262e49e8221bfaaf9f34c2c2ad95f8dcbfde3641dc046ed"
+    },
+    {
+      "path": "svg/favicon.svg",
+      "bytes": 2695,
+      "sha256": "10a66259f94c361d3f1ac0b9deef40bc3ca38df997b67079248c4873b6dc6d0e"
+    },
+    {
+      "path": "svg/lockup-horizontal-accent.svg",
+      "bytes": 12470,
+      "sha256": "41f9aac5ab246ffe1b9be6a271326aaf74706d9b7c7b3fb8be07fc89bf0884fc"
+    },
+    {
+      "path": "svg/lockup-horizontal-black.svg",
+      "bytes": 12464,
+      "sha256": "a94f72db8af01ee1a581dbd42fb991b2115428cae95880a88db14fd40ed7058e"
+    },
+    {
+      "path": "svg/lockup-horizontal-ink.svg",
+      "bytes": 12470,
+      "sha256": "28921da67522c8ae544009ae0de593c0ab6c29d4b165f6b9f4f0f26388ce72ad"
+    },
+    {
+      "path": "svg/lockup-horizontal-white.svg",
+      "bytes": 12464,
+      "sha256": "bbb7b1ce99767a7926a19c23b5ee2d5af9c0a6bf0dee92ebc34a5a837b47e563"
+    },
+    {
+      "path": "svg/lockup-stacked-accent.svg",
+      "bytes": 12459,
+      "sha256": "71d4d0708ce04f7883f52ec62e175fff5b9933c1119fefd885c235091b816bcd"
+    },
+    {
+      "path": "svg/lockup-stacked-black.svg",
+      "bytes": 12453,
+      "sha256": "9adf5fb51a66ca44db74551aaaf2fc6de514241f70cb1f7316e2e2b862e854b8"
+    },
+    {
+      "path": "svg/lockup-stacked-ink.svg",
+      "bytes": 12459,
+      "sha256": "6a9a41824a1d0b23f8bd419c5700f7b76362a475ee8f79b2a0bff8ce9cb9157c"
+    },
+    {
+      "path": "svg/lockup-stacked-white.svg",
+      "bytes": 12453,
+      "sha256": "65e414464bb0a60cc1f0ad6c319602ac259aba8a47ec11e2b408629118ef804f"
+    },
+    {
+      "path": "svg/mark-accent.svg",
+      "bytes": 2723,
+      "sha256": "ad81c30e741198c4d5b7ee93e0d631c65cf16ad671f6ce3147324f2d1ccfa20c"
+    },
+    {
+      "path": "svg/mark-black.svg",
+      "bytes": 2720,
+      "sha256": "cbaba6768bbe4cf26088440249bbd9e8b0b2c378d4e019e4236c2c0b1ed2abc6"
+    },
+    {
+      "path": "svg/mark-ink.svg",
+      "bytes": 2723,
+      "sha256": "d465cf6a3a7ead8755c3a9272c2c337d92340a10fb00d0d63aa0a4791151462f"
+    },
+    {
+      "path": "svg/mark-white.svg",
+      "bytes": 2720,
+      "sha256": "5d659e6fd4413f939c3db6f5009d0893931302cb2bd27c30ca37124f8e6c9346"
+    },
+    {
+      "path": "svg/social-cover.svg",
+      "bytes": 15503,
+      "sha256": "db73c30c099613f68ba429b05438c35e36656d2aa0cce673c955eaef896c0dfe"
+    },
+    {
+      "path": "svg/wordmark-ink.svg",
+      "bytes": 9959,
+      "sha256": "64c100310914d51781e561eb55a5b85054fa02b38da3764cc725095683819762"
+    },
+    {
+      "path": "tokens.css",
+      "bytes": 423,
+      "sha256": "1b366f12f8eb55cd3ff12e10556ca23016e2f40bd9e80f65add0a073e41bd25a"
+    }
+  ],
+  "manifestSelfHashOmitted": true
+}

@@ -5,7 +5,9 @@ import { engine } from '../editor/document/engine';
 import { downloadSvg } from '../app/actions';
 import { Modal } from './Modal';
 import { run, useDocument } from './shared';
+import { useLocale } from '../i18n/locale';
 export function DocumentTabs() {
+  const { t } = useLocale();
   useSyncExternalStore(documents.subscribe, documents.getSnapshot);
   useDocument(true);
   const [closing, setClosing] = useState<string | null>(null);
@@ -32,7 +34,7 @@ export function DocumentTabs() {
   return (
     <>
       <div className="document-strip">
-        <div className="document-tabs" role="tablist" aria-label="SVG 文档" ref={list}>
+        <div className="document-tabs" role="tablist" aria-label={t('SVG 文档')} ref={list}>
           {documents.items.map((item, index) => {
             const active = item.id === activeId,
               name = nameOf(item.id),
@@ -50,7 +52,7 @@ export function DocumentTabs() {
                   aria-selected={active}
                   aria-label={name}
                   tabIndex={active ? 0 : -1}
-                  title={`${name}${dirty ? ' · 有未导出修改' : ''}`}
+                  title={`${name}${dirty ? ` · ${t('有未导出修改')}` : ''}`}
                   onClick={() => run(() => documents.activate(item.id))}
                   onKeyDown={(e) => {
                     if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
@@ -78,13 +80,13 @@ export function DocumentTabs() {
                   <FileCode2 size={14} aria-hidden="true" />
                   <span className="document-tab-name">{name}</span>
                   {dirty && (
-                    <span className="document-tab-dirty" role="img" aria-label="有未导出修改" />
+                    <span className="document-tab-dirty" role="img" aria-label={t('有未导出修改')} />
                   )}
                 </button>
                 <button
                   className="document-tab-close"
-                  aria-label={`关闭 ${name}`}
-                  title={`关闭 ${name}`}
+                  aria-label={`${t('关闭')} ${name}`}
+                  title={`${t('关闭')} ${name}`}
                   tabIndex={active ? 0 : -1}
                   onClick={() => requestClose(item.id)}
                 >
@@ -96,21 +98,21 @@ export function DocumentTabs() {
         </div>
         <button
           className="document-new"
-          aria-label="新建 SVG"
-          title="新建空白 SVG"
+          aria-label={t('新建 SVG')}
+          title={t('新建空白 SVG')}
           onClick={() => run(() => documents.create())}
         >
           <Plus size={16} />
         </button>
       </div>
       {closing && (
-        <Modal title="关闭有未导出修改的图稿" onClose={() => setClosing(null)}>
+        <Modal title={t('关闭有未导出修改的图稿')} onClose={() => setClosing(null)}>
           <p className="dialog-description">
-            「{nameOf(closing)}」有未导出的修改。关闭后将从已打开的图稿中移除，建议先下载 SVG。
+            「{nameOf(closing)}」{t('有未导出的修改。关闭后将从已打开的图稿中移除，建议先下载 SVG。')}
           </p>
           <div className="modal-footer document-close-actions">
             <button className="button" onClick={() => setClosing(null)}>
-              保留图稿
+              {t('保留图稿')}
             </button>
             <button
               className="button"
@@ -121,7 +123,7 @@ export function DocumentTabs() {
                 })
               }
             >
-              直接关闭
+              {t('直接关闭')}
             </button>
             <button
               className="button primary"
@@ -135,7 +137,7 @@ export function DocumentTabs() {
               }
             >
               <Download size={14} />
-              下载并关闭
+              {t('下载并关闭')}
             </button>
           </div>
         </Modal>

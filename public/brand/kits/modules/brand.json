@@ -1,0 +1,57 @@
+{
+  "id": "modules",
+  "letter": "B",
+  "name": "模块",
+  "accent": "#0f766e",
+  "soft": "#e8f5f1",
+  "paper": "#f2f8f6",
+  "character": "独立的模块，完整的系统。",
+  "summary": "以青绿色为强调色，用明确的分区与对齐建立秩序。",
+  "radius": 8,
+  "ink": "#334256",
+  "sourceSha256": "a14b9e5bde8eb83bfa48575c8f578cd26839cf33f42d42d9cc0600763d906596",
+  "sourceInk": "#334256",
+  "sourceBox": [
+    472,
+    34,
+    229,
+    229
+  ],
+  "sourceShape": "Unchanged silhouette; traced from supplied raster",
+  "trace": {
+    "method": "50% coverage isocontour, linear interpolation, RDP 0.15 source px",
+    "sourceImage": "source/uploaded-two-logos.png",
+    "noGeometricRedesign": true
+  },
+  "colors": {
+    "ink": "#334256",
+    "accent": "#0f766e",
+    "paper": "#f2f8f6",
+    "accentSoft": "#e8f5f1",
+    "muted": "#64748b",
+    "line": "#dce2ea",
+    "success": "#15803d",
+    "warning": "#a16207",
+    "danger": "#b91c1c"
+  },
+  "type": {
+    "family": "JustSVG Sans",
+    "fallback": "PingFang SC, sans-serif",
+    "wordmarkWeight": 650,
+    "displayWeight": 750,
+    "bodyWeight": 400,
+    "fontLicense": "SIL OFL 1.1"
+  },
+  "rules": {
+    "clearSpace": 0.25,
+    "minimumUiPx": 24,
+    "faviconExceptionPx": 16,
+    "iconSymbolPx": 592,
+    "iconCanvasPx": 1024,
+    "iconInsetPx": 216
+  },
+  "contrast": {
+    "inkOnWhite": 10.221840794399025,
+    "whiteOnAccent": 5.473250081210842
+  }
+}

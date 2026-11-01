@@ -1,0 +1,79 @@
+{
+  "title": "An order becomes an event.",
+  "status": "illustrative",
+  "nodes": [
+    {
+      "id": "client",
+      "label": "Client",
+      "detail": "Creates an order"
+    },
+    {
+      "id": "api",
+      "label": "Order API",
+      "detail": "Validates the request"
+    },
+    {
+      "id": "database",
+      "label": "Order store",
+      "detail": "Durable order record"
+    },
+    {
+      "id": "outbox",
+      "label": "Outbox",
+      "detail": "Pending domain events"
+    },
+    {
+      "id": "broker",
+      "label": "Event broker",
+      "detail": "Fan-out to subscribers"
+    },
+    {
+      "id": "mail",
+      "label": "Notification",
+      "detail": "Sends a receipt"
+    },
+    {
+      "id": "audit",
+      "label": "Audit",
+      "detail": "Appends event log"
+    }
+  ],
+  "edges": [
+    {
+      "id": "create",
+      "from": "client",
+      "to": "api",
+      "label": "POST /orders"
+    },
+    {
+      "id": "persist",
+      "from": "api",
+      "to": "database",
+      "label": "write"
+    },
+    {
+      "id": "enqueue",
+      "from": "api",
+      "to": "outbox",
+      "label": "event"
+    },
+    {
+      "id": "publish",
+      "from": "outbox",
+      "to": "broker",
+      "label": "publish"
+    },
+    {
+      "id": "notify",
+      "from": "broker",
+      "to": "mail",
+      "label": "notify"
+    },
+    {
+      "id": "record",
+      "from": "broker",
+      "to": "audit",
+      "label": "record"
+    }
+  ]
+}

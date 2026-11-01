@@ -1,20 +1,33 @@
+import {
+  browseContents,
+  contentKey,
+  diagramType,
+  diagramTypes,
+  styleById,
+  type VisualFamily,
+} from './browse';
 import { BrandIdentity } from '../components/Brand';
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowUpRight,
   BookOpen,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Search,
   Check,
+  ChevronDown,
   Code2,
   Copy,
-  Download,
   FileText,
   Maximize2,
+  Minimize2,
   RotateCcw,
-  Save,
 } from 'lucide-react';
 import { examples, exampleStyles, type SvgExample } from './catalog';
 import { SvgPreview, FittedSvgPreview } from './SvgPreview';
+import { ExampleSelect } from './ExampleSelect';
 import {
   loadExampleVersions,
   saveExampleVersion,
@@ -23,31 +36,23 @@ import {
 } from './storage';
 import { editorHref, examplesHref, navigate, useLocation } from '../app/routing';
 import { importDocument } from '../app/actions';
+import { useLocale } from '../i18n/locale';
+import { LanguageSwitch } from '../components/LanguageSwitch';
 import './examples.css';
 interface Draft {
   svg: string;
   prompt: string;
   preview: string;
-  savedAt: number;
-}
-function download(source: string, name: string, type: string) {
-  const url = URL.createObjectURL(new Blob([source], { type })),
-    link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 export default function ExamplesPage() {
+  const { t } = useLocale();
   const location = useLocation(),
     requested = new URLSearchParams(location.split('?')[1]).get('example');
   const selected =
     examples.find((e) => e.id === requested) ||
     examples.find((e) => e.style === exampleStyles[0].id)!;
   const style = exampleStyles.find((s) => s.id === selected.style)!;
-  const sameContent = selected.sourceId
-    ? examples.filter((e) => e.sourceId === selected.sourceId)
-    : [];
+  const sameContent = examples.filter((e) => contentKey(e) === contentKey(selected));
   useEffect(() => {
     if (requested && requested !== selected.id)
       navigate(`${examplesHref}?example=${encodeURIComponent(selected.id)}`, true);
@@ -64,28 +69,75 @@ export default function ExamplesPage() {
   const [tab, setTab] = useState<'prompt' | 'svg'>('prompt'),
     [notice, setNotice] = useState(initial.error),
     [error, setError] = useState(!!initial.error),
-    [actualSize, setActualSize] = useState(false);
-  const promptRef = useRef<HTMLTextAreaElement>(null);
-  const [family, setFamily] = useState<'all' | 'brand'>('all');
-  const railRef = useRef<HTMLElement>(null);
+    [expanded, setExpanded] = useState(false);
+  const [mobilePreview, setMobilePreview] = useState(
+    () => window.matchMedia('(max-width: 700px)').matches,
+  );
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const expandRef = useRef<HTMLButtonElement>(null);
+  const detailRef = useRef<HTMLElement>(null);
+  const detailScroll = useRef(0);
+  const wasPreviewOpen = useRef(false);
   useEffect(() => {
-    const rail = railRef.current;
-    if (!rail) return;
-    const reveal = () =>
-      rail
-        .querySelector('[aria-pressed="true"]')
+    const media = window.matchMedia('(max-width: 700px)');
+    const update = () => setMobilePreview(media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  useEffect(() => {
+    if (requested && !wasPreviewOpen.current) closeRef.current?.focus({ preventScroll: true });
+    wasPreviewOpen.current = !!requested;
+  }, [requested]);
+  const promptRef = useRef<HTMLTextAreaElement>(null);
+  const [family, setFamily] = useState<VisualFamily>('all');
+  const [typeFilter, setTypeFilter] = useState('');
+  const [search, setSearch] = useState('');
+  const groups = browseContents(typeFilter, family, search);
+  const results = groups.flatMap((group) => group.variants);
+  const detailOpen = !!requested;
+  const fullPreview = detailOpen && expanded;
+  const modalPreview = detailOpen && (mobilePreview || fullPreview);
+  const resultIndex = results.findIndex((e) => e.id === selected.id);
+  const currentVisible = resultIndex >= 0;
+  const clearFilters = () => {
+    setFamily('all');
+    setTypeFilter('');
+    setSearch('');
+  };
+  const gridRef = useRef<HTMLElement>(null);
+  const resultScroll = useRef(0);
+  useEffect(() => {
+    if (requested && !mobilePreview && !fullPreview)
+      document
+        .getElementById(`result-${requested}`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    reveal();
-    const observer = new ResizeObserver(reveal);
-    observer.observe(rail);
-    return () => observer.disconnect();
-  }, [style.id, family]);
+  }, [requested, mobilePreview, fullPreview]);
+  const toggleExpanded = () => {
+    if (!fullPreview) detailScroll.current = detailRef.current?.scrollTop || 0;
+    setExpanded(!fullPreview);
+    requestAnimationFrame(() => {
+      if (detailRef.current) detailRef.current.scrollTop = fullPreview ? detailScroll.current : 0;
+      expandRef.current?.focus({ preventScroll: true });
+    });
+  };
+  const closePreview = () => {
+    setExpanded(false);
+    navigate(examplesHref, true);
+    requestAnimationFrame(() => {
+      if (gridRef.current) gridRef.current.scrollTop = resultScroll.current;
+      document.getElementById(`result-${selected.id}`)?.focus({ preventScroll: true });
+    });
+  };
+  const movePreview = (offset: number) => {
+    if (resultIndex < 0) return;
+    const next = results[resultIndex + offset];
+    if (next) choose(next);
+  };
   const saved = versions[selected.id];
   const draft = drafts[selected.id] || {
     svg: saved?.svg || selected.svg,
     preview: saved?.svg || selected.svg,
     prompt: saved?.prompt || selected.prompt,
-    savedAt: saved?.savedAt || 0,
   };
   const pending = draft.svg !== draft.preview;
   const modified =
@@ -97,30 +149,21 @@ export default function ExamplesPage() {
     setNotice(message);
     setError(failed);
   };
-  const choose = (example: SvgExample, preserveInspection = false) => {
-    if (!exampleStyles.find((s) => s.id === example.style)?.brand) setFamily('all');
+  const choose = (example: SvgExample) => {
+    if (!requested) {
+      resultScroll.current = gridRef.current?.scrollTop || 0;
+      setExpanded(false);
+    }
     navigate(`${examplesHref}?example=${encodeURIComponent(example.id)}`, true);
     setNotice('');
-    if (!preserveInspection) setActualSize(false);
   };
   const preview = () => {
     try {
       const v = validateExample(draft.svg, draft.prompt);
       update({ svg: v.svg, preview: v.svg });
-      report('预览已更新，尚未保存到本地版本。');
+      report(t('预览已更新。'));
     } catch (e) {
       report((e as Error).message, true);
-    }
-  };
-  const save = () => {
-    try {
-      const v = validateExample(draft.svg, draft.prompt);
-      saveExampleVersion(selected.id, v);
-      setVersions((all) => ({ ...all, [selected.id]: v }));
-      update({ ...v, preview: v.svg });
-      report('SVG 和 Prompt 已保存为本地版本。');
-    } catch (e) {
-      report(`保存失败：${(e as Error).message} 当前内容仍保留，请复制或下载备份。`, true);
     }
   };
   const reset = () => {
@@ -131,8 +174,8 @@ export default function ExamplesPage() {
         delete next[selected.id];
         return next;
       });
-      update({ svg: selected.svg, preview: selected.svg, prompt: selected.prompt, savedAt: 0 });
-      report('已恢复内置示例。');
+      update({ svg: selected.svg, preview: selected.svg, prompt: selected.prompt });
+      report(t('已恢复内置示例。'));
     } catch (e) {
       report((e as Error).message, true);
     }
@@ -140,7 +183,7 @@ export default function ExamplesPage() {
   const open = () => {
     try {
       if (importDocument(draft.preview, `${selected.id}.svg`)) navigate(editorHref);
-      else report('此示例需要检查清理报告，请返回编辑器查看。', true);
+      else report(t('此示例需要检查清理报告，请返回编辑器查看。'), true);
     } catch (e) {
       report((e as Error).message, true);
     }
@@ -148,19 +191,60 @@ export default function ExamplesPage() {
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(draft.prompt);
-      report('Prompt 已复制，可粘贴到 AI 应用。');
+      report(t('Prompt 已复制，可粘贴到 AI 应用。'));
     } catch {
       setTab('prompt');
       requestAnimationFrame(() => {
         promptRef.current?.focus();
         promptRef.current?.select();
       });
-      report('剪贴板不可用，已选中 Prompt，请按 ⌘/Ctrl+C 复制。');
+      report(t('剪贴板不可用，已选中 Prompt，请按 ⌘/Ctrl+C 复制。'));
     }
   };
   return (
-    <main className="examples-page">
-      <header className="examples-header">
+    <main
+      className={`examples-page image-search-page ${detailOpen ? 'has-detail' : ''}`}
+      onKeyDown={(e) => {
+        if (e.defaultPrevented) return;
+        if (e.key === 'Tab' && fullPreview) {
+          const controls = [
+            ...detailRef.current!.querySelectorAll<HTMLElement>(
+              'button:not(:disabled),a[href],input,textarea',
+            ),
+          ].filter((control) => control.getClientRects().length > 0);
+          const first = controls[0],
+            last = controls.at(-1);
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last?.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first?.focus();
+          }
+        }
+        if (
+          e.key !== 'Escape' &&
+          (e.target as HTMLElement).closest(
+            'input,textarea,select,[role="combobox"],[role="listbox"]',
+          )
+        )
+          return;
+        if (e.key === 'Escape' && detailOpen) {
+          e.preventDefault();
+          if (fullPreview) toggleExpanded();
+          else closePreview();
+        }
+        if (e.key === 'ArrowRight' && detailOpen) {
+          e.preventDefault();
+          movePreview(1);
+        }
+        if (e.key === 'ArrowLeft' && detailOpen) {
+          e.preventDefault();
+          movePreview(-1);
+        }
+      }}
+    >
+      <header className="examples-header" inert={modalPreview}>
         <a
           className="brand"
           aria-label="JustSVG"
@@ -175,8 +259,9 @@ export default function ExamplesPage() {
         </a>
         <span className="examples-header-label">
           <BookOpen size={16} />
-          Example 示例
+          {t('Example 示例')}
         </span>
+        <LanguageSwitch compact />
         <a
           className="button"
           href={editorHref}
@@ -187,304 +272,320 @@ export default function ExamplesPage() {
           }}
         >
           <ArrowLeft size={15} />
-          返回编辑器
+          {t('返回编辑器')}
         </a>
       </header>
-      <div className="examples-workbench">
-        <aside className="examples-sidebar" aria-label="示例风格">
-          <div className="examples-sidebar-heading">
-            <h1>SVG 风格库</h1>
-            <p>
-              {exampleStyles.length} 种风格 · {examples.length} 个示例
-            </p>
-          </div>
-          <nav className="example-family-filter" aria-label="风格分类">
-            <button
-              className="button"
-              aria-pressed={family === 'all'}
-              onClick={() => setFamily('all')}
-            >
-              全部
+      <section className="image-search-controls" aria-label={t('搜索与筛选')} inert={modalPreview}>
+        <label className="image-search-input">
+          <Search size={20} />
+          <input
+            type="search"
+            aria-label={t('搜索示例')}
+            placeholder={t('搜索图形、场景或品牌，例如：架构、泳道、OpenAI')}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {search && (
+            <button aria-label={t('清除筛选')} onClick={() => setSearch('')}>
+              <X size={17} />
             </button>
-            <button
-              className="button"
-              aria-pressed={family === 'brand'}
-              onClick={() => setFamily('brand')}
-            >
-              品牌风格 · {exampleStyles.filter((s) => s.brand).length}
-            </button>
-          </nav>
-          <nav aria-label="风格选择" ref={railRef}>
-            {exampleStyles
-              .filter((s) => family === 'all' || s.brand)
-              .map((s) => {
-                const items = examples.filter((e) => e.style === s.id),
-                  sample = items[0];
-                return (
-                  <button
-                    key={s.id}
-                    aria-label={`选择${s.name}`}
-                    className={`example-style ${s.id === style.id ? 'selected' : ''}`}
-                    aria-pressed={s.id === style.id}
-                    onClick={() => {
-                      const matching =
-                        selected.sourceId && items.find((e) => e.sourceId === selected.sourceId);
-                      choose(matching || sample, !!matching);
-                    }}
-                  >
-                    <span className="example-style-thumbnail">
-                      <SvgPreview svg={sample.svg} label={`${s.name}缩略图`} />
-                    </span>
-                    <span>
-                      <strong>{s.name}</strong>
-                      {s.featured && <small className="example-featured-label">推荐构图</small>}
-                      <small>{s.summary}</small>
-                      <small>{items.length} 个示例</small>
-                    </span>
-                  </button>
-                );
-              })}
-          </nav>
-          <p className="examples-sidebar-note">
-            内置示例均为原生 SVG。
-            <br />
-            可以编辑，也可以复制 Prompt 生成自己的图。
-          </p>
-        </aside>
-        <section className="example-main" aria-label="示例预览区">
-          <nav className="example-featured-switcher" aria-label="推荐风格">
-            <span>推荐</span>
-            {exampleStyles
-              .filter((s) => s.featured)
-              .map((s) => (
-                <button
-                  className="button"
-                  aria-pressed={style.id === s.id}
-                  key={s.id}
-                  onClick={() => choose(examples.find((e) => e.style === s.id)!)}
-                >
-                  {s.name}
-                </button>
-              ))}
-          </nav>
-          <div className="example-heading">
-            <div>
-              <h2>{style.name}</h2>
-              <p>{style.summary}</p>
-            </div>
-            <button className="button primary" onClick={open} disabled={pending}>
-              在编辑器中打开
-              <ArrowUpRight size={15} />
-            </button>
-          </div>
-          <div className="example-options">
-            <label>
-              示例
-              <select
-                aria-label="选择示例"
-                value={selected.id}
-                onChange={(e) => choose(examples.find((x) => x.id === e.target.value)!)}
-              >
-                {examples
-                  .filter((e) => e.style === style.id)
-                  .map((e) => (
-                    <option value={e.id} key={e.id}>
-                      {e.name}
-                    </option>
-                  ))}
-              </select>
-            </label>
-            <button
-              className="button"
-              onClick={() =>
-                download(draft.preview, `${selected.id}.svg`, 'image/svg+xml;charset=utf-8')
-              }
-              disabled={pending}
-            >
-              <Download size={14} />
-              下载 SVG
-            </button>
-          </div>
-          {sameContent.length > 1 && (
-            <nav className="example-featured-switcher example-style-switcher" aria-label="同图风格">
-              <span>同图风格</span>
-              {sameContent.map((example) => (
-                <button
-                  key={example.id}
-                  className="button"
-                  aria-pressed={example.id === selected.id}
-                  title="比较同一内置内容的视觉风格，已有修改保留在各自版本中"
-                  onClick={() => choose(example, true)}
-                >
-                  {example.style === 'base'
-                    ? '标准基础'
-                    : exampleStyles.find((s) => s.id === example.style)!.name.replace('基础·', '')}
-                </button>
-              ))}
-            </nav>
           )}
-          <div className="example-preview-stage">
-            <FittedSvgPreview
-              svg={draft.preview}
-              label={`${selected.name} SVG 预览`}
-              width={selected.width}
-              height={selected.height}
-              actualSize={actualSize}
+        </label>
+        <div className="image-search-filters">
+          <div className="image-filter">
+            <span>{t('图形类型')}</span>
+            <ExampleSelect
+              label={t('筛选图形类型')}
+              value={typeFilter}
+              onChange={setTypeFilter}
+              options={[
+                { value: '', label: t('全部类型') },
+                ...diagramTypes.map((type) => ({ value: type, label: type })),
+              ]}
             />
-            <button
-              className="button example-fit"
-              aria-pressed={actualSize}
-              onClick={() => setActualSize(!actualSize)}
-            >
-              <Maximize2 size={14} />
-              {actualSize ? '适应预览' : '100% 查看'}
+          </div>
+          <div className="image-filter">
+            <span>{t('风格系列')}</span>
+            <ExampleSelect
+              label={t('筛选风格系列')}
+              value={family}
+              onChange={(value) => setFamily(value as VisualFamily)}
+              options={[
+                { value: 'all', label: t('全部系列') },
+                { value: 'base', label: t('基础风格') },
+                { value: 'brand', label: t('品牌风格') },
+                { value: 'special', label: t('专题风格') },
+              ]}
+            />
+          </div>
+          <span role="status" aria-label={t('筛选结果')}>
+            {results.length} SVG
+          </span>
+          {(search || typeFilter || family !== 'all') && (
+            <button className="text-button" onClick={clearFilters}>
+              {t('清除筛选')}
             </button>
+          )}
+        </div>
+      </section>
+      <div className="examples-workbench">
+        <section ref={gridRef} className="image-results" aria-label={t('图片结果')} inert={modalPreview}>
+          <div className="image-grid">
+            {results.map((example) => (
+              <button
+                id={`result-${example.id}`}
+                key={example.id}
+                className={`image-result ${detailOpen && selected.id === example.id ? 'selected' : ''}`}
+                aria-label={`${t('预览')} ${t(styleById.get(example.style)!.name)} · ${t(example.name)}`}
+                aria-pressed={detailOpen && selected.id === example.id}
+                onClick={() => choose(example)}
+              >
+                <span
+                  className="image-result-art"
+                  style={{ aspectRatio: `${example.width} / ${example.height}` }}
+                >
+                  <SvgPreview
+                    svg={versions[example.id]?.svg || example.svg}
+                    label={`${t(example.name)} thumbnail`}
+                  />
+                </span>
+                <strong>{t(styleById.get(example.style)!.name)}</strong>
+                <span>{t(example.name)}</span>
+              </button>
+            ))}
           </div>
-          <div className="example-caption">
-            <span>
-              {selected.name} · {selected.width} × {selected.height}
-            </span>
-            <span className="example-swatches" aria-label="风格配色">
-              {style.palette.map((color) => (
-                <span key={color} style={{ background: color }} title={color} />
-              ))}
-            </span>
-          </div>
-          <p className="example-explanation">
-            {style.tags.join(' / ')}
-            。内容为演示结构，不代表生产配置或性能数据。打开示例会新增图稿标签，当前工作继续保留。
-          </p>
-          {style.brand && (
-            <aside className="example-brand-reference" aria-label="品牌风格依据">
-              <strong>品牌灵感示例 · 非官方</strong>
-              <p>{style.brand.note}</p>
-              <div>
-                {style.brand.sources.map((source) => (
-                  <a key={source.url} href={source.url} target="_blank" rel="noreferrer">
-                    {source.title}
-                    <ArrowUpRight size={12} />
-                  </a>
-                ))}
-              </div>
-              <small>
-                字体使用本机回退；未嵌入专有字体或品牌标志。完整规则与参考链接已记入 Prompt。
-              </small>
-            </aside>
+          {results.length === 0 && (
+            <div className="image-empty">
+              <h2>{t('没有找到匹配的 SVG')}</h2>
+              <p>{t('试试其他关键词，或清除筛选。')}</p>
+              <button className="button" onClick={clearFilters}>
+                {t('显示全部示例')}
+              </button>
+            </div>
           )}
         </section>
-        <aside className="example-source-panel" aria-label="Prompt 与 SVG 调试">
-          <div className="example-source-heading">
-            <h2>复用与调试</h2>
-            <span>{modified ? '未保存修改' : draft.savedAt ? '本地版本已保存' : '内置原版'}</span>
+        <div className="image-detail-placeholder" hidden={!fullPreview} aria-hidden="true" />
+        <aside
+          ref={detailRef}
+          className={`image-detail ${fullPreview ? 'is-expanded' : ''}`}
+          aria-label={t('图片预览')}
+          role="dialog"
+          aria-modal={modalPreview || undefined}
+          hidden={!detailOpen}
+        >
+          <div className="image-detail-toolbar">
+            <div className="image-detail-identity">
+              <ExampleSelect
+                label={t('选择视觉风格')}
+                menuOffset={26}
+                value={selected.id}
+                onChange={(value) => choose(examples.find((item) => item.id === value)!)}
+                options={sameContent.map((item) => ({
+                  value: item.id,
+                  label: t(styleById.get(item.style)!.name),
+                  palette: styleById.get(item.style)!.palette,
+                }))}
+              />
+            <h2 title={t(selected.name)}>{t(selected.name)}</h2>
+            </div>
+            <div className="image-detail-actions">
+              <button
+                className="button primary example-open"
+                aria-label={t('在编辑器中打开')}
+                title={t('在编辑器中打开')}
+                onClick={open}
+                disabled={pending}
+              >
+                <span>{t('打开编辑器')}</span>
+                <ArrowUpRight size={15} />
+              </button>
+              <button
+                className="button example-close"
+                ref={closeRef}
+                aria-label={t('关闭预览')}
+                onClick={closePreview}
+              >
+                <X size={18} />
+              </button>
+            </div>
           </div>
-          <div
-            className="example-source-tabs"
-            role="tablist"
-            aria-label="示例内容"
-            onKeyDown={(e) => {
-              if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
-              e.preventDefault();
-              const next =
-                e.key === 'Home'
-                  ? 'prompt'
-                  : e.key === 'End'
-                    ? 'svg'
-                    : tab === 'prompt'
-                      ? 'svg'
-                      : 'prompt';
-              setTab(next);
-              document.getElementById(`example-${next}-tab`)?.focus();
-            }}
-          >
-            <button
-              role="tab"
-              id="example-prompt-tab"
-              aria-selected={tab === 'prompt'}
-              aria-controls="example-source-content"
-              onClick={() => setTab('prompt')}
+            <section className="example-main" aria-label={t('示例预览区')}>
+            <div
+              className="example-preview-stage"
+              style={{
+                aspectRatio: fullPreview ? undefined : `${selected.width} / ${selected.height}`,
+              }}
             >
-              <FileText size={14} />
-              生成 Prompt
-            </button>
-            <button
-              role="tab"
-              id="example-svg-tab"
-              aria-selected={tab === 'svg'}
-              aria-controls="example-source-content"
-              onClick={() => setTab('svg')}
-            >
-              <Code2 size={14} />
-              SVG 源码
-            </button>
-          </div>
-          <div
-            className="example-source-content"
-            id="example-source-content"
-            role="tabpanel"
-            aria-labelledby={tab === 'prompt' ? 'example-prompt-tab' : 'example-svg-tab'}
-          >
-            {tab === 'prompt' ? (
-              <>
-                <p>
-                  复制到 AI 应用即可生成同类风格。可以修改主题和内容；AI 输出可能与示例存在差异。
-                </p>
-                <textarea
-                  ref={promptRef}
-                  aria-label="示例生成 Prompt"
-                  value={draft.prompt}
-                  onChange={(e) => update({ prompt: e.target.value })}
-                  spellCheck={false}
-                />
-                <button className="button primary" onClick={() => void copy()}>
-                  <Copy size={15} />
-                  复制 Prompt
-                </button>
-              </>
-            ) : (
-              <>
-                <p>
-                  修改源码后先预览，再保存本地版本或打开编辑器。无效或不安全的 SVG
-                  不会替换当前预览。
-                </p>
-                <textarea
-                  className="example-code"
-                  aria-label="示例 SVG 源码"
-                  value={draft.svg}
-                  onChange={(e) => update({ svg: e.target.value })}
-                  spellCheck={false}
-                />
-                <button className="button" onClick={preview}>
-                  <Check size={15} />
-                  预览 SVG
-                </button>
-              </>
+              <FittedSvgPreview
+                svg={draft.preview}
+                label={`${t(selected.name)} SVG preview`}
+                width={selected.width}
+                height={selected.height}
+              />
+              <button
+                className="button example-fit"
+                ref={expandRef}
+                aria-label={fullPreview ? t('退出全屏') : t('全屏预览')}
+                title={fullPreview ? `${t('退出全屏')} (Esc)` : t('全屏预览')}
+                aria-pressed={fullPreview}
+                onClick={toggleExpanded}
+              >
+                {fullPreview ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+              </button>
+              <button
+                className="button example-nav example-previous"
+                aria-label={t('上一张')}
+                title={t('上一张')}
+                disabled={resultIndex <= 0}
+                onClick={() => movePreview(-1)}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                className="button example-nav example-next"
+                aria-label={t('下一张')}
+                title={t('下一张')}
+                disabled={resultIndex < 0 || resultIndex >= results.length - 1}
+                onClick={() => movePreview(1)}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+            <div className="example-caption">
+              <span>
+                {diagramType(selected)} · {selected.width} × {selected.height}
+              </span>
+              <span>
+                {currentVisible
+                  ? `${resultIndex + 1} / ${results.length}`
+                  : t('当前图片不在筛选结果中')}
+              </span>
+            </div>
+            {style.brand && (
+              <details
+                key={selected.id}
+                className="example-brand-reference"
+                aria-label={t('品牌风格依据')}
+              >
+                <summary>
+                  <span>{t('品牌参考与设计依据')}</span>
+                  <span>{t('非官方')}</span>
+                  <ChevronDown size={14} />
+                </summary>
+                <p>{style.brand.note}</p>
+                <div>
+                  {style.brand.sources.map((source) => (
+                    <a key={source.url} href={source.url} target="_blank" rel="noreferrer">
+                      {source.title}
+                      <ArrowUpRight size={12} />
+                    </a>
+                  ))}
+                </div>
+              </details>
             )}
-          </div>
-          {notice && (
-            <p
-              className={`example-notice ${error ? 'error' : ''}`}
-              role={error ? 'alert' : 'status'}
+          </section>
+          <aside className="example-source-panel" aria-label={t('复用与调试')}>
+            <div className="example-source-heading">
+              <h2>{t('复用与调试')}</h2>
+              <span>
+                {modified ? t('本页草稿') : saved ? t('历史本地版本') : t('内置示例')}
+              </span>
+            </div>
+            <div
+              className="example-source-tabs"
+              role="tablist"
+              aria-label={t('示例内容')}
+              onKeyDown={(e) => {
+                if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+                e.preventDefault();
+                const next =
+                  e.key === 'Home'
+                    ? 'prompt'
+                    : e.key === 'End'
+                      ? 'svg'
+                      : tab === 'prompt'
+                        ? 'svg'
+                        : 'prompt';
+                setTab(next);
+                document.getElementById(`example-${next}-tab`)?.focus();
+              }}
             >
-              {notice}
-            </p>
-          )}
-          {pending && (
-            <p className="example-pending">源码有未预览的修改，请先预览或保存后再使用。</p>
-          )}
-          <div className="example-save-actions">
-            <button className="button" onClick={save}>
-              <Save size={14} />
-              保存本地版本
-            </button>
-            <button className="text-button" onClick={reset}>
-              <RotateCcw size={13} />
-              恢复内置
-            </button>
-          </div>
-          <p className="example-storage-note">
-            本地版本独立于编辑器图稿，仅保存在当前浏览器。Prompt
-            草稿修改后需保存；编辑器内的修改不会自动写回示例库。
-          </p>
+              <button
+                role="tab"
+                id="example-prompt-tab"
+                aria-selected={tab === 'prompt'}
+                aria-controls="example-source-content"
+                onClick={() => setTab('prompt')}
+              >
+                <FileText size={14} />
+                {t('生成 Prompt')}
+              </button>
+              <button
+                role="tab"
+                id="example-svg-tab"
+                aria-selected={tab === 'svg'}
+                aria-controls="example-source-content"
+                onClick={() => setTab('svg')}
+              >
+                <Code2 size={14} />
+                {t('SVG 源码')}
+              </button>
+            </div>
+            <div
+              className="example-source-content"
+              id="example-source-content"
+              role="tabpanel"
+              aria-labelledby={tab === 'prompt' ? 'example-prompt-tab' : 'example-svg-tab'}
+            >
+              {tab === 'prompt' ? (
+                <>
+                  <p>{t('复制 Prompt 到 AI 应用，可替换主题与内容。')}</p>
+                  <textarea
+                    ref={promptRef}
+                    aria-label={t('生成 Prompt')}
+                    value={draft.prompt}
+                    onChange={(e) => update({ prompt: e.target.value })}
+                    spellCheck={false}
+                  />
+                  <button className="button" onClick={() => void copy()}>
+                    <Copy size={15} />
+                    {t('复制 Prompt')}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p>{t('修改源码后先预览，再打开编辑器。无效或不安全的 SVG 不会替换当前预览。')}</p>
+                  <textarea
+                    className="example-code"
+                    aria-label={t('SVG 源码')}
+                    value={draft.svg}
+                    onChange={(e) => update({ svg: e.target.value })}
+                    spellCheck={false}
+                  />
+                  <button className="button" onClick={preview}>
+                    <Check size={15} />
+                    {t('预览 SVG')}
+                  </button>
+                </>
+              )}
+            </div>
+            {notice && (
+              <p
+                className={`example-notice ${error ? 'error' : ''}`}
+                role={error ? 'alert' : 'status'}
+              >
+                {notice}
+              </p>
+            )}
+            {pending && <p className="example-pending">{t('源码有未预览的修改，请先预览后再使用。')}</p>}
+            <div className="example-reset-actions">
+              <button className="text-button" onClick={reset}>
+                <RotateCcw size={13} />
+                {t('恢复内置')}
+              </button>
+            </div>
+            <p className="example-storage-note">{t('修改仅在本页保留，需要保存时请在编辑器中继续。')}</p>
+          </aside>
         </aside>
       </div>
     </main>

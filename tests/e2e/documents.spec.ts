@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 const bridge = '/tests/e2e/bridge.ts';
 const tabsName = 'SVG 文档';
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/editor');
   await expect(page.getByRole('tablist', { name: tabsName })).toBeVisible();
 });
 test('file, paste and blank documents open as independent tabs with separate history, selection and viewport', async ({
@@ -78,31 +78,33 @@ test('file, paste and blank documents open as independent tabs with separate his
   await expect(page.locator('[data-svg-host] text')).toHaveText('Third drawing');
   await page.getByRole('button', { name: '新建 SVG', exact: true }).click();
   await expect(page.getByRole('tablist', { name: tabsName }).getByRole('tab')).toHaveCount(4);
-  await expect(page.locator('[data-svg-host] > svg > *')).toHaveCount(0);
+  await expect(page.locator('[data-svg-host] > svg > :not([data-sf-page-background])')).toHaveCount(
+    0,
+  );
 });
 
 test('closing dirty drawings can retain, download and close, or discard without touching other tabs', async ({
   page,
 }) => {
   await page.getByRole('button', { name: '新建 SVG', exact: true }).click();
-  await page.getByRole('button', { name: '插入圆角矩形', exact: true }).click();
+  await page.getByRole('button', { name: /^插入\s*圆角矩形$/, exact: true }).click();
   await page.getByRole('tab', { name: 'architecture.svg', exact: true }).click();
-  await page.getByRole('button', { name: '关闭 untitled-1.svg', exact: true }).click();
+  await page.getByRole('button', { name: '关闭 untitled', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: '关闭有未导出修改的图稿' });
-  await expect(dialog).toContainText('untitled-1.svg');
+  await expect(dialog).toContainText('untitled');
   await dialog.getByRole('button', { name: '保留图稿', exact: true }).click();
-  await expect(page.getByRole('tab', { name: 'untitled-1.svg', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: '关闭 untitled-1.svg', exact: true }).click();
+  await expect(page.getByRole('tab', { name: 'untitled', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '关闭 untitled', exact: true }).click();
   const downloadPromise = page.waitForEvent('download');
   await dialog.getByRole('button', { name: '下载并关闭', exact: true }).click();
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toBe('untitled-1-finished.svg');
+  expect(download.suggestedFilename()).toBe('untitled-finished.svg');
   expect(await fs.readFile((await download.path())!, 'utf8')).toContain('圆角矩形');
-  await expect(page.getByRole('tab', { name: 'untitled-1.svg', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('tab', { name: 'untitled', exact: true })).toHaveCount(0);
   await expect(page.locator('[data-svg-host] #client-card')).toBeVisible();
   await page.getByRole('button', { name: '新建 SVG', exact: true }).click();
-  await page.getByRole('button', { name: '插入圆角矩形', exact: true }).click();
-  await page.getByRole('button', { name: '关闭 untitled-1.svg', exact: true }).click();
+  await page.getByRole('button', { name: /^插入\s*圆角矩形$/, exact: true }).click();
+  await page.getByRole('button', { name: '关闭 untitled', exact: true }).click();
   await dialog.getByRole('button', { name: '直接关闭', exact: true }).click();
   await expect(page.getByRole('tablist', { name: tabsName }).getByRole('tab')).toHaveCount(1);
 });
@@ -116,7 +118,7 @@ test('all open documents, active tab, dirty flags and views recover after refres
     useUI.getState().set({ zoom: 0.65, pan: { x: 10, y: -33 } });
   }, bridge);
   await page.getByRole('button', { name: '新建 SVG', exact: true }).click();
-  await page.getByRole('button', { name: '插入圆角矩形', exact: true }).click();
+  await page.getByRole('button', { name: /^插入\s*圆角矩形$/, exact: true }).click();
   await page.evaluate(async (module) => {
     const { useUI } = await import(/* @vite-ignore */ module);
     useUI.getState().set({ zoom: 0.9, pan: { x: 25, y: 45 } });
@@ -129,7 +131,7 @@ test('all open documents, active tab, dirty flags and views recover after refres
     )
     .toBe(2);
   await page.reload();
-  await expect(page.getByRole('tab', { name: 'untitled-1.svg', exact: true })).toHaveAttribute(
+  await expect(page.getByRole('tab', { name: 'untitled', exact: true })).toHaveAttribute(
     'aria-selected',
     'true',
   );
@@ -171,7 +173,7 @@ test('all open documents, active tab, dirty flags and views recover after refres
   ).toHaveCount(0);
   await expect(
     tabs
-      .getByRole('tab', { name: 'untitled-1.svg', exact: true })
+      .getByRole('tab', { name: 'untitled', exact: true })
       .getByRole('img', { name: '有未导出修改' }),
   ).toHaveCount(1);
 });
@@ -189,7 +191,7 @@ test('tab keyboard navigation does not nudge artwork and closing the final tab l
   const a = page.getByRole('tab', { name: 'architecture.svg', exact: true });
   await a.focus();
   await a.press('ArrowRight');
-  const b = page.getByRole('tab', { name: 'untitled-1.svg', exact: true });
+  const b = page.getByRole('tab', { name: 'untitled', exact: true });
   await expect(b).toBeFocused();
   await b.press('Home');
   await expect(a).toBeFocused();
@@ -199,7 +201,7 @@ test('tab keyboard navigation does not nudge artwork and closing the final tab l
   await b.focus();
   await b.press('Delete');
   await expect(page.getByRole('tablist', { name: tabsName }).getByRole('tab')).toHaveCount(1);
-  await page.getByRole('button', { name: '插入圆角矩形', exact: true }).click();
+  await page.getByRole('button', { name: /^插入\s*圆角矩形$/, exact: true }).click();
   await expect(page.locator('[data-svg-host] [data-label="圆角矩形"]')).toBeVisible();
 });
 

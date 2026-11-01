@@ -1,0 +1,51 @@
+{
+  "file": "release-flow.svg",
+  "renderer": "Chromium 155.0.8059.85",
+  "structure": {
+    "file": "release-flow.svg",
+    "errors": [],
+    "warnings": [],
+    "profile": "static-presentation-attributes",
+    "counts": {
+      "ids": 20,
+      "nodes": 8,
+      "edges": 9,
+      "texts": 31
+    }
+  },
+  "geometry": {
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "nodes": 8,
+      "edges": 9,
+      "texts": 31
+    },
+    "fonts": [
+      "Georgia, \"Songti SC\", serif",
+      "Arial, \"Helvetica Neue\", \"PingFang SC\", sans-serif"
+    ],
+    "textEditXmlRoundtrip": true,
+    "limits": [
+      "Axis-aligned envelopes; stroke/marker extents and clipping require visual inspection.",
+      "Routes sampled at ~2 root units, capped at 4000 samples per edge; narrow collisions can escape.",
+      "Font stacks reported, not proof that the first font is installed.",
+      "No automated contrast, brand fidelity, editor binding or user acceptance verdict."
+    ]
+  },
+  "textEditBrowserReopen": true,
+  "blockedRequests": [],
+  "status": "technical-checks-passed",
+  "visualReview": "required",
+  "checkedOn": "2026-10-26",
+  "artifactSha256": {
+    "release-flow.svg": "c1a93684265dfb88d93532a61545f2d19fa8169e5153e2aefa28e115d0dfadca",
+    "release-flow.graph.json": "9f8b5832c9586faa891d3b925213acb25329962db9ad57153ce45f0a0ce9cd4e",
+    "release-flow.prompt.md": "414f3922262ac9f7c0b588a5477311b449fa9907c2ac8e84b2d79b4eee5df7cb"
+  },
+  "portableBundleRecheck": {
+    "status": "technical-checks-passed",
+    "textEditBrowserReopen": true,
+    "runtime": "Playwright resolved from caller project; no JustSVG editor/generator imports"
+  }
+}

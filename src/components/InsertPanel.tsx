@@ -9,11 +9,13 @@ import {
   matchesAsset,
 } from '../editor/insert/catalog';
 import { insertCustom } from '../editor/insert/actions';
-import { useUI } from '../store/ui';
+import { useChromeUI } from '../store/ui';
 import { assetGroups, type AssetTab } from '../editor/insert/groups';
 import { AssetGallery } from './AssetGallery';
+import { useLocale } from '../i18n/locale';
 export function InsertPanel() {
-  const ui = useUI(),
+  const { t } = useLocale();
+  const ui = useChromeUI(),
     [tab, setTab] = useState<AssetTab>('shapes'),
     [query, setQuery] = useState(''),
     [ready, setReady] = useState(isIconLibraryReady),
@@ -30,12 +32,12 @@ export function InsertPanel() {
         if (alive) setReady(true);
       })
       .catch(() => {
-        if (alive) setLoadError('图标库加载失败，请重试。素材随应用提供，不需要外部图标服务。');
+        if (alive) setLoadError(t('图标库加载失败，请重试。素材随应用提供，不需要外部图标服务。'));
       });
     return () => {
       alive = false;
     };
-  }, [tab, retry]);
+  }, [tab, retry, t]);
   const options = tab === 'shapes' ? shapes : tab === 'templates' ? templates : iconAssets;
   const groups = assetGroups(tab, ui.recentIcons);
   const filtered = options.filter((asset) => matchesAsset(asset, query));
@@ -50,7 +52,7 @@ export function InsertPanel() {
     }
   };
   return (
-    <aside className="insert-panel" aria-label="插入面板">
+    <aside className="insert-panel" aria-label={t('插入面板')}>
       <div className="insert-tabs" role="tablist">
         <button
           role="tab"
@@ -60,7 +62,7 @@ export function InsertPanel() {
             setQuery('');
           }}
         >
-          常见图形
+          {t('常见图形')}
         </button>
         <button
           role="tab"
@@ -70,7 +72,7 @@ export function InsertPanel() {
             setQuery('');
           }}
         >
-          Icon 图标
+          {t('Icon 图标')}
         </button>
         <button
           role="tab"
@@ -80,14 +82,14 @@ export function InsertPanel() {
             setQuery('');
           }}
         >
-          组合图
+          {t('组合图')}
         </button>
       </div>
       <div className="insert-search">
         <Search size={14} />
         <input
-          aria-label="搜索素材"
-          placeholder="搜索名称或关键词…"
+          aria-label={t('搜索素材')}
+          placeholder={t('搜索名称或关键词…')}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -95,8 +97,7 @@ export function InsertPanel() {
         />
       </div>
       <div className="asset-results" role="status" aria-live="polite">
-        {query.trim() ? `${filtered.length} 个匹配 · ` : ''}共 {options.length.toLocaleString()} 个
-        {tab === 'icons' ? '图标' : tab === 'templates' ? '组合图' : '图形'}
+        {query.trim() ? `${filtered.length} ${t('个匹配')} · ` : ''}{t('共')} {options.length.toLocaleString()} {tab === 'icons' ? t('图标') : tab === 'templates' ? t('组合图') : t('图形')}
       </div>
       <AssetGallery
         key={tab}
@@ -114,12 +115,12 @@ export function InsertPanel() {
         <details className="custom-icon">
           <summary>
             <Upload size={13} />
-            导入自己的 SVG 图标
+            {t('导入自己的 SVG 图标')}
           </summary>
-          <p>作为新对象插入，不替换当前图稿。</p>
+          <p>{t('作为新对象插入，不替换当前图稿。')}</p>
           <button className="button" onClick={() => file.current?.click()}>
             <Upload size={13} />
-            选择 SVG 文件
+            {t('选择 SVG 文件')}
           </button>
           <input
             ref={file}
@@ -130,7 +131,7 @@ export function InsertPanel() {
               const f = e.target.files?.[0];
               if (!f) return;
               if (f.size > 5 * 1024 * 1024) {
-                setError('图标超过 5 MB 限制。');
+                setError(t('图标超过 5 MB 限制。'));
                 return;
               }
               void f
@@ -148,8 +149,8 @@ export function InsertPanel() {
             }}
           />
           <textarea
-            aria-label="自定义图标 SVG"
-            placeholder="或粘贴 <svg>…</svg>"
+            aria-label={t('自定义图标 SVG')}
+            placeholder={t('或粘贴 <svg>…</svg>')}
             value={custom}
             onChange={(e) => {
               setCustom(e.target.value);
@@ -158,7 +159,7 @@ export function InsertPanel() {
           />
           <button className="button primary" disabled={!custom.trim()} onClick={applyCustom}>
             <ClipboardPaste size={13} />
-            插入图标
+            {t('插入图标')}
           </button>
           {error && (
             <p role="alert" className="field-error">
@@ -169,9 +170,9 @@ export function InsertPanel() {
       )}
       <p className="insert-footnote">
         {tab === 'templates'
-          ? '点击或拖入当前图稿；双击组合深入编辑。'
-          : '点击插入视口中心，或拖入指定位置。'}
-        {tab === 'icons' ? ' 内置图标：Lucide · ISC / MIT。' : ''}
+          ? t('点击或拖入当前图稿；双击组合深入编辑。')
+          : t('点击插入视口中心，或拖入指定位置。')}
+        {tab === 'icons' ? t(' 内置图标：Lucide · ISC / MIT。') : ''}
       </p>
     </aside>
   );

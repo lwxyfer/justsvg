@@ -1,0 +1,102 @@
+{
+  "title": "Release with a return path.",
+  "status": "illustrative",
+  "nodes": [
+    {
+      "id": "draft",
+      "label": "Change",
+      "detail": "A reviewed revision"
+    },
+    {
+      "id": "checks",
+      "label": "Build & test",
+      "detail": "Static + behavior checks"
+    },
+    {
+      "id": "gate",
+      "label": "Ready?",
+      "detail": "Pass / revise"
+    },
+    {
+      "id": "canary",
+      "label": "Canary",
+      "detail": "Small traffic slice"
+    },
+    {
+      "id": "observe",
+      "label": "Healthy?",
+      "detail": "Signals / errors"
+    },
+    {
+      "id": "promote",
+      "label": "Promote",
+      "detail": "Expand the rollout"
+    },
+    {
+      "id": "rollback",
+      "label": "Rollback",
+      "detail": "Restore prior version"
+    },
+    {
+      "id": "rework",
+      "label": "Revise",
+      "detail": "Address failed checks"
+    }
+  ],
+  "edges": [
+    {
+      "id": "build",
+      "from": "draft",
+      "to": "checks",
+      "label": ""
+    },
+    {
+      "id": "assess",
+      "from": "checks",
+      "to": "gate",
+      "label": ""
+    },
+    {
+      "id": "pass",
+      "from": "gate",
+      "to": "canary",
+      "label": "pass"
+    },
+    {
+      "id": "fail",
+      "from": "gate",
+      "to": "rework",
+      "label": "revise"
+    },
+    {
+      "id": "retry",
+      "from": "rework",
+      "to": "checks",
+      "label": "recheck"
+    },
+    {
+      "id": "monitor",
+      "from": "canary",
+      "to": "observe",
+      "label": "observe"
+    },
+    {
+      "id": "healthy",
+      "from": "observe",
+      "to": "promote",
+      "label": "healthy"
+    },
+    {
+      "id": "unhealthy",
+      "from": "observe",
+      "to": "rollback",
+      "label": "errors"
+    },
+    {
+      "id": "restore",
+      "from": "rollback",
+      "to": "draft",
+      "label": "new revision after rollback"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "file": "event-architecture.svg",
+  "renderer": "Chromium 155.0.8059.85",
+  "structure": {
+    "file": "event-architecture.svg",
+    "errors": [],
+    "warnings": [],
+    "profile": "static-presentation-attributes",
+    "counts": {
+      "ids": 22,
+      "nodes": 7,
+      "edges": 6,
+      "texts": 23
+    }
+  },
+  "geometry": {
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "nodes": 7,
+      "edges": 6,
+      "texts": 23
+    },
+    "fonts": ["Arial, \"Helvetica Neue\", \"PingFang SC\", sans-serif"],
+    "textEditXmlRoundtrip": true,
+    "limits": [
+      "Axis-aligned envelopes; stroke/marker extents and clipping require visual inspection.",
+      "Routes sampled at ~2 root units, capped at 4000 samples per edge; narrow collisions can escape.",
+      "Font stacks reported, not proof that the first font is installed.",
+      "No automated contrast, brand fidelity, editor binding or user acceptance verdict."
+    ]
+  },
+  "textEditBrowserReopen": true,
+  "blockedRequests": [],
+  "status": "technical-checks-passed",
+  "visualReview": "required",
+  "checkedOn": "2026-10-26",
+  "artifactSha256": {
+    "event-architecture.svg": "14c7088408bb6948e1693e7408a1528827037ac1a9c2e6f279a8190f2dfab0cf",
+    "event-architecture.graph.json": "f728cf66295cd0102081c97eea0ad95e6f4828408b6019e286649f070d92afcd",
+    "event-architecture.prompt.md": "df07c064633161d8bb3aec1a40c3936bbd682e4a7249207892388760765dcd88"
+  },
+  "portableBundleRecheck": {
+    "status": "technical-checks-passed",
+    "textEditBrowserReopen": true,
+    "runtime": "Playwright resolved from caller project; no JustSVG editor/generator imports"
+  }
+}

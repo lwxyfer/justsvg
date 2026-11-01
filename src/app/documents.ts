@@ -1,6 +1,8 @@
 import { DocumentEngine, engine, type DocumentSession } from '../editor/document/engine';
 import { useUI } from '../store/ui';
 export const MAX_DOCUMENTS = 20;
+const blankSvg =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700"><rect data-sf-page-background="" width="1000" height="700" fill="#ffffff" pointer-events="none"/></svg>';
 export interface DocumentView {
   zoom: number;
   pan: { x: number; y: number };
@@ -104,12 +106,26 @@ export class DocumentWorkspace {
     const names = new Set(
       this.items.map((d) => (d.id === this.activeId ? engine.name : d.session.name)),
     );
-    let number = 1;
-    while (names.has(`untitled-${number}.svg`)) number++;
-    return this.open(
-      '<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700"/>',
-      `untitled-${number}.svg`,
-    );
+    let name = 'untitled',
+      number = 2;
+    while (names.has(name)) name = `untitled-${number++}`;
+    return this.open(blankSvg, name);
+  }
+  rename(value: string) {
+    const name = value.trim();
+    if (
+      !name ||
+      name.length > 120 ||
+      /[\\/:*?"<>|]/.test(name) ||
+      [...name].some((c) => c.charCodeAt(0) < 32) ||
+      /^\.+$/.test(name)
+    )
+      throw new Error('名称需为 1–120 个字符，不能包含文件路径或特殊文件名字符。');
+    if (name === engine.name) return;
+    engine.name = name;
+    engine.notify('selection');
+    this.capture();
+    this.notify();
   }
   dirty(id: string) {
     return id === this.activeId
@@ -124,10 +140,7 @@ export class DocumentWorkspace {
     if (this.items.length === 1) {
       // Closing the final tab leaves an empty document rather than a dead editor.
       const blank = new DocumentEngine();
-      blank.importSvg(
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700"/>',
-        'untitled-1.svg',
-      );
+      blank.importSvg(blankSvg, 'untitled');
       const item: OpenDocument = {
         id: crypto.randomUUID(),
         session: blank.captureSession(),

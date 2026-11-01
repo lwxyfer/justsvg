@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { engine } from '../editor/document/engine';
 import type { Point } from '../editor/geometry/geometry';
+import { useLocale } from '../i18n/locale';
 
 export function SelectionMenu({
   point,
@@ -11,6 +12,7 @@ export function SelectionMenu({
   position: Point;
   onClose: () => void;
 }) {
+  const { t } = useLocale();
   const ref = useRef<HTMLDivElement>(null);
   const candidates = engine
     .all()
@@ -47,7 +49,7 @@ export function SelectionMenu({
       className="selection-menu"
       data-ui
       role="dialog"
-      aria-label="选择下方对象"
+      aria-label={t('选择下方对象')}
       style={{ left: position.x, top: position.y }}
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
@@ -56,8 +58,8 @@ export function SelectionMenu({
         }
       }}
     >
-      <strong>选择当前位置的对象</strong>
-      <p>按图形边界列出，包含重叠对象与分组。</p>
+      <strong>{t('选择当前位置的对象')}</strong>
+      <p>{t('按图形边界列出，包含重叠对象与分组。')}</p>
       {candidates.map((el) => (
         <button
           key={engine.key(el)}
@@ -67,12 +69,12 @@ export function SelectionMenu({
           }}
         >
           <code>&lt;{el.localName}&gt;</code>{' '}
-          {el.getAttribute('data-label') || el.id || el.textContent?.slice(0, 30) || '未命名'}
+          {el.getAttribute('data-label') || el.id || el.textContent?.slice(0, 30) || t('未命名')}
         </button>
       ))}
-      {!candidates.length && <p>此位置没有可选择的对象。</p>}
+      {!candidates.length && <p>{t('此位置没有可选择的对象。')}</p>}
       <button className="text-button" onClick={onClose}>
-        关闭
+        {t('关闭')}
       </button>
     </div>
   );

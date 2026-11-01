@@ -7,13 +7,13 @@ const bridge = '/tests/e2e/bridge.ts',
 const svg =
   '<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#2563eb"/></marker></defs><g id="a" data-label="服务 A" transform="translate(100 200)"><rect width="160" height="90" rx="8" fill="#eff6ff" stroke="#93c5fd"/><text x="20" y="48" fill="#1e3a8a">API 服务</text></g><g id="b" data-label="服务 B" transform="translate(600 200)"><rect width="160" height="90" rx="8" fill="#ecfdf5" stroke="#6ee7b7"/><text x="20" y="48">存储服务</text></g><line id="edge" x1="260" y1="245" x2="600" y2="245" style="stroke:#2563eb!important;stroke-width:3!important;stroke-dashoffset:0!important" marker-end="url(#arrow)"/></svg>';
 async function setup(page: Page, xml = svg, select = '#a') {
-  await page.goto('/');
+  await page.goto('/editor');
   await expect(page.locator('[data-svg-host] > svg')).toBeVisible();
   await page.evaluate(
     async ({ bridge, xml, select }) => {
       const { engine, useUI } = await import(/* @vite-ignore */ bridge);
       engine.importSvg(xml);
-      useUI.getState().set({ snap: false });
+      useUI.getState().set({ snap: false, sections: { 动效: true } });
       engine.select([engine.root!.querySelector(select) as SVGGraphicsElement]);
     },
     { bridge, xml, select },
@@ -60,7 +60,12 @@ test('card effects configure, play, pause, edit opacity and remove without chang
   await page.getByLabel('启用动效', { exact: true }).uncheck();
   await expect(wrapper).toHaveCSS('animation-name', 'none');
   await page.getByLabel('启用动效', { exact: true }).check();
-  await page.getByRole('button', { name: '布局', exact: true }).click();
+  if (
+    (await page
+      .getByRole('button', { name: '布局', exact: true })
+      .getAttribute('aria-expanded')) === 'false'
+  )
+    await page.getByRole('button', { name: '布局', exact: true }).click();
   await page.getByLabel('透明度', { exact: true }).fill('0.8');
   await page.getByLabel('透明度', { exact: true }).press('Enter');
   await expect(card).toHaveCSS('opacity', '0.8');
@@ -144,7 +149,7 @@ test('animated SVG plays standalone, reimports safely, and static export retains
     engine.select([engine.root!.querySelector('#edge') as SVGGraphicsElement]);
   }, bridge);
   await page.getByLabel('动效类型', { exact: true }).selectOption('flow');
-  await page.getByText('导出 SVG', { exact: true }).click();
+  await page.locator('.export-dropdown > summary').click();
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: '下载 SVG', exact: true }).click();
   const download = await pending,
@@ -172,7 +177,7 @@ test('animated SVG plays standalone, reimports safely, and static export retains
   expect(warnings).toEqual([]);
   await expect(page.getByLabel('动效类型', { exact: true })).toHaveValue('blink');
   await page.getByRole('button', { name: '暂停全部动效预览', exact: true }).click();
-  await page.getByText('导出 SVG', { exact: true }).click();
+  await page.locator('.export-dropdown > summary').click();
   const staticPending = page.waitForEvent('download');
   await page.getByRole('button', { name: '下载静态 SVG', exact: true }).click();
   const staticDownload = await staticPending,

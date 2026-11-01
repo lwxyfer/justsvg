@@ -1,13 +1,15 @@
 import { useEffect, useRef } from 'react';
 import { engine } from '../editor/document/engine';
-import { useUI } from '../store/ui';
+import { useUI, useChromeUI } from '../store/ui';
 import { run } from './shared';
+import { useLocale } from '../i18n/locale';
 
 /** One native color-picker session is one history entry, including live changes. */
-export function ColorPicker({ name, color }: { name: 'fill' | 'stroke'; color: string }) {
+export function ColorPicker({ name, color }: { name: 'fill' | 'stroke' | 'icon'; color: string }) {
+  const { t } = useLocale();
   const active = useRef(false),
     latest = useRef('');
-  const ui = useUI();
+  const ui = useChromeUI();
   const finish = () => {
     if (!active.current) return;
     active.current = false;
@@ -28,7 +30,9 @@ export function ColorPicker({ name, color }: { name: 'fill' | 'stroke'; color: s
     },
     [],
   );
-  const label = name === 'fill' ? '填充' : '描边';
+  const label = t(
+    name === 'icon' ? '图标颜色' : name === 'fill' ? '填充颜色选择器' : '描边颜色选择器',
+  );
   const rgb = color.match(/^rgb\(\s*(\d+)[, ]+\s*(\d+)[, ]+\s*(\d+)\s*\)$/);
   const pickerColor = rgb
     ? '#' +
@@ -41,17 +45,19 @@ export function ColorPicker({ name, color }: { name: 'fill' | 'stroke'; color: s
     <span className="color-chip" style={{ background: color }}>
       <input
         type="color"
-        aria-label={`${label}颜色选择器`}
+        aria-label={label}
         value={/^#[a-f\d]{6}$/i.test(pickerColor) ? pickerColor : '#2563eb'}
         onChange={(e) =>
           run(() => {
             active.current = true;
             latest.current = e.target.value;
-            engine.updateAttributes({ [name]: e.target.value }, true);
+            if (name === 'icon') engine.updateIcon(e.target.value, undefined, true);
+            else engine.updateAttributes({ [name]: e.target.value }, true);
           })
         }
         onBlur={finish}
         onKeyDown={(e) => {
+          if (e.key === 'Enter') e.currentTarget.blur();
           if (e.key === 'Escape' && active.current) {
             active.current = false;
             latest.current = '';

@@ -12,9 +12,58 @@ const expected = [
   'Linear',
   'Figma',
   'Vercel',
+  'Dropbox',
+  'Spotify',
+  'Duolingo',
+  'IBM',
+  'Ramp',
+  'GitHub',
+  'Slack',
+  'Cloudflare',
+  'Miro',
+  'Airbnb',
+  'Cursor',
+  'Lovable',
+  'Supabase',
+  'n8n',
+  'Raycast',
+  '字节跳动',
+  '小红书',
+  'DJI 大疆',
+  'Kimi（月之暗面）',
+  '阶跃星辰',
+  'Mistral',
+  'Perplexity',
+  'Cohere',
+  'Hugging Face',
+  'ElevenLabs',
+  'Replicate',
 ];
 describe('brand-inspired native examples', () => {
-  it('offers ten independently sourced visual languages for one shared diagram', () => {
+  it('identifies the new five community and five Chinese unicorn studies with dated sources', () => {
+    const community = brandStyles.filter((s) => s.tags.includes('社区热议'));
+    const china = brandStyles.filter((s) => s.tags.includes('中国独角兽'));
+    expect(community.map((s) => s.name)).toEqual([
+      'Cursor',
+      'Lovable',
+      'Supabase',
+      'n8n',
+      'Raycast',
+    ]);
+    expect(china.map((s) => s.name)).toEqual([
+      '字节跳动',
+      '小红书',
+      'DJI 大疆',
+      'Kimi（月之暗面）',
+      '阶跃星辰',
+    ]);
+    for (const style of china) {
+      expect(style.brand!.sources.some((s) => s.url.includes('hurun.net/'))).toBe(true);
+      expect(style.brand!.note).toContain('2026');
+    }
+    for (const style of community) expect(style.brand!.sources.length).toBeGreaterThan(1);
+  });
+  it('offers thirty-six independently sourced visual languages for one shared diagram', () => {
     expect(brandStyles.map((s) => s.name)).toEqual(expected);
     expect(new Set(brandExamples.map((e) => e.sourceId))).toEqual(new Set(['brand-rag']));
     const signatures = brandExamples.map((e) => {
@@ -30,7 +79,7 @@ describe('brand-inspired native examples', () => {
         .map((n) => n.getAttribute('data-layout'))
         .join('|'),
     );
-    expect(new Set(layouts).size).toBe(10);
+    expect(new Set(layouts).size).toBe(expected.length);
   });
   it.each(brandExamples)(
     'keeps $id safe, native and correctly bound through XML round trips',
@@ -39,6 +88,9 @@ describe('brand-inspired native examples', () => {
         root = safe.root;
       expect(safe.warnings).toEqual([]);
       expect(root.getAttribute('viewBox')).toBe('0 0 1600 1100');
+      expect(root.getAttribute('data-brand-style')).toBe(
+        example.id.replace(/^brand-/, '').replace(/-rag$/, ''),
+      );
       expect(root.querySelector('image,script,foreignObject,filter')).toBeNull();
       expect(root.querySelectorAll('[data-node]')).toHaveLength(9);
       expect(root.querySelectorAll('[data-sf-start-node]')).toHaveLength(8);

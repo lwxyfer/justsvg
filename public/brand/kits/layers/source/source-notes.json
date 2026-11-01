@@ -1,0 +1,28 @@
+{
+  "originalFile": "uploaded-two-logos.png",
+  "embeddedProfile": "Generic RGB Profile",
+  "sourceRawRgb": [
+    39,
+    50,
+    68
+  ],
+  "canonicalSrgb": [
+    51,
+    66,
+    86
+  ],
+  "method": "Original profile decoded by Chrome sRGB canvas; no source bitmap edits",
+  "traceValidation": {
+    "mark": "layers",
+    "sourceBox": [
+      73,
+      34,
+      251,
+      251
+    ],
+    "maskIoU": 0.9991611129235215,
+    "differingPixels": 18,
+    "totalSourcePixels": 63001
+  },
+  "geometryPolicy": "No redesign; preserve source proportions, gaps, corners and component count"
+}

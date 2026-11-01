@@ -1,3 +1,4 @@
+import { prepareResize } from '../document/resizing';
 import {
   useEffect,
   useLayoutEffect,
@@ -25,10 +26,12 @@ import { SelectionMenu } from '../../components/SelectionMenu';
 import { detachEnd, syncConnections } from '../document/connections';
 import { syncMotionGeometry } from '../document/motion';
 import { useMotionPreview } from './useMotionPreview';
+import { useLocale } from '../../i18n/locale';
 interface Gesture {
   type: 'move' | 'resize' | 'pan' | 'marquee' | 'endpoint';
   endpoint?: number;
   originalPoints?: Point[];
+  resize?: (world: DOMMatrix) => void;
   start: Point;
   last: Point;
   pan: Point;
@@ -39,15 +42,16 @@ interface Gesture {
   moved: boolean;
   additive: boolean;
   before: SVGGraphicsElement[];
-  clearSelectionOnClick: boolean;
 }
 export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
+  const { t } = useLocale();
   const revision = useDocument();
   const ui = useUI();
   const container = useRef<HTMLDivElement>(null),
     host = useRef<HTMLDivElement>(null);
   const gesture = useRef<Gesture | null>(null);
   const space = useRef(false);
+  const overCanvas = useRef(false);
   useMotionPreview(host, engine.root, engine.documentRevision, ui.motionPreview);
   const [selectionMenu, setSelectionMenu] = useState<{ point: Point; position: Point } | null>(
     null,
@@ -65,6 +69,8 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
       const style = document.createElement('style');
       style.textContent = `:host{all:initial;display:block} :host > svg{cursor:inherit;display:block;width:${pageSize.width}px!important;height:${pageSize.height}px!important}`;
       shadow.replaceChildren(style, engine.root);
+      // Inspectors must measure the restored/imported SVG after it is attached, not its detached snapshot.
+      engine.notify('geometry');
     }
   }, [revision, pageSize.width, pageSize.height]);
   useEffect(() => {
@@ -78,12 +84,18 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
   }, [fitOnMount]);
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.code === 'Escape' && gesture.current) blur();
+      if (e.code === 'Escape' && gesture.current) {
+        blur();
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return;
+      }
       if (
         e.code === 'Space' &&
         !(
           e.target instanceof HTMLElement &&
-          e.target.closest('input,textarea,select,button,summary,[contenteditable],[role="dialog"]')
+          (e.target.closest('input,textarea,select,[contenteditable],[role="dialog"]') ||
+            (!overCanvas.current && e.target.closest('button,summary')))
         )
       ) {
         space.current = true;
@@ -103,6 +115,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
       if (container.current) container.current.style.cursor = '';
       if (gesture.current) {
         engine.cancel();
+        if (gesture.current.type === 'marquee') engine.select(gesture.current.before);
         gesture.current = null;
         setMarquee(null);
         setGuides([]);
@@ -127,19 +140,56 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
   useEffect(() => {
     const el = container.current;
     if (!el) return;
-    const wheel = (e: WheelEvent) => {
-      if ((e.target as Element).closest('[data-ui]')) return;
-      const state = useUI.getState();
-      if (!state.wheelModifier || e.ctrlKey || e.metaKey) {
-        e.preventDefault();
-        zoomTo(state.zoom * Math.exp(-e.deltaY * 0.0015), { x: e.clientX, y: e.clientY });
-      } else {
-        e.preventDefault();
-        state.set({ pan: { x: state.pan.x - e.deltaX, y: state.pan.y - e.deltaY } });
+    let frame = 0;
+    let queue: { dx: number; dy: number; zoom: boolean; x: number; y: number }[] = [];
+    const flush = () => {
+      frame = 0;
+      const events = queue;
+      queue = [];
+      const state = useUI.getState(),
+        rect = el.getBoundingClientRect();
+      let { zoom } = state;
+      let { x, y } = state.pan;
+      for (const event of events) {
+        if (event.zoom) {
+          const next = Math.max(0.02, Math.min(16, zoom * Math.exp(-event.dy * 0.0018)));
+          const cx = event.x - rect.left,
+            cy = event.y - rect.top;
+          x = cx - ((cx - x) * next) / zoom;
+          y = cy - ((cy - y) * next) / zoom;
+          zoom = next;
+        } else {
+          x -= event.dx;
+          y -= event.dy;
+        }
       }
+      if (events.length) state.set({ pan: { x, y }, zoom });
     };
-    el.addEventListener('wheel', wheel, { passive: false });
-    return () => el.removeEventListener('wheel', wheel);
+    const wheel = (e: WheelEvent) => {
+      if (
+        e
+          .composedPath()
+          .some((target) => target instanceof HTMLElement && target.hasAttribute('data-ui'))
+      )
+        return;
+      if (e.cancelable) e.preventDefault();
+      const state = useUI.getState();
+      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? el.clientHeight : 1;
+      queue.push({
+        dx: e.deltaX * unit,
+        dy: e.deltaY * unit,
+        zoom: !state.wheelModifier || e.ctrlKey || e.metaKey,
+        x: e.clientX,
+        y: e.clientY,
+      });
+      if (!frame) frame = requestAnimationFrame(flush);
+    };
+    el.addEventListener('wheel', wheel, { passive: false, capture: true });
+    return () => {
+      el.removeEventListener('wheel', wheel, true);
+      if (frame) cancelAnimationFrame(frame);
+      queue = [];
+    };
   }, []);
   const point = (p: Point) => {
     const m = engine.root?.getScreenCTM();
@@ -225,10 +275,12 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
     const actual = e.nativeEvent
       .composedPath()
       .find((v) => v instanceof Element && engine.root?.contains(v)) as Element | undefined;
-    let hit = forcePan ? null : engine.hit(actual || null, e.altKey);
+    let hit = forcePan
+      ? null
+      : engine.hitAt(point({ x: e.clientX, y: e.clientY }), actual || null, e.altKey);
     if (hit && getComputedStyle(hit).display === 'none') hit = null;
     if (!e.altKey && isBackground(hit)) hit = null;
-    const pan = forcePan || (!hit && !handle && endpoint === null && !e.shiftKey);
+    const pan = forcePan;
     const previous = [...engine.selection];
     if (!pan && !handle && endpoint === null) {
       if (hit) {
@@ -264,14 +316,24 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
       moved: false,
       additive: e.shiftKey,
       before: previous,
-      clearSelectionOnClick: pan && !forcePan,
       endpoint: endpoint !== null ? Number(endpoint) : undefined,
       originalPoints:
         engine.selection.length === 1 ? getLinePoints(engine.selection[0]) : undefined,
     };
-    if (type === 'move' || type === 'resize' || type === 'endpoint')
-      engine.begin(type === 'move' ? '拖动元素' : '缩放元素');
-    if (type === 'pan') container.current?.setAttribute('data-panning', 'true');
+    if (type === 'move' || type === 'resize' || type === 'endpoint') {
+      try {
+        engine.begin(type === 'move' ? '拖动元素' : '调整元素尺寸');
+        if (type === 'resize') gesture.current.resize = prepareResize(engine);
+      } catch (error) {
+        gesture.current = null;
+        engine.cancel();
+        ui.message((error as Error).message, true);
+      }
+    }
+    if (type === 'pan' && container.current) {
+      container.current.setAttribute('data-panning', 'true');
+      container.current.style.cursor = 'grabbing';
+    }
     e.preventDefault();
   };
   const move = (e: ReactPointerEvent<HTMLDivElement>) => {
@@ -280,7 +342,11 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
       const actual = e.nativeEvent
         .composedPath()
         .find((v) => v instanceof Element && engine.root?.contains(v)) as Element | undefined;
-      const candidate = engine.hit(actual || null, e.altKey);
+      const candidate = engine.hitAt(
+        point({ x: e.clientX, y: e.clientY }),
+        actual || null,
+        e.altKey,
+      );
       const next = !e.altKey && isBackground(candidate) ? null : candidate;
       container.current?.toggleAttribute('data-over-element', !!next);
       if (next !== hover) setHover(next);
@@ -319,7 +385,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
           matrix = el.getScreenCTM();
         if (!matrix || !g.originalPoints || g.endpoint === undefined) return;
         if (Math.abs(matrix.a * matrix.d - matrix.b * matrix.c) < 1e-12)
-          throw new Error('连接线坐标不可逆，请先调整父级 Transform。');
+          throw new Error(t('连接线坐标不可逆，请先调整父级 Transform。'));
         const a = new DOMPoint(g.start.x, g.start.y).matrixTransform(matrix.inverse()),
           p = new DOMPoint(current.x, current.y).matrixTransform(matrix.inverse());
         const points = g.originalPoints.map((point, i) =>
@@ -362,7 +428,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
           .translate(anchor.x, anchor.y)
           .scale(sx, sy)
           .translate(-anchor.x, -anchor.y);
-        for (const [el, original] of g.originals) engine.applyWorld(el, m, original);
+        g.resize?.(m);
       }
       syncConnections(engine);
       if (engine.root) syncMotionGeometry(engine.root);
@@ -377,6 +443,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
   };
   const up = (e: ReactPointerEvent<HTMLDivElement>) => {
     container.current?.removeAttribute('data-panning');
+    if (container.current) container.current.style.cursor = space.current ? 'grab' : '';
     const g = gesture.current;
     if (!g) return;
     gesture.current = null;
@@ -392,10 +459,10 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
         };
       const selected = engine.children(engine.scope || engine.root!).filter((el) => {
         const b = engine.bounds(el);
-        return b && intersects(b, box) && !engine.isLocked(el);
+        return b && intersects(b, box) && !engine.isLocked(el) && !isBackground(el);
       });
       engine.select(g.additive ? [...g.before, ...selected] : selected);
-    } else if ((g.type === 'marquee' && !g.additive) || (g.clearSelectionOnClick && !g.moved)) {
+    } else if (g.type === 'marquee' && !g.additive) {
       engine.select([]);
     }
     if (g.type === 'move' || g.type === 'resize' || g.type === 'endpoint') engine.commit();
@@ -408,7 +475,8 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
     const actual = e.nativeEvent
       .composedPath()
       .find((v) => v instanceof Element && engine.root?.contains(v)) as Element | undefined;
-    let text = actual;
+    const hit = engine.hitAt(point({ x: e.clientX, y: e.clientY }), actual || null);
+    let text = hit && actual && (hit === actual || hit.contains(actual)) ? actual : undefined;
     while (text && text !== engine.root && text.localName !== 'text')
       text = text.parentElement || undefined;
     if (text?.localName === 'text' && !engine.isLocked(text)) {
@@ -416,7 +484,6 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
       ui.set({ textEdit: true });
       return;
     }
-    const hit = engine.hit(actual || null);
     if (hit?.localName === 'g' || hit?.localName === 'svg') {
       engine.scope = hit;
       engine.select([]);
@@ -427,15 +494,23 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
   const selection = currentBounds ? overlay.selection : null;
   return (
     <main
-      className={`canvas ${ui.grid ? 'with-grid' : ''}`}
+      className={`canvas ${ui.grid ? `with-grid pattern-${ui.gridPattern}` : ''}`}
       data-canvas
       style={{ backgroundColor: ui.background }}
       ref={container}
+      onPointerEnter={() => {
+        overCanvas.current = true;
+      }}
+      onPointerLeave={() => {
+        overCanvas.current = false;
+      }}
       onPointerDown={down}
       onPointerMove={move}
       onPointerUp={up}
       onPointerCancel={() => {
         container.current?.removeAttribute('data-panning');
+        if (container.current) container.current.style.cursor = space.current ? 'grab' : '';
+        if (gesture.current?.type === 'marquee') engine.select(gesture.current.before);
         gesture.current = null;
         engine.cancel();
         setMarquee(null);
@@ -462,8 +537,8 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
           run(() => insertAsset(assetId, { x: e.clientX, y: e.clientY }));
           return;
         }
-        const file = e.dataTransfer.files[0];
-        if (file) window.dispatchEvent(new CustomEvent('svg-file', { detail: file }));
+        const files = Array.from(e.dataTransfer.files);
+        if (files.length) window.dispatchEvent(new CustomEvent('svg-file', { detail: files }));
       }}
     >
       <div className="canvas-document-name" data-ui>
@@ -480,10 +555,10 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
               engine.select([]);
             }}
           >
-            文档
+            {t('文档')}
           </button>
           <span>/</span>
-          <span>{engine.scope.id || '分组'}</span>
+          <span>{engine.scope.id || t('分组')}</span>
           <button
             onClick={() => {
               engine.scope =
@@ -493,7 +568,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
               engine.select([]);
             }}
           >
-            退出分组 Esc
+            {t('退出分组')} Esc
           </button>
         </div>
       )}
@@ -554,7 +629,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
             data-endpoint={p.index}
             key={p.index}
             style={{ left: p.x, top: p.y }}
-            title={`连接线控制点 ${p.index + 1}`}
+            title={`${t('连接线控制点')} ${p.index + 1}`}
           />
         ))}
         {box && (
@@ -586,22 +661,23 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
       )}
       {selectionMenu && <SelectionMenu {...selectionMenu} onClose={closeSelectionMenu} />}
       <div className="zoom-tools" data-ui>
-        <IconButton label="缩小 (-)" onClick={() => zoomTo(ui.zoom / 1.2)}>
+        <IconButton label={t('缩小 (-)')} onClick={() => zoomTo(ui.zoom / 1.2)}>
           <Minus size={15} />
         </IconButton>
-        <button className="zoom-percent" title="还原 100%" onClick={() => zoomTo(1)}>
+        <button className="zoom-percent" title={t('还原 100%')} onClick={() => zoomTo(1)}>
           {Math.round(ui.zoom * 100)}%
         </button>
-        <IconButton label="放大 (+)" onClick={() => zoomTo(ui.zoom * 1.2)}>
+        <IconButton label={t('放大 (+)')} onClick={() => zoomTo(ui.zoom * 1.2)}>
           <Plus size={15} />
         </IconButton>
         <span className="separator" />
-        <IconButton label="适应画布 (Shift+1)" onClick={fitView}>
+        <IconButton label={t('适应画布 (Shift+1)')} onClick={fitView}>
           <Scan size={16} />
         </IconButton>
       </div>
       <div className="canvas-hint" data-ui>
-        拖动背景平移 <span>·</span> Shift 框选 <span>·</span> 右键选择下方对象
+        {t('拖动空白处框选')} <span>·</span> {t('Space + 拖动平移')} <span>·</span>{' '}
+        {t('右键选择下方对象')}
       </div>
     </main>
   );

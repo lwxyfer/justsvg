@@ -5,7 +5,7 @@ import pixelmatch from 'pixelmatch';
 const bridge = '/tests/e2e/bridge.ts';
 const catalog = '/src/editor/insert/catalog.ts';
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/editor');
   await expect(page.locator('[data-svg-host] > svg')).toBeVisible();
   await page.getByRole('tab', { name: '组合图', exact: true }).click();
 });
@@ -189,7 +189,7 @@ test('starting from a template backs up the current work and offers usable previ
   await page.getByRole('button', { name: '适应画布 (Shift+1)', exact: true }).click();
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBe(1024);
   await page.screenshot({ path: 'tests/templates-compact.png', fullPage: true });
-  await page.locator('.export-dropdown summary').click();
+  await page.locator('.file-dropdown summary').click();
   await page.getByRole('button', { name: '恢复上一份文档', exact: true }).click();
   await expect(page.locator('[data-svg-host] #client-card')).toBeVisible();
   expect(

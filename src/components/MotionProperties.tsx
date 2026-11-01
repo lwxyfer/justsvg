@@ -11,8 +11,9 @@ import {
   type MotionConfig,
 } from '../editor/document/motion';
 import { engine } from '../editor/document/engine';
-import { useUI } from '../store/ui';
+import { useChromeUI } from '../store/ui';
 import { run } from './shared';
+import { useLocale } from '../i18n/locale';
 function MotionNumber({
   label,
   value,
@@ -28,6 +29,7 @@ function MotionNumber({
   step?: number;
   apply: (n: number) => void;
 }) {
+  const { t } = useLocale();
   const [draft, setDraft] = useState<string | null>(null),
     [error, setError] = useState('');
   return (
@@ -49,7 +51,7 @@ function MotionNumber({
           onBlur={(e) => {
             const n = Number(e.target.value);
             if (!e.target.value.trim() || !Number.isFinite(n) || n < min || n > max) {
-              setError(`请输入 ${min}–${max} 之间的数值。`);
+              setError(`${t('请输入')} ${min}–${max} ${t('之间的数值。')}`);
               return;
             }
             try {
@@ -80,7 +82,8 @@ function MotionNumber({
   );
 }
 export function MotionProperties({ el }: { el: SVGGraphicsElement }) {
-  const ui = useUI(),
+  const { t } = useLocale();
+  const ui = useChromeUI(),
     wrapper = motionWrapper(el),
     config = decodeMotion(wrapper?.getAttribute(motionAttribute) || null);
   const apply = (patch: Partial<MotionConfig>) => {
@@ -89,9 +92,9 @@ export function MotionProperties({ el }: { el: SVGGraphicsElement }) {
   return (
     <>
       <label className="property-field">
-        <span>动效类型</span>
+        <span>{t('动效类型')}</span>
         <select
-          aria-label="动效类型"
+          aria-label={t('动效类型')}
           value={config?.type || 'none'}
           onChange={(e) =>
             run(() =>
@@ -105,10 +108,10 @@ export function MotionProperties({ el }: { el: SVGGraphicsElement }) {
             )
           }
         >
-          <option value="none">无动效</option>
-          {flowTarget(el) && <option value="flow">箭头流动</option>}
-          <option value="pulse">呼吸</option>
-          <option value="blink">柔和闪动</option>
+          <option value="none">{t('无动效')}</option>
+          {flowTarget(el) && <option value="flow">{t('箭头流动')}</option>}
+          <option value="pulse">{t('呼吸')}</option>
+          <option value="blink">{t('柔和闪动')}</option>
         </select>
       </label>
       {config && (
@@ -116,14 +119,14 @@ export function MotionProperties({ el }: { el: SVGGraphicsElement }) {
           <label className="motion-switch">
             <input
               type="checkbox"
-              aria-label="启用动效"
+              aria-label={t('启用动效')}
               checked={config.enabled}
               onChange={(e) => run(() => apply({ enabled: e.target.checked }))}
             />
-            启用动效
+            {t('启用动效')}
           </label>
           <MotionNumber
-            label="动效周期（秒）"
+            label={t('动效周期（秒）')}
             value={config.duration}
             min={1}
             max={20}
@@ -133,26 +136,26 @@ export function MotionProperties({ el }: { el: SVGGraphicsElement }) {
           {config.type === 'flow' ? (
             <>
               <label className="property-field">
-                <span>流动方向</span>
+                <span>{t('流动方向')}</span>
                 <select
-                  aria-label="流动方向"
+                  aria-label={t('流动方向')}
                   value={config.reverse ? 'reverse' : 'forward'}
                   onChange={(e) => run(() => apply({ reverse: e.target.value === 'reverse' }))}
                 >
-                  <option value="forward">沿路径正向</option>
-                  <option value="reverse">沿路径反向</option>
+                  <option value="forward">{t('沿路径正向')}</option>
+                  <option value="reverse">{t('沿路径反向')}</option>
                 </select>
               </label>
               <div className="property-grid">
                 <MotionNumber
-                  label="流动线段"
+                  label={t('流动线段')}
                   value={config.dash}
                   min={2}
                   max={40}
                   apply={(n) => apply({ dash: n })}
                 />
                 <MotionNumber
-                  label="流动间隔"
+                  label={t('流动间隔')}
                   value={config.gap}
                   min={2}
                   max={40}
@@ -162,7 +165,7 @@ export function MotionProperties({ el }: { el: SVGGraphicsElement }) {
             </>
           ) : (
             <MotionNumber
-              label="动效强度（%）"
+              label={t('动效强度（%）')}
               value={Math.round(config.amount * 100)}
               min={10}
               max={75}
@@ -174,7 +177,7 @@ export function MotionProperties({ el }: { el: SVGGraphicsElement }) {
               className="button"
               onClick={() => wrapper && engine.select([motionOriginal(wrapper)!])}
             >
-              编辑原图形
+              {t('编辑原图形')}
             </button>
             <button
               className="button"
@@ -182,18 +185,18 @@ export function MotionProperties({ el }: { el: SVGGraphicsElement }) {
               onClick={() => ui.set({ motionPreview: !ui.motionPreview })}
             >
               {ui.motionPreview ? <Pause size={13} /> : <Play size={13} />}
-              {ui.motionPreview ? '暂停预览' : '播放预览'}
+              {ui.motionPreview ? t('暂停预览') : t('播放预览')}
             </button>
             <button className="button" onClick={() => run(() => configureMotion(engine, el, null))}>
               <Trash2 size={13} />
-              移除动效
+              {t('移除动效')}
             </button>
           </div>
           <p className="field-note">
             {config.type === 'flow'
-              ? '周期越短流动越快，方向按 SVG 路径定义。轨道保留原线，节点关联仍可跟随。'
-              : '通过透明度变化强调状态，不改变卡片尺寸或连接位置。'}
-            配置随 SVG 导出；暂停仅影响编辑器预览。系统开启减少动态效果时显示静态。
+              ? t('周期越短流动越快，方向按 SVG 路径定义。轨道保留原线，节点关联仍可跟随。')
+              : t('通过透明度变化强调状态，不改变卡片尺寸或连接位置。')}
+            {t('配置随 SVG 导出；暂停仅影响编辑器预览。系统开启减少动态效果时显示静态。')}
           </p>
         </>
       )}

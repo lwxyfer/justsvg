@@ -5,7 +5,7 @@ import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 const bridge = '/tests/e2e/bridge.ts';
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/editor');
   await expect(page.locator('[data-svg-host] > svg')).toBeVisible();
 });
 async function selectText(page: Page) {

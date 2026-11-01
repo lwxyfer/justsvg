@@ -1,3 +1,4 @@
+import { rasterizeSvg, type RasterFormat } from './raster';
 import { sanitizeSvg, needsImportReview } from '../editor/security/sanitize';
 import { preservePrevious, previousRecovery } from './recovery';
 import { engine } from '../editor/document/engine';
@@ -33,7 +34,43 @@ export function importDocument(xml: string, name = 'untitled.svg', confirmed = f
 export async function openFile(file: File) {
   if (!/\.svg$/i.test(file.name)) throw new Error('请选择 .svg 文件。');
   if (file.size > 5 * 1024 * 1024) throw new Error('文件超过 5 MB 限制。');
-  importDocument(await file.text(), file.name);
+  return importDocument(await file.text(), file.name);
+}
+let importingFiles = false;
+export async function openFiles(files: readonly File[], previousErrors: string[] = []) {
+  if (importingFiles || useUI.getState().pendingImport) {
+    useUI.getState().message('请先完成当前的文件导入检查。', true);
+    return;
+  }
+  importingFiles = true;
+  const errors = [...previousErrors];
+  try {
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      try {
+        const imported = await openFile(file);
+        if (!imported) {
+          const pending = useUI.getState().pendingImport;
+          if (pending)
+            useUI
+              .getState()
+              .set({
+                pendingImport: {
+                  ...pending,
+                  remainingFiles: files.slice(index + 1),
+                  batchErrors: errors,
+                },
+              });
+          return; // Resume the remaining files after this file's review is accepted or cancelled.
+        }
+      } catch (error) {
+        errors.push(`${file.name}：${error instanceof Error ? error.message : String(error)}`);
+      }
+    }
+    if (errors.length) useUI.getState().message(`以下文件未导入：\n${errors.join('\n')}`, true);
+  } finally {
+    importingFiles = false;
+  }
 }
 export function downloadSvg(staticOnly = false) {
   const blob = new Blob(
@@ -54,6 +91,21 @@ export function downloadSvg(staticOnly = false) {
         ? '已发起静态 SVG 下载，编辑中的动效配置保留。'
         : '已发起 SVG 下载，请检查浏览器下载结果。',
     );
+}
+export async function downloadRaster(format: RasterFormat, scale = 1) {
+  if (!engine.root) throw new Error('请先打开 SVG 文档。');
+  // Capture the active document before asynchronous rendering; raster export does not mark SVG saved.
+  const xml = staticMotionSvg(engine.root),
+    size = engine.pageSize(),
+    name = engine.name;
+  const blob = await rasterizeSvg(xml, size.width, size.height, format, scale);
+  const url = URL.createObjectURL(blob),
+    a = document.createElement('a');
+  a.href = url;
+  a.download = name.replace(/\.svg$/i, '') + `@${scale}x.${format === 'jpeg' ? 'jpg' : format}`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  useUI.getState().message(`已发起 ${format.toUpperCase()} 下载。`);
 }
 export async function copySource() {
   try {

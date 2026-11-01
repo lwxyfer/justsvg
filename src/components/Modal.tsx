@@ -1,17 +1,21 @@
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { X } from 'lucide-react';
 import { IconButton } from './shared';
+import { useLocale } from '../i18n/locale';
 export function Modal({
   title,
   onClose,
   children,
   wide = false,
+  className = '',
 }: {
   title: string;
   onClose: () => void;
   children: ReactNode;
   wide?: boolean;
+  className?: string;
 }) {
+  const { t } = useLocale();
   const ref = useRef<HTMLDivElement>(null),
     close = useRef(onClose);
   useLayoutEffect(() => {
@@ -62,14 +66,14 @@ export function Modal({
     >
       <div
         ref={ref}
-        className={`modal ${wide ? 'modal-wide' : ''}`}
+        className={`modal ${wide ? 'modal-wide' : ''} ${className}`}
         role="dialog"
         aria-modal="true"
         aria-label={title}
       >
         <div className="modal-heading">
           <h2>{title}</h2>
-          <IconButton label="关闭窗口" onClick={onClose}>
+          <IconButton label={t('关闭窗口')} onClick={onClose}>
             <X size={18} />
           </IconButton>
         </div>

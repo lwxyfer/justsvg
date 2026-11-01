@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/editor');
 });
 test('common shapes are first, categories are directly visible, and browsing does not modify the SVG', async ({
   page,

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -7,16 +7,24 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' ws://127.0.0.1:* ws://localhost:*; object-src 'none'; base-uri 'none'; frame-src 'none'"
     />
-    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="%BASE_URL%favicon.ico?v=j-df" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg?v=j-df" />
+    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png?v=j-df" sizes="180x180" />
     <meta
       name="description"
-      content="JustSVG 是 SVG 原生的开源 Diagram 工具，为架构图、流程图、信息图、技术框架、产品与代码仓库提供直接编辑、场景模板、品牌风格与标准 SVG 导出。"
+      content="An open-source alternative to draw.io. Generate architecture diagrams, flowcharts and infographics with SVG Skill in your AI tool, then refine them in the SVG editor."
     />
     <meta name="application-name" content="JustSVG" />
     <meta name="theme-color" content="#f7f8fa" />
     <title>JustSVG · Just diagrams. Just SVG.</title>
   </head>
   <body>
+    <!-- b28ec1f7 | THESIS: One editable native SVG connects structure, brand expression, Skill generation and direct refinement.
+    OWN-WORLD: Approved A's heavy self-hosted sans, open white/cobalt construction sheet; B's full-width brand slices transform the entire homepage.
+    STORY: Inspect native elements, preview and select a brand, copy a real Skill task, edit and download the same nine-node diagram.
+    FIRST VIEWPORT: 原生 SVG，品牌风格。 beside a native RAG construction, with text/path/group specimens below and a direct editor action.
+    FORM: Four connected chapters from approved comps, GSAP scroll choreography, native editing and an independent closing SVG-document footer. No shipping mockup bitmaps.
+    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

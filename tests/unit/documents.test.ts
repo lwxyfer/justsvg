@@ -72,7 +72,7 @@ describe('independent SVG document sessions', () => {
     workspace.close(b, true);
     expect(workspace.items).toHaveLength(1);
     expect(workspace.activeId).not.toBe(b);
-    expect(engine.name).toBe('untitled-1.svg');
+    expect(engine.name).toBe('untitled');
     expect(engine.dirty).toBe(false);
     expect(engine.past).toHaveLength(0);
   });

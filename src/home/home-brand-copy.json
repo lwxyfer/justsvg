@@ -1,0 +1,146 @@
+{
+  "apple": {
+    "label": "产品发布",
+    "description": "以芯片为视觉中心，用分层模块组织信息。"
+  },
+  "microsoft": {
+    "label": "Fluent 叠层",
+    "description": "叠层面板与双色图标，区分不同模块。"
+  },
+  "google": {
+    "label": "Material 几何",
+    "description": "用四色几何与不同轮廓，区分节点角色。"
+  },
+  "openai": {
+    "label": "暖色透明",
+    "description": "暖橙与珊瑚色背景，搭配半透明技术模块。"
+  },
+  "claude": {
+    "label": "纸页排版",
+    "description": "以知识手册排版呈现文档、上下文和引用。"
+  },
+  "notion": {
+    "label": "纸墨文档",
+    "description": "黑白文档图形，用黄色点出关键节点。"
+  },
+  "stripe": {
+    "label": "渐变分层",
+    "description": "斜切渐变与分层数据流，展示系统结构。"
+  },
+  "linear": {
+    "label": "紧凑工作区",
+    "description": "暖灰底色、细线与清楚的任务层级。"
+  },
+  "figma": {
+    "label": "彩色协作",
+    "description": "用组件色块与几何形状，搭起协作画布。"
+  },
+  "vercel": {
+    "label": "黑白工程",
+    "description": "黑白配色、细线边框与代码层级。"
+  },
+  "dropbox": {
+    "label": "大胆拼版",
+    "description": "大字号与醒目色块，重新组织阅读顺序。"
+  },
+  "spotify": {
+    "label": "唱片与队列",
+    "description": "以唱片为中心，像播放队列一样排列知识。"
+  },
+  "duolingo": {
+    "label": "圆润路径",
+    "description": "圆润节点与层叠按钮，串起学习路径。"
+  },
+  "ibm": {
+    "label": "正交分区",
+    "description": "按区域组织模块，用正交连线表达关系。"
+  },
+  "ramp": {
+    "label": "柠黄与黑",
+    "description": "柠黄色、浅石灰与黑色核心，突出重点。"
+  },
+  "github": {
+    "label": "代码依赖",
+    "description": "用提交轨道与代码层级，组织依赖关系。"
+  },
+  "slack": {
+    "label": "消息工作区",
+    "description": "紫色工作区里，知识以消息和附件展开。"
+  },
+  "cloudflare": {
+    "label": "边缘网络",
+    "description": "橙色技术背景与网络环，连接各个节点。"
+  },
+  "miro": {
+    "label": "便签画布",
+    "description": "在开放画布上，用便签和流程对象组织信息。"
+  },
+  "airbnb": {
+    "label": "探索地图",
+    "description": "搜索框、目的地与地图，把检索画成探索路线。"
+  },
+  "cursor": {
+    "label": "代码与文档",
+    "description": "暖纸底色与展开的文件，展示代码上下文。"
+  },
+  "lovable": {
+    "label": "柔和彩色",
+    "description": "柔和彩色背景与白色模块，呈现知识汇合。"
+  },
+  "supabase": {
+    "label": "白色数据架构",
+    "description": "以索引结构为中心，展示数据与向量关系。"
+  },
+  "n8n": {
+    "label": "深色工作流",
+    "description": "深色画布、清晰端口与粉色重点节点。"
+  },
+  "raycast": {
+    "label": "键帽与指令",
+    "description": "红色斜线汇聚到键帽，强调指令与输出。"
+  },
+  "bytedance": {
+    "label": "蔚蓝分区",
+    "description": "蔚蓝背景、白色转角模块与青色重点。"
+  },
+  "xiaohongshu": {
+    "label": "内容笔记",
+    "description": "封面式笔记与粗体标题，用红色连线串联。"
+  },
+  "dji": {
+    "label": "精密光学",
+    "description": "三孔镜组与深蓝背景，构成精密设备般的图形。"
+  },
+  "kimi": {
+    "label": "问题与引用",
+    "description": "用开放文档和引用正文，突出问题与依据。"
+  },
+  "stepfun": {
+    "label": "研究纸页",
+    "description": "错落纸页、衬线标题与青蓝色知识点。"
+  },
+  "mistral": {
+    "label": "暖色像素",
+    "description": "暖色像素与阶梯结构，展示知识逐层汇合。"
+  },
+  "perplexity": {
+    "label": "知识出版",
+    "description": "纸白底色、青绿点缀与可追溯的引用。"
+  },
+  "cohere": {
+    "label": "深绿知识库",
+    "description": "深绿区域与大字号，把知识材料分组呈现。"
+  },
+  "huggingface": {
+    "label": "模型仓库",
+    "description": "深色模型面板中，用黄色突出关键内容。"
+  },
+  "elevenlabs": {
+    "label": "蓝绿声球",
+    "description": "蓝绿球形与清晰连线，串起知识处理链。"
+  },
+  "replicate": {
+    "label": "API 色场",
+    "description": "网点渐变与白色代码模块，呈现 API 数据流。"
+  }
+}

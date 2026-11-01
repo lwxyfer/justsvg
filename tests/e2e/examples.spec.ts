@@ -1,9 +1,14 @@
+import {
+  chooseContent,
+  downloadExampleFromEditor,
+  selectExampleOption,
+  expectFullPagePreview,
+} from './example-navigation';
 import { test, expect } from '@playwright/test';
-import { readFile } from 'node:fs/promises';
 test('Example page previews existing templates and returns without losing editor history', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/editor');
   await expect(page.locator('[data-svg-host] > svg')).toBeVisible();
   await page.evaluate(async () => {
     const bridge = '/tests/e2e/bridge.ts';
@@ -14,10 +19,11 @@ test('Example page previews existing templates and returns without losing editor
   });
   await page.getByRole('link', { name: 'Example 示例', exact: true }).click();
   await expect(page).toHaveURL(/\/examples/);
-  await expect(page.getByRole('heading', { name: 'SVG 风格库' })).toBeVisible();
-  await expect(page.getByLabel('选择示例')).toHaveValue('factory-rag');
-  await page.getByRole('button', { name: '选择基础风格', exact: true }).click();
-  await page.getByLabel('选择示例').selectOption('template-rag');
+  await expect(page.locator('.image-result')).toHaveCount(139);
+  await chooseContent(page, 'factory-rag');
+  await expect(page.getByLabel('选择视觉风格')).toHaveAttribute('data-value', 'factory-rag');
+  await chooseContent(page, 'base-dense-platform');
+  await chooseContent(page, 'template-rag');
   await expect(page.getByLabel('示例生成 Prompt')).toHaveValue(/完整、可编辑 SVG/);
   const original = await page.evaluate(async () => {
     const bridge = '/tests/e2e/bridge.ts';
@@ -43,14 +49,15 @@ test('Example page previews existing templates and returns without losing editor
 test('all seventeen styles have safe native previews, editable nodes and correctly routed arrow references', async ({
   page,
 }) => {
-  await page.goto('/examples');
+  test.setTimeout(90_000);
+  await page.goto('/examples?example=factory-rag');
   const styles: { id: string; name: string }[] = await page.evaluate(async () => {
     const module = '/src/examples/styles.ts';
     return (await import(/* @vite-ignore */ module)).additionalStyles;
   });
   expect(styles).toHaveLength(17);
   for (const { id, name: label } of styles) {
-    await page.getByRole('button', { name: `选择${label}`, exact: true }).click();
+    await chooseContent(page, `${id}-rag`);
     await expect(page.getByLabel('示例生成 Prompt')).toHaveValue(new RegExp(label));
     const preview = page.getByRole('img', { name: 'RAG 检索增强生成架构 SVG 预览', exact: true });
     const measure = await preview.locator('svg').evaluate((root) => {
@@ -125,7 +132,7 @@ test('all seventeen styles have safe native previews, editable nodes and correct
   }
 });
 
-test('SVG + prompt local versions preview, persist, reset, and reject unsafe source without losing the preview', async ({
+test('SVG and prompt stay as page drafts without a save action and unsafe source preserves the preview', async ({
   page,
 }) => {
   await page.goto('/examples?example=blueprint-rag');
@@ -142,9 +149,11 @@ test('SVG + prompt local versions preview, persist, reset, and reject unsafe sou
       .locator('text')
       .filter({ hasText: 'CUSTOM / KNOWLEDGE SYSTEM' }),
   ).toBeVisible();
-  await page.getByRole('button', { name: '保存本地版本', exact: true }).click();
-  await expect(page.getByRole('status')).toContainText('已保存为本地版本');
-  await page.reload();
+  await expect(page.getByRole('button', { name: '保存本地版本', exact: true })).toHaveCount(0);
+  expect(await page.evaluate(() => localStorage.getItem('svg-finisher.examples.v1'))).toBeNull();
+  await selectExampleOption(page, '选择视觉风格', 'factory-rag');
+  await selectExampleOption(page, '选择视觉风格', 'blueprint-rag');
+  await page.getByRole('tab', { name: '生成 Prompt', exact: true }).click();
   await expect(page.getByLabel('示例生成 Prompt')).toHaveValue('工程蓝图：我自己的知识系统 prompt');
   await page.getByRole('tab', { name: 'SVG 源码', exact: true }).click();
   await expect(page.getByLabel('示例 SVG 源码')).toHaveValue(/CUSTOM \/ KNOWLEDGE SYSTEM/);
@@ -157,15 +166,39 @@ test('SVG + prompt local versions preview, persist, reset, and reject unsafe sou
       .locator('text')
       .filter({ hasText: 'CUSTOM / KNOWLEDGE SYSTEM' }),
   ).toBeVisible();
-  await page.getByRole('button', { name: '恢复内置', exact: true }).click();
-  await expect(code).toHaveValue(original);
   await page.reload();
   await expect(page.getByLabel('示例生成 Prompt')).not.toHaveValue(
     '工程蓝图：我自己的知识系统 prompt',
   );
+  await page.getByRole('tab', { name: 'SVG 源码', exact: true }).click();
+  await expect(code).toHaveValue(original);
 });
 
-test('prompt copy, denied clipboard fallback, SVG download and direct URL all work', async ({
+test('legacy saved examples remain readable and can be restored without adding a save action', async ({
+  page,
+}) => {
+  await page.goto('/examples?example=blueprint-rag');
+  await page.getByRole('tab', { name: 'SVG 源码', exact: true }).click();
+  const original = await page.getByLabel('示例 SVG 源码').inputValue();
+  await page.evaluate(
+    (svg) =>
+      localStorage.setItem(
+        'svg-finisher.examples.v1',
+        JSON.stringify({
+          'blueprint-rag': { svg, prompt: '此前保存的示例说明', savedAt: 1 },
+        }),
+      ),
+    original,
+  );
+  await page.reload();
+  await expect(page.getByLabel('示例生成 Prompt')).toHaveValue('此前保存的示例说明');
+  await expect(page.getByRole('button', { name: '保存本地版本', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: '恢复内置', exact: true }).click();
+  await page.reload();
+  await expect(page.getByLabel('示例生成 Prompt')).not.toHaveValue('此前保存的示例说明');
+});
+
+test('prompt copy, denied clipboard fallback and direct URL all work without a download action', async ({
   page,
 }) => {
   await page.goto('/examples?example=swiss-rag');
@@ -194,29 +227,31 @@ test('prompt copy, denied clipboard fallback, SVG download and direct URL all wo
     });
   });
   await page.getByRole('button', { name: '复制 Prompt', exact: true }).click();
-  await expect(page.getByRole('status')).toContainText('已选中 Prompt');
+  await expect(page.locator('.example-notice[role="status"]')).toContainText('已选中 Prompt');
   expect(
     await page
       .getByLabel('示例生成 Prompt')
       .evaluate((el) => (el as HTMLTextAreaElement).selectionEnd),
   ).toBeGreaterThan(100);
-  const pending = page.waitForEvent('download');
-  await page.getByRole('button', { name: '下载 SVG', exact: true }).click();
-  const download = await pending,
-    xml = await readFile((await download.path())!, 'utf8');
-  expect(download.suggestedFilename()).toBe('swiss-rag.svg');
-  expect(xml).toContain('data-node="true"');
-  expect(xml).not.toContain('<script');
+  await expect(page.getByRole('button', { name: '下载 SVG', exact: true })).toHaveCount(0);
   await page.getByRole('link', { name: '返回编辑器', exact: true }).click();
   await page.goBack();
-  await expect(page.getByRole('heading', { name: '瑞士信息设计', exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole('combobox', { name: '选择视觉风格', exact: true })
+      .filter({ hasText: '瑞士信息设计' }),
+  ).toBeVisible();
 });
 
 test('Example page and every style render at desktop, compact and mobile widths', async ({
   page,
 }) => {
   await page.goto('/examples?example=editorial-rag');
-  await expect(page.getByRole('heading', { name: '纸本编辑', exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole('combobox', { name: '选择视觉风格', exact: true })
+      .filter({ hasText: '纸本编辑' }),
+  ).toBeVisible();
   await expect(
     page.getByRole('img', { name: 'RAG 检索增强生成架构 SVG 预览', exact: true }).locator('svg'),
   ).toBeVisible();
@@ -248,27 +283,20 @@ test('Example page and every style render at desktop, compact and mobile widths'
   await expect(page.getByRole('button', { name: '复制 Prompt', exact: true })).toBeVisible();
 });
 
-test('the selected style remains discoverable in a long desktop and mobile rail', async ({
-  page,
-}) => {
+test('closing a deep-linked preview restores the image results', async ({ page }) => {
   await page.goto('/examples?example=handdrawn-rag');
-  const selected = page.getByRole('button', { name: '选择手绘草图', exact: true });
-  await expect(selected).toBeInViewport();
-  await expect(page.getByRole('heading', { name: '手绘草图', exact: true })).toBeVisible();
-  await page.setViewportSize({ width: 390, height: 844 });
-  await expect(selected).toBeInViewport();
-  await page.reload();
-  await expect(selected).toBeInViewport();
-  await selected.focus();
-  await page.keyboard.press('Shift+Tab');
-  await page.keyboard.press('Enter');
-  await expect(page.getByRole('heading', { name: '极简线性', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '关闭预览', exact: true }).click();
+  await expect(page.locator('#result-handdrawn-rag')).toBeVisible();
 });
 
 test('the additional vector styles have an inspectable native contact sheet', async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 1400 });
   await page.goto('/examples?example=paper-rag');
-  await expect(page.getByRole('heading', { name: '黑白论文', exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole('combobox', { name: '选择视觉风格', exact: true })
+      .filter({ hasText: '黑白论文' }),
+  ).toBeVisible();
   await page.evaluate(async () => {
     const module = '/src/examples/more-styles.ts',
       { moreStyles, moreExamples } = await import(/* @vite-ignore */ module);
@@ -296,22 +324,24 @@ test('the additional vector styles have an inspectable native contact sheet', as
   await page.screenshot({ path: 'tests/styles-more-contact-sheet.png', fullPage: true });
 });
 
-test('recommended compositions are visible from an old style and their SVGs export without UI', async ({
-  page,
-}) => {
+test('factory remains selectable from a RAG style and exports without UI', async ({ page }) => {
   for (const id of ['orbital-rag', 'folded-rag']) {
     await page.goto(`/examples?example=${id}`);
     await expect(page).toHaveURL(/example=factory-rag$/);
-    await expect(page.getByRole('heading', { name: '等距知识工厂', exact: true })).toBeVisible();
+    await expect(
+      page
+        .getByRole('combobox', { name: '选择视觉风格', exact: true })
+        .filter({ hasText: '等距知识工厂' }),
+    ).toBeVisible();
     await expect(page.getByRole('button', { name: '选择轨道星图', exact: true })).toHaveCount(0);
     await expect(page.getByRole('button', { name: '选择折纸数据流', exact: true })).toHaveCount(0);
   }
   await page.goto('/examples?example=blueprint-rag');
-  const featured = page.getByRole('navigation', { name: '推荐风格', exact: true });
-  await expect(featured.getByRole('button')).toHaveCount(3);
   for (const [id, label] of [['factory', '等距知识工厂']]) {
-    await featured.getByRole('button', { name: label, exact: true }).click();
-    await expect(page.getByRole('heading', { name: label, exact: true })).toBeVisible();
+    await selectExampleOption(page, '选择视觉风格', { label });
+    await expect(
+      page.getByRole('combobox', { name: '选择视觉风格', exact: true }).filter({ hasText: label }),
+    ).toBeVisible();
     const svg = page
       .getByRole('img', { name: 'RAG 检索增强生成架构 SVG 预览', exact: true })
       .locator('svg');
@@ -350,11 +380,8 @@ test('recommended compositions are visible from an old style and their SVGs expo
       });
       expect(hiddenTips).toEqual([]);
     }
-    const pending = page.waitForEvent('download');
-    await page.getByRole('button', { name: '下载 SVG', exact: true }).click();
-    const downloaded = await pending,
-      xml = await readFile((await downloaded.path())!, 'utf8');
-    expect(downloaded.suggestedFilename()).toBe(`${id}-rag.svg`);
+    const { filename, xml } = await downloadExampleFromEditor(page);
+    expect(filename).toBe(`${id}-rag-finished.svg`);
     expect(xml).not.toContain('example-featured-switcher');
     expect(xml).toContain('data-sf-start-node');
     expect(
@@ -379,37 +406,36 @@ test('recommended compositions are visible from an old style and their SVGs expo
   await page.screenshot({ path: 'tests/featured-mobile.png', fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.setViewportSize({ width: 633, height: 879 });
-  for (const [id, label] of [
+  for (const [id] of [
     ['factory', '等距知识工厂'],
     ['editorial', '纸本编辑'],
   ]) {
-    await page.getByRole('button', { name: `选择${label}`, exact: true }).click();
+    await chooseContent(page, `${id}-rag`);
     const scroll = page.locator('.example-preview-scroll');
     const fits = () =>
       scroll.evaluate((el) => {
         const board = el.querySelector('.example-artboard')!.getBoundingClientRect(),
           viewport = el.getBoundingClientRect(),
-          controls = el.parentElement!.querySelector('.example-fit')!.getBoundingClientRect();
+          controls = el
+            .closest('.image-detail')!
+            .querySelector('.example-fit')!
+            .getBoundingClientRect();
         return (
           board.left >= viewport.left &&
           board.top >= viewport.top &&
           board.right <= viewport.right &&
           board.bottom <= viewport.bottom &&
-          board.bottom <= controls.top &&
+          controls.top >= viewport.top &&
+          controls.right <= viewport.right &&
           Math.abs(board.width / board.height - 1.5) < 0.01 &&
           el.scrollHeight <= el.clientHeight + 1 &&
           el.scrollWidth <= el.clientWidth + 1
         );
       });
     await expect.poll(fits).toBe(true);
-    await page.getByRole('button', { name: '100% 查看', exact: true }).click();
-    expect(
-      await page.locator('.example-artboard').evaluate((el) => ({
-        width: el.getBoundingClientRect().width,
-        height: el.getBoundingClientRect().height,
-      })),
-    ).toEqual({ width: 1200, height: 800 });
-    await page.getByRole('button', { name: '适应预览', exact: true }).click();
+    await page.getByRole('button', { name: '全屏预览', exact: true }).click();
+    await expectFullPagePreview(page, 1.5);
+    await page.getByRole('button', { name: '退出全屏', exact: true }).click();
     await expect.poll(fits).toBe(true);
     await page.screenshot({ path: `tests/featured-${id}-user-633.png`, fullPage: true });
   }

@@ -1,0 +1,13 @@
+:root {
+  --justsvg-brand-ink: #334256;
+  --justsvg-brand-accent: #0f766e;
+  --justsvg-brand-paper: #f2f8f6;
+  --justsvg-brand-accent-soft: #e8f5f1;
+  --justsvg-brand-muted: #64748b;
+  --justsvg-brand-line: #dce2ea;
+  --justsvg-brand-success: #15803d;
+  --justsvg-brand-warning: #a16207;
+  --justsvg-brand-danger: #b91c1c;
+  --justsvg-brand-radius: 8px;
+  --justsvg-brand-font: 'JustSVG Sans', 'PingFang SC', sans-serif;
+}

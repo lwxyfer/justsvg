@@ -1,19 +1,19 @@
 import { readRecovery, readWorkspaceRecovery, saveRecovery } from './recovery';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { documents } from './documents';
-import { DocumentTabs } from '../components/DocumentTabs';
 import { AlertTriangle, CheckCircle2, X, ShieldCheck, ChevronUp } from 'lucide-react';
 import { engine } from '../editor/document/engine';
 import { fixtures } from '../fixtures';
-import { useUI } from '../store/ui';
+import { useUI, useStatusUI } from '../store/ui';
 import { Canvas } from '../editor/canvas/Canvas';
 import { Sidebar } from '../components/Sidebar';
 import { Inspector } from '../components/Inspector';
 import { Toolbar } from '../components/Toolbar';
 import { Dialogs } from '../components/Dialogs';
 import { useDocument, IconButton } from '../components/shared';
-import { openFile } from './actions';
+import { openFiles } from './actions';
 import { useKeyboard } from './useKeyboard';
+import { useLocale } from '../i18n/locale';
 
 // Startup happens once, outside React rendering. Local recovery is sanitized like any other input.
 let recoveredAt: number | null = null;
@@ -39,23 +39,29 @@ try {
 if (!engine.root) engine.importSvg(fixtures.architecture, 'architecture.svg');
 documents.ensure();
 export function App({ active = true }: { active?: boolean }) {
+  const { t, locale } = useLocale();
   useDocument();
   useSyncExternalStore(documents.subscribe, documents.getSnapshot);
-  const ui = useUI(),
+  const ui = useStatusUI(),
     [warningsOpen, setWarningsOpen] = useState(false);
   useKeyboard(active);
   useEffect(() => {
     if (recoveryError) {
       ui.set({ recoveryState: 'unavailable' });
-      ui.message(recoveryError, true);
+      ui.message(
+        locale === 'en' ? `Local document recovery failed: ${recoveryError}` : recoveryError,
+        true,
+      );
     } else if (recoveredAt !== null) {
       ui.set({ recoveryState: 'saved', savedAt: recoveredAt });
       ui.message(
-        `已恢复${recoveredAt ? new Date(recoveredAt).toLocaleString() : '上次'}的本地文档。`,
+        locale === 'en'
+          ? `Recovered the local document from ${recoveredAt ? new Date(recoveredAt).toLocaleString() : 'the last session'}.`
+          : `已恢复${recoveredAt ? new Date(recoveredAt).toLocaleString() : '上次'}的本地文档。`,
       );
     }
     const file = (e: Event) => {
-      void openFile((e as CustomEvent<File>).detail).catch((e) =>
+      void openFiles((e as CustomEvent<File[]>).detail).catch((e) =>
         useUI.getState().message(e.message, true),
       );
     };
@@ -72,7 +78,7 @@ export function App({ active = true }: { active?: boolean }) {
           saveRecovery();
         } catch {
           useUI.getState().set({ recoveryState: 'unavailable' });
-          useUI.getState().message('本地恢复空间不可用，请及时导出各标签中的 SVG。', true);
+          useUI.getState().message(t('本地恢复空间不可用，请及时导出各标签中的 SVG。'), true);
         }
       }, 1200);
     };
@@ -107,31 +113,30 @@ export function App({ active = true }: { active?: boolean }) {
   return (
     <div className="app-shell" hidden={!active} inert={!active}>
       <Toolbar />
-      <DocumentTabs />
       <div
         className="workspace"
         role="tabpanel"
         id="document-workspace"
         aria-labelledby={`document-tab-${documents.activeId}`}
       >
-        {ui.leftOpen && <Sidebar />}
+        <Sidebar />
         {active && (
           <Canvas
             key={`canvas-${documents.activeId}`}
             fitOnMount={documents.items.find((d) => d.id === documents.activeId)?.fitOnMount}
           />
         )}
-        {ui.rightOpen && <Inspector key={`inspector-${documents.activeId}`} />}
+        <Inspector key={`inspector-${documents.activeId}`} />
       </div>
       <footer className="statusbar">
         <div>
           <span className="status-dot" />
           {engine.selection.length
-            ? `${engine.selection.length} 个已选 · ${engine.selection
+            ? `${engine.selection.length} ${t('个已选')} · ${engine.selection
                 .map((el) => el.localName)
                 .filter((v, i, a) => a.indexOf(v) === i)
                 .join(', ')}`
-            : '就绪，选择一个元素开始编辑'}
+            : t('就绪，选择一个元素开始编辑')}
           {selected && (
             <span className="status-coordinates">
               X {selected.x.toFixed(1)} · Y {selected.y.toFixed(1)}
@@ -148,16 +153,16 @@ export function App({ active = true }: { active?: boolean }) {
             onClick={() => setWarningsOpen(!warningsOpen)}
           >
             {engine.warnings.length ? <AlertTriangle size={12} /> : <ShieldCheck size={12} />}{' '}
-            {engine.warnings.length ? `${engine.warnings.length} 条提示` : '安全 SVG'}
+            {engine.warnings.length ? `${engine.warnings.length} ${t('条提示')}` : t('安全 SVG')}
             <ChevronUp size={11} />
           </button>
           <span className="status-separator" />
           <span className="status-local">
             {ui.recoveryState === 'saved'
-              ? '已写入本地恢复副本'
+              ? t('已写入本地恢复副本')
               : ui.recoveryState === 'unavailable'
-                ? '恢复不可用'
-                : '待写入恢复副本'}
+                ? t('恢复不可用')
+                : t('待写入恢复副本')}
           </span>
           <span>{Math.round(ui.zoom * 100)}%</span>
         </div>
@@ -165,8 +170,8 @@ export function App({ active = true }: { active?: boolean }) {
       {warningsOpen && (
         <div className="warnings-popover">
           <div>
-            <strong>导入兼容性与安全报告</strong>
-            <IconButton label="关闭兼容性报告" onClick={() => setWarningsOpen(false)}>
+            <strong>{t('导入兼容性与安全报告')}</strong>
+            <IconButton label={t('关闭兼容性报告')} onClick={() => setWarningsOpen(false)}>
               <X size={14} />
             </IconButton>
           </div>
@@ -177,9 +182,11 @@ export function App({ active = true }: { active?: boolean }) {
               ))}
             </ul>
           ) : (
-            <p>未发现需移除的危险内容。内部 SVG 资源与结构已保留。</p>
+            <p>{t('未发现需移除的危险内容。内部 SVG 资源与结构已保留。')}</p>
           )}
-          <p className="field-note">安全处理会限制高风险特性。建议在导出前检查原始视觉效果。</p>
+          <p className="field-note">
+            {t('安全处理会限制高风险特性。建议在导出前检查原始视觉效果。')}
+          </p>
         </div>
       )}
       {ui.toast && (
@@ -189,7 +196,7 @@ export function App({ active = true }: { active?: boolean }) {
         >
           {ui.toast.error ? <AlertTriangle size={17} /> : <CheckCircle2 size={17} />}
           <span>{ui.toast.message}</span>
-          <IconButton label="关闭提示" onClick={() => ui.set({ toast: null })}>
+          <IconButton label={t('关闭提示')} onClick={() => ui.set({ toast: null })}>
             <X size={14} />
           </IconButton>
         </div>

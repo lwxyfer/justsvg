@@ -1,3 +1,4 @@
+import { prepareResize } from './resizing';
 import { sanitizeSvg, SVG_NS, cleanCss } from '../security/sanitize';
 import { rewriteReferences } from './references';
 import { freezeAssetAppearance } from '../insert/appearance';
@@ -97,6 +98,8 @@ export class DocumentEngine {
   private keys = new WeakMap<Element, string>();
   private nextKey = 0;
   private locks = new Set<string>();
+  private hitRegions:
+    { el: SVGGraphicsElement; box: Bounds; inverse: DOMMatrix; container: boolean }[] | null = null;
   private allCache: SVGGraphicsElement[] | null = null;
   private childCache = new WeakMap<Element, SVGGraphicsElement[]>();
   subscribe = (fn: () => void) => {
@@ -130,6 +133,7 @@ export class DocumentEngine {
   }
   notify(kind: 'document' | 'geometry' | 'selection' = 'document') {
     if (kind !== 'geometry') this.panelVersion++;
+    if (kind !== 'selection') this.hitRegions = null;
     if (kind === 'document') {
       this.documentRevision++;
       this.allCache = null;
@@ -232,7 +236,7 @@ export class DocumentEngine {
     return this.allCache;
   }
   isDrawable(el: Element): el is SVGGraphicsElement {
-    if (isMotionPart(el)) return false;
+    if (isMotionPart(el) || el.hasAttribute('data-sf-page-background')) return false;
     if (!drawable.has(el.localName) || el === this.root) return false;
     for (let p: Element | null = el.parentElement; p && p !== this.root; p = p.parentElement)
       if (nonVisual.has(p.localName)) return false;
@@ -276,12 +280,86 @@ export class DocumentEngine {
         if (this.isDrawable(p)) el = p;
     return this.isDrawable(el) && !this.isLocked(el) ? el : null;
   }
+  private localBox(el: SVGGraphicsElement): Bounds {
+    const frame = isMotionWrapper(el)
+      ? motionOriginal(el)
+      : el.localName === 'g'
+        ? this.children(el).find(
+            (child) => child.localName === 'rect' && child.hasAttribute('data-sf-node-frame'),
+          )
+        : null;
+    if (frame) {
+      const parent = el.getScreenCTM(),
+        child = frame.getScreenCTM();
+      if (parent && child)
+        return transformedBounds(
+          this.localBox(frame),
+          domMatrix(parent).inverse().multiply(domMatrix(child)),
+        );
+    }
+    return el.getBBox();
+  }
+  hitAt(point: Point, target: Element | null, deep = false) {
+    if (!this.root) return null;
+    if (!this.hitRegions) {
+      const rootCTM = this.root.getScreenCTM();
+      if (!rootCTM) return this.hit(target, deep);
+      this.hitRegions = this.all()
+        .flatMap((el) => {
+          const ctm = el.getScreenCTM();
+          if (!ctm || Math.abs(ctm.a * ctm.d - ctm.b * ctm.c) < 1e-12) return [];
+          const style = getComputedStyle(el);
+          if (style.visibility === 'hidden' || style.pointerEvents === 'none') return [];
+          for (let p: Element | null = el; p && p !== this.root; p = p.parentElement)
+            if (getComputedStyle(p).display === 'none') return [];
+          try {
+            return [
+              {
+                el,
+                box: this.localBox(el),
+                inverse: domMatrix(ctm).inverse().multiply(domMatrix(rootCTM)),
+                container:
+                  ['rect', 'g', 'svg', 'circle', 'ellipse', 'polygon', 'image', 'use'].includes(
+                    el.localName,
+                  ) &&
+                  (el.localName !== 'g' ||
+                    !!el.querySelector('rect,circle,ellipse,polygon,image,use') ||
+                    [...el.querySelectorAll('path')].some((p) =>
+                      /[zZ]\s*$/.test(p.getAttribute('d') || ''),
+                    )),
+              },
+            ];
+          } catch {
+            return [];
+          }
+        })
+        .reverse();
+    }
+    for (const { el, box, inverse, container } of this.hitRegions) {
+      if (this.isLocked(el) || (this.scope && (el === this.scope || !this.scope.contains(el))))
+        continue;
+      const local = new DOMPoint(point.x, point.y).matrixTransform(inverse);
+      if (
+        el === target ||
+        (target !== null && el.contains(target)) ||
+        (container &&
+          local.x >= box.x &&
+          local.y >= box.y &&
+          local.x <= box.x + box.width &&
+          local.y <= box.y + box.height)
+      ) {
+        const hit = this.hit(el, deep);
+        if (hit) return hit;
+      }
+    }
+    return null;
+  }
   bounds(el: SVGGraphicsElement): Bounds | null {
     try {
       const rootCTM = this.root?.getScreenCTM(),
         ctm = el.getScreenCTM();
       if (!rootCTM || !ctm || getComputedStyle(el).display === 'none') return null;
-      const b = el.getBBox();
+      const b = this.localBox(el);
       return transformedBounds(b, domMatrix(rootCTM).inverse().multiply(domMatrix(ctm)));
     } catch {
       return null;
@@ -452,12 +530,15 @@ export class DocumentEngine {
     if (!b || b.width < 0.001 || b.height < 0.001)
       throw new Error('零宽或零高元素请通过线条端点属性调整。');
     if (width <= 0 || height <= 0) throw new Error('尺寸必须大于 0。');
-    this.transaction('缩放元素', () => {
-      const m = new DOMMatrix()
-        .translate(b.x, b.y)
-        .scale(width / b.width, height / b.height)
-        .translate(-b.x, -b.y);
-      this.selection.forEach((el) => this.applyWorld(el, m));
+    if (![width, height].every(Number.isFinite)) throw new Error('请输入有效尺寸。');
+    this.transaction('调整元素尺寸', () => {
+      const resize = prepareResize(this);
+      resize(
+        new DOMMatrix()
+          .translate(b.x, b.y)
+          .scale(width / b.width, height / b.height)
+          .translate(-b.x, -b.y),
+      );
     });
   }
   rotate(angle: number) {
@@ -866,7 +947,7 @@ export class DocumentEngine {
     refreshMotionStyles(clone);
     return new XMLSerializer().serializeToString(clone);
   }
-  updateIcon(color: string, strokeWidth?: number) {
+  updateIcon(color: string, strokeWidth?: number, preview = false) {
     if (
       !CSS.supports('color', color) ||
       (strokeWidth !== undefined && (!Number.isFinite(strokeWidth) || strokeWidth <= 0))
@@ -883,7 +964,7 @@ export class DocumentEngine {
       stroke: getComputedStyle(el).stroke,
       fill: getComputedStyle(el).fill,
     }));
-    this.transaction('修改图标样式', () => {
+    const apply = () => {
       for (const { el, stroke, fill } of targets) {
         if (stroke !== 'none') {
           el.setAttribute('stroke', color);
@@ -898,7 +979,17 @@ export class DocumentEngine {
           el.style.setProperty('fill', color, 'important');
         }
       }
-    });
+    };
+    if (preview) {
+      this.begin('修改图标样式');
+      try {
+        apply();
+        this.notify('geometry');
+      } catch (error) {
+        this.cancel();
+        throw error;
+      }
+    } else this.transaction('修改图标样式', apply);
   }
   applySource(xml: string) {
     const safe = sanitizeSvg(xml);

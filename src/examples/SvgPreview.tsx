@@ -19,13 +19,11 @@ export function FittedSvgPreview({
   label,
   width,
   height,
-  actualSize,
 }: {
   svg: string;
   label: string;
   width: number;
   height: number;
-  actualSize: boolean;
 }) {
   const viewport = useRef<HTMLDivElement>(null);
   const artboard = useRef<HTMLDivElement>(null);
@@ -33,15 +31,11 @@ export function FittedSvgPreview({
     const scroll = viewport.current!,
       board = artboard.current!;
     const fit = (availableWidth: number, availableHeight: number) => {
-      const scale = actualSize
-        ? 1
-        : Math.max(0, Math.min(availableWidth / width, availableHeight / height));
+      const scale = Math.max(0, Math.min(availableWidth / width, availableHeight / height));
       board.style.width = `${width * scale}px`;
       board.style.height = `${height * scale}px`;
-      if (!actualSize) {
-        scroll.scrollTop = 0;
-        scroll.scrollLeft = 0;
-      }
+      scroll.scrollTop = 0;
+      scroll.scrollLeft = 0;
     };
     const style = getComputedStyle(scroll);
     fit(
@@ -53,7 +47,7 @@ export function FittedSvgPreview({
     );
     observer.observe(scroll);
     return () => observer.disconnect();
-  }, [width, height, actualSize]);
+  }, [width, height]);
   return (
     <div className="example-preview-scroll" ref={viewport}>
       <div className="example-artboard" ref={artboard}>

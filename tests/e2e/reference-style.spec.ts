@@ -1,5 +1,10 @@
+import {
+  chooseContent,
+  downloadExampleFromEditor,
+  selectExampleOption,
+  expectExampleOptionCount,
+} from './example-navigation';
 import { test, expect } from '@playwright/test';
-import { readFile } from 'node:fs/promises';
 const refs = [
   {
     id: 'reference-sandbox-overview',
@@ -24,7 +29,11 @@ test('both user reference reconstructions have native centered text and clear no
 }) => {
   for (const ref of refs) {
     await page.goto(`/examples?example=${ref.id}`);
-    await expect(page.getByRole('heading', { name: '基础·技术文档', exact: true })).toBeVisible();
+    await expect(
+      page
+        .getByRole('combobox', { name: '选择视觉风格', exact: true })
+        .filter({ hasText: '基础·技术文档' }),
+    ).toBeVisible();
     const svg = page.locator('.example-artboard svg');
     await expect(svg).toBeVisible();
     const result = await svg.evaluate((root) => {
@@ -82,10 +91,7 @@ test('both user reference reconstructions have native centered text and clear no
       errors: [],
       collisions: [],
     });
-    const pending = page.waitForEvent('download');
-    await page.getByRole('button', { name: '下载 SVG', exact: true }).click();
-    const download = await pending,
-      xml = await readFile((await download.path())!, 'utf8');
+    const { xml } = await downloadExampleFromEditor(page);
     expect(xml).not.toContain('<image');
     expect(xml).not.toContain('<script');
     const standalone = await page.context().newPage();
@@ -195,21 +201,21 @@ test('the reference look applies to the same content and exposes both reconstruc
       ),
     }));
   const original = await signature();
-  await page
-    .getByRole('navigation', { name: '同图风格', exact: true })
-    .getByRole('button', { name: '技术文档', exact: true })
-    .click();
-  await expect(page.getByLabel('选择示例')).toHaveValue('base-reference-dense-platform');
+  await selectExampleOption(page, '选择视觉风格', { label: '基础·技术文档' });
+  await expect(page.getByLabel('选择视觉风格')).toHaveAttribute(
+    'data-value',
+    'base-reference-dense-platform',
+  );
   expect(await signature()).toEqual(original);
-  await expect(page.getByLabel('选择示例').locator('option')).toHaveCount(6);
+  await expectExampleOptionCount(page, '选择视觉风格', 5);
   await page.screenshot({ path: 'tests/reference-style-dense-desktop.png', fullPage: true });
-  await page
-    .getByRole('navigation', { name: '推荐风格', exact: true })
-    .getByRole('button', { name: '基础·技术文档', exact: true })
-    .click();
-  await expect(page.getByLabel('选择示例')).toHaveValue('reference-sandbox-overview');
+  await chooseContent(page, 'reference-sandbox-overview');
+  await expect(page.getByLabel('选择视觉风格')).toHaveAttribute(
+    'data-value',
+    'reference-sandbox-overview',
+  );
   for (const ref of refs) {
-    await page.getByLabel('选择示例').selectOption(ref.id);
+    await chooseContent(page, ref.id);
     await page.screenshot({ path: `tests/${ref.id}-desktop.png`, fullPage: true });
   }
   for (const viewport of [

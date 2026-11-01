@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 const bridge = '/tests/e2e/bridge.ts';
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/editor');
   await page.evaluate(() => {
     localStorage.clear();
   });
@@ -72,7 +72,12 @@ test('offline icons support bilingual search, recent items, independent vector r
   await page.getByLabel('图标颜色', { exact: true }).press('Enter');
   await expect(database.locator('path').first()).toHaveCSS('stroke', 'rgb(239, 68, 68)');
   const iconBox = await database.boundingBox();
-  await page.getByRole('button', { name: '布局', exact: true }).click();
+  if (
+    (await page
+      .getByRole('button', { name: '布局', exact: true })
+      .getAttribute('aria-expanded')) === 'false'
+  )
+    await page.getByRole('button', { name: '布局', exact: true }).click();
   const width = page.getByLabel('宽度', { exact: true });
   await width.fill(String(Number(await width.inputValue()) * 1.5));
   await width.press('Enter');
@@ -158,8 +163,7 @@ test('source edits sanitize atomically and preserve the undo chain and viewport'
     const { engine, useUI } = await import(/* @vite-ignore */ module);
     return { xml: engine.exportSvg(), pan: useUI.getState().pan };
   }, bridge);
-  await page.locator('.export-dropdown summary').click();
-  await page.getByRole('button', { name: '查看源码', exact: true }).click();
+  await page.getByRole('button', { name: '源码', exact: true }).click();
   const source = page.getByLabel('导出 SVG 源码');
   await source.fill('<svg><broken></svg>');
   await page.getByRole('button', { name: '应用修改', exact: true }).click();
@@ -185,7 +189,12 @@ test('container dimensions preserve text size; text wrapping is explicit and rev
   page,
 }) => {
   await choose(page, '#client-card rect');
-  await page.getByRole('button', { name: '布局', exact: true }).click();
+  if (
+    (await page
+      .getByRole('button', { name: '布局', exact: true })
+      .getAttribute('aria-expanded')) === 'false'
+  )
+    await page.getByRole('button', { name: '布局', exact: true }).click();
   const font = await page
     .locator('[data-svg-host] #client-card text')
     .first()

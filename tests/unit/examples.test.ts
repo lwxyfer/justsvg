@@ -36,11 +36,11 @@ describe('SVG examples and reusable prompts', () => {
     },
   );
   it('keeps base content separate from visual styles and preserves all existing diagrams', () => {
-    expect(exampleStyles).toHaveLength(32);
-    expect(examples.filter((e) => e.style === 'base')).toHaveLength(28);
-    expect(examples).toHaveLength(73);
+    expect(exampleStyles).toHaveLength(58);
+    expect(examples.filter((e) => e.style === 'base')).toHaveLength(36);
+    expect(examples).toHaveLength(139);
     expect(examples.some((e) => ['orbital-rag', 'folded-rag'].includes(e.id))).toBe(false);
-    expect(new Set(examples.map((e) => e.id)).size).toBe(73);
+    expect(new Set(examples.map((e) => e.id)).size).toBe(139);
     expect(exampleStyles.map((s) => s.id)).not.toEqual(
       expect.arrayContaining(['base-architecture', 'base-flow', 'base-infographic']),
     );

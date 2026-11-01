@@ -18,9 +18,11 @@ Developers, technical writers, product builders and researchers creating archite
 
 An open-source, SVG-native diagram creation and editing tool, positioned as an alternative to draw.io. Core subjects are architecture diagrams, flowcharts, infographics, technical frameworks, products and code repositories. Start with brand/scene styles and templates, or refine AI-generated SVG. SVG is the portable document format; this is not a general-purpose vector illustration editor.
 
+The homepage presents SVG Diagram Skill for AI-assisted technical-diagram generation in a supporting agent, and the native SVG editor for refinement. A standalone local Skill package is downloadable and the editor MVP is ready; the webpage does not call a model. Four connected chapters demonstrate native construction, whole-homepage Vercel/Figma/OpenAI visual adaptation, honest local Skill task preparation and actual editing of a shared nine-node/eight-link RAG graph. Hero, brand and Skill use distinct chapter compositions of those semantics; the interactive editor retains its own editable geometry and static export contract. The displayed diagram remains an authored example when task text changes; copied instructions run in a supporting AI agent.
+
 ## Operating Context
 
-Desktop browser, local files, no server or account. Choose a scene/style/template or import SVG → create and edit a diagram → export standard SVG.
+Desktop browser, local files, no server or account. Choose a scene/style/template or import SVG → create and edit a diagram → export standard SVG. The public homepage is `/`, the editor is `/editor`, and the example library remains `/examples` (all respect the configured application base path). The homepage uses the same editable nine-node RAG content through four chapters, a dynamic brand-study catalog (currently 36 entries), a local Skill ZIP download and an independent closing SVG-document footer. Node labels, colors, positions and locked homepage theme survive route navigation in module memory only. Opening creates a new document in the existing editor; download exports the actual current static native SVG with its eight connector bindings and no homepage animation runtime.
 
 ## Capabilities and Constraints
 
@@ -36,4 +38,4 @@ Import fidelity first; non-destructive edits; direct manipulation; semantic grou
 
 ## Evidence on Hand
 
-Working editor with native SVG, multi-document tabs, local recovery, bound connectors and a style/example library. The user selected the name JustSVG. Tagline: Just diagrams. Just SVG.
+Working editor with native SVG, multi-document tabs, local recovery, bound connectors and a style/example library. The user selected the name JustSVG and the D + F identity: a forward-leaning J cut out of a rounded-square badge. Tagline: Just diagrams. Just SVG.

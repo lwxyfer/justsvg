@@ -1,3 +1,4 @@
+import { useShallow } from 'zustand/react/shallow';
 import { create } from 'zustand';
 interface UIState {
   motionPreview: boolean;
@@ -6,6 +7,8 @@ interface UIState {
     name: string;
     warnings: string[];
     kind: 'document' | 'icon';
+    remainingFiles?: File[];
+    batchErrors?: string[];
   } | null;
   recoveryState: 'pending' | 'saved' | 'unavailable';
   savedAt: number;
@@ -18,13 +21,13 @@ interface UIState {
   zoom: number;
   pan: { x: number; y: number };
   grid: boolean;
+  gridPattern: 'dots' | 'grid';
   snap: boolean;
   wheelModifier: boolean;
   background: string;
-  leftOpen: boolean;
-  rightOpen: boolean;
   importOpen: boolean;
   helpOpen: boolean;
+  settingsOpen: boolean;
   sourceOpen: boolean;
   textEdit: boolean;
   toast: { message: string; error: boolean } | null;
@@ -47,17 +50,13 @@ try {
       : [],
     wheelModifier: parsed.wheelModifier !== false,
     grid: parsed.grid !== false,
+    gridPattern: parsed.gridPattern === 'grid' ? 'grid' : 'dots',
     snap: parsed.snap !== false,
     background:
       typeof parsed.background === 'string' && /^#[a-f\d]{6}$/i.test(parsed.background)
         ? parsed.background
         : '#eef0f3',
-    // Ignore the old layer-only preference when migrating to the material sidebar.
-    leftOpen: ['insert', 'layers'].includes(parsed.leftPanel || '')
-      ? parsed.leftOpen !== false
-      : true,
     leftPanel: parsed.leftPanel === 'layers' ? 'layers' : 'insert',
-    rightOpen: parsed.rightOpen !== false,
   };
 } catch {
   /* Preferences never block startup. */
@@ -77,13 +76,13 @@ export const useUI = create<UIState>()((set) => ({
   zoom: 1,
   pan: { x: 60, y: 60 },
   grid: true,
+  gridPattern: 'dots',
   snap: true,
   wheelModifier: true,
   background: '#eef0f3',
-  leftOpen: true,
-  rightOpen: true,
   importOpen: false,
   helpOpen: false,
+  settingsOpen: false,
   sourceOpen: false,
   textEdit: false,
   toast: null,
@@ -105,11 +104,10 @@ useUI.subscribe((state) => {
       recentColors: state.recentColors,
       wheelModifier: state.wheelModifier,
       grid: state.grid,
+      gridPattern: state.gridPattern,
       snap: state.snap,
       background: state.background,
-      leftOpen: state.leftOpen,
       leftPanel: state.leftPanel,
-      rightOpen: state.rightOpen,
     });
     if (encoded !== lastPreferences) {
       localStorage.setItem(prefKey, encoded);
@@ -119,3 +117,22 @@ useUI.subscribe((state) => {
     /* Document recovery reports storage failures separately. */
   }
 });
+
+// Canvas navigation should not redraw document controls and asset galleries on every wheel tick.
+export function useChromeUI() {
+  return useUI(
+    useShallow(({ pan, zoom, ...chrome }) => {
+      void pan;
+      void zoom;
+      return chrome;
+    }),
+  );
+}
+export function useStatusUI() {
+  return useUI(
+    useShallow(({ pan, ...status }) => {
+      void pan;
+      return status;
+    }),
+  );
+}

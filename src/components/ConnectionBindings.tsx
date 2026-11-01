@@ -11,12 +11,14 @@ import { decodeAnchor, type Port } from '../editor/geometry/connectors';
 import { useUI } from '../store/ui';
 import { run } from './shared';
 import { motionOriginal, motionWrapper } from '../editor/document/motion';
+import { useLocale } from '../i18n/locale';
 const nodeLabel = (el: SVGGraphicsElement) =>
   el.getAttribute('data-label') ||
   el.querySelector('text')?.textContent?.trim().slice(0, 40) ||
   el.id ||
   el.localName;
 export function ConnectionBindings({ line }: { line: SVGGraphicsElement }) {
+  const { t } = useLocale();
   const nodes = connectionNodes(engine).filter((node) => node !== line && !node.contains(line));
   return (
     <>
@@ -35,11 +37,11 @@ export function ConnectionBindings({ line }: { line: SVGGraphicsElement }) {
                 : anchor.u === 0.5 && anchor.v === 1
                   ? 'bottom'
                   : 'nearest';
-        const name = end === 'start' ? '起点' : '终点';
+        const name = end === 'start' ? t('起点') : t('终点');
         return (
           <div key={end}>
             <label className="property-field">
-              <span>{name}关联节点</span>
+              <span>{name}{t('关联节点')}</span>
               <select
                 aria-label={`${name}关联节点`}
                 value={node ? engine.key(node) : ref ? 'missing' : ''}
@@ -54,10 +56,10 @@ export function ConnectionBindings({ line }: { line: SVGGraphicsElement }) {
                   )
                 }
               >
-                <option value="">未关联</option>
+                <option value="">{t('未关联')}</option>
                 {ref && !node && (
                   <option value="missing" disabled>
-                    目标已丢失或不支持
+                    {t('目标已丢失或不支持')}
                   </option>
                 )}
                 {nodes.map((node) => (
@@ -69,7 +71,7 @@ export function ConnectionBindings({ line }: { line: SVGGraphicsElement }) {
             </label>
             {node && (
               <label className="property-field">
-                <span>{name}连接位置</span>
+                <span>{name}{t('连接位置')}</span>
                 <select
                   aria-label={`${name}连接位置`}
                   value={port}
@@ -77,11 +79,11 @@ export function ConnectionBindings({ line }: { line: SVGGraphicsElement }) {
                     run(() => bindConnection(engine, line, end, node, e.target.value as Port))
                   }
                 >
-                  <option value="nearest">最近边界</option>
-                  <option value="left">左侧中心</option>
-                  <option value="right">右侧中心</option>
-                  <option value="top">顶部中心</option>
-                  <option value="bottom">底部中心</option>
+                  <option value="nearest">{t('最近边界')}</option>
+                  <option value="left">{t('左侧中心')}</option>
+                  <option value="right">{t('右侧中心')}</option>
+                  <option value="top">{t('顶部中心')}</option>
+                  <option value="bottom">{t('底部中心')}</option>
                 </select>
               </label>
             )}
@@ -89,12 +91,13 @@ export function ConnectionBindings({ line }: { line: SVGGraphicsElement }) {
         );
       })}
       <p className="field-note">
-        关联后跟随节点移动、缩放和对齐。拖动端点会解除该端关联；单独移动连线会解除两端关联。折线保留原有走线，不自动避让其他节点。
+        {t('关联后跟随节点移动、缩放和对齐。拖动端点会解除该端关联；单独移动连线会解除两端关联。折线保留原有走线，不自动避让其他节点。')}
       </p>
     </>
   );
 }
 export function NodeConnections() {
+  const { t } = useLocale();
   const ids = new Set(
     engine.selection
       .map((n) => (motionWrapper(n) === n ? motionOriginal(n)!.id : n.id))
@@ -119,14 +122,14 @@ export function NodeConnections() {
                 .getState()
                 .message(
                   count
-                    ? `已建立 ${count} 个端点关联，可直接移动卡片。`
-                    : '没有找到可明确关联的新端点。可选中连线，手动指定节点。',
+                    ? `${t('已建立')} ${count} ${t('个端点关联，可直接移动卡片。')}`
+                    : t('没有找到可明确关联的新端点。可选中连线，手动指定节点。'),
                 );
             })
           }
         >
           <Link size={13} />
-          关联相邻箭头
+          {t('关联相邻箭头')}
         </button>
         <button
           className="button"
@@ -143,12 +146,11 @@ export function NodeConnections() {
           }
         >
           <Unlink size={13} />
-          解除关联
+          {t('解除关联')}
         </button>
       </div>
       <p className="field-note">
-        已有 {lines.length} 条连线关联到所选节点。识别屏幕上距边界 14 px
-        内且目标明确的端点；不会自动修改导入的曲线或复杂 Path。
+        {t('已有')} {lines.length} {t('条连线关联到所选节点。识别屏幕上距边界 14 px 内且目标明确的端点；不会自动修改导入的曲线或复杂 Path。')}
       </p>
     </>
   );

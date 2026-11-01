@@ -1,0 +1,4 @@
+interface:
+  display_name: 'SVG Diagram'
+  short_description: 'Create native SVG diagrams with visual source calibration'
+  default_prompt: 'Use $svg-diagram to create an editable SVG diagram from my content and visual reference, then render and verify it.'

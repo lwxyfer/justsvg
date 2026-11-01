@@ -1,0 +1,24 @@
+[
+  {
+    "id": "layers",
+    "letter": "A",
+    "name": "层叠",
+    "accent": "#2855ee",
+    "soft": "#edf2ff",
+    "paper": "#f6f8ff",
+    "character": "清楚的层级，连续的思路。",
+    "summary": "以蓝色为强调色，用有节奏的间距与浅色平面组织信息。",
+    "radius": 6
+  },
+  {
+    "id": "modules",
+    "letter": "B",
+    "name": "模块",
+    "accent": "#0f766e",
+    "soft": "#e8f5f1",
+    "paper": "#f2f8f6",
+    "character": "独立的模块，完整的系统。",
+    "summary": "以青绿色为强调色，用明确的分区与对齐建立秩序。",
+    "radius": 8
+  }
+]

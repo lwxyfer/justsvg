@@ -26,11 +26,11 @@ async function selectLayer(page: Page, id: string) {
 const engineModule = '/tests/e2e/bridge.ts';
 const uiModule = '/tests/e2e/bridge.ts';
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/editor');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
   await expect(page.locator('[data-svg-host] > svg')).toBeVisible();
-  await page.getByRole('button', { name: '切换图层面板', exact: true }).click();
+  await page.getByRole('button', { name: '显示图层面板', exact: true }).click();
 });
 
 test('full MVP: paste, move card, edit text, align, style, undo/redo, download and reimport', async ({
@@ -276,8 +276,8 @@ test('overlay stays attached at different zoom and pan positions; small desktop 
   await page.getByRole('button', { name: '适应画布 (Shift+1)' }).click();
   await expect(page.locator('.export-dropdown')).toBeVisible();
   await expect(page.getByTestId('selection-box')).toBeVisible();
-  await page.getByRole('button', { name: '切换图层面板' }).click();
-  await expect(page.getByRole('complementary', { name: '图层面板' })).toHaveCount(0);
+  await page.getByRole('button', { name: '显示图层面板' }).click();
+  await expect(page.getByRole('complementary', { name: '图层面板' })).toBeVisible();
 });
 
 test('native rendering visually matches sanitized editor import', async ({ page }, testInfo) => {
@@ -316,7 +316,10 @@ test('file upload, marquee, hide/lock, clipboard paste and pan tools', async ({ 
     .locator('input[type=file]')
     .first()
     .setInputFiles(path.resolve('src/fixtures/flowchart.svg'));
-  await expect(page.locator('.file-title')).toContainText('flowchart.svg');
+  await expect(page.getByRole('tab', { name: 'flowchart.svg', exact: true })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
   // The authored example has a font inheritance group. Enter it, then marquee all three cards.
   await page.evaluate(async (module) => {
     const { engine } = await import(/* @vite-ignore */ module);
@@ -484,9 +487,7 @@ test('root transforms/compositing do not apply twice when duplicating; CSS trans
   expect(await page.locator('[data-svg-host] #css-card').getAttribute('transform')).toBe(original);
 });
 
-test('dragging the canvas background pans immediately without a tool switch or document edit', async ({
-  page,
-}) => {
+test('Space dragging pans immediately without a tool switch or document edit', async ({ page }) => {
   await selectLayer(page, 'client-card');
   const canvas = page.locator('[data-canvas]');
   const svg = page.locator('[data-svg-host] > svg');
@@ -496,12 +497,14 @@ test('dragging the canvas background pans immediately without a tool switch or d
   const area = await canvas.boundingBox();
   const start = { x: area!.x + 25, y: area!.y + 75 };
   await page.mouse.move(start.x, start.y);
+  await page.keyboard.down('Space');
   await page.mouse.down();
   await page.mouse.move(start.x + 70, start.y + 45);
   await expect(canvas).toHaveAttribute('data-panning', 'true');
   await expect(canvas).toHaveCSS('cursor', 'grabbing');
   await expect(page.getByRole('button', { name: /选择工具|手型工具/ })).toHaveCount(0);
   await page.mouse.up();
+  await page.keyboard.up('Space');
   const after = await card.boundingBox();
   expect(after!.x - before!.x).toBeCloseTo(70, 1);
   expect(after!.y - before!.y).toBeCloseTo(45, 1);
@@ -549,7 +552,7 @@ test('font size edits apply in the real browser, resize the overlay, and undo/re
   await expect(text).toHaveCSS('font-size', '24px');
 });
 
-test('every inspector module collapses independently and layout starts collapsed', async ({
+test('every inspector module collapses independently and layout starts expanded', async ({
   page,
 }) => {
   await page.evaluate(async (module) => {
@@ -558,13 +561,12 @@ test('every inspector module collapses independently and layout starts collapsed
   }, engineModule);
   const inspector = page.getByRole('complementary', { name: '属性面板' });
   const layout = inspector.getByRole('button', { name: '布局', exact: true });
-  await expect(layout).toHaveAttribute('aria-expanded', 'false');
-  await expect(inspector.getByLabel('X', { exact: true })).not.toBeVisible();
-  await layout.click();
+  await expect(layout).toHaveAttribute('aria-expanded', 'true');
   await expect(inspector.getByLabel('X', { exact: true })).toBeVisible();
   await layout.click();
   for (const title of ['外观', '文字', 'SVG 属性']) {
     const toggle = inspector.getByRole('button', { name: title, exact: true });
+    if ((await toggle.getAttribute('aria-expanded')) === 'false') await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     const content = page.locator(`[id="${await toggle.getAttribute('aria-controls')}"]`);
     await toggle.click();

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { X, Check } from 'lucide-react';
 import { engine } from '../editor/document/engine';
-import { useUI } from '../store/ui';
+import { useChromeUI } from '../store/ui';
 import { IconButton, run } from './shared';
+import { useLocale } from '../i18n/locale';
 export function TextEditor({
   element,
   position,
@@ -10,9 +11,10 @@ export function TextEditor({
   element: SVGGraphicsElement;
   position: { x: number; y: number };
 }) {
+  const { t } = useLocale();
   const info = engine.textStructure(element);
   const [values, setValues] = useState(info.parts.map((p) => p.textContent || ''));
-  const ui = useUI();
+  const ui = useChromeUI();
   const save = () =>
     run(() => {
       if (info.parts.length === 1 && values[0].includes('\n'))
@@ -26,7 +28,7 @@ export function TextEditor({
       data-ui
       style={{ left: position.x, top: position.y }}
       role="dialog"
-      aria-label="编辑文字"
+      aria-label={t('编辑文字')}
       onKeyDown={(e) => {
         e.stopPropagation();
         if (e.nativeEvent.isComposing) return;
@@ -35,8 +37,8 @@ export function TextEditor({
       }}
     >
       <div className="text-editor-header">
-        <strong>编辑文字</strong>
-        <IconButton label="取消文字编辑" onClick={() => ui.set({ textEdit: false })}>
+        <strong>{t('编辑文字')}</strong>
+        <IconButton label={t('取消文字编辑')} onClick={() => ui.set({ textEdit: false })}>
           <X size={15} />
         </IconButton>
       </div>
@@ -44,11 +46,11 @@ export function TextEditor({
         <>
           {values.map((v, i) => (
             <label key={i}>
-              {values.length > 1 && <span>段落 {i + 1} · 保留原始位置</span>}
+              {values.length > 1 && <span>{t('段落')} {i + 1} · {t('保留原始位置')}</span>}
               <textarea
                 autoFocus={i === 0}
                 value={v}
-                aria-label={`文字段落 ${i + 1}`}
+                aria-label={`${t('文字段落')} ${i + 1}`}
                 onChange={(e) =>
                   setValues(values.map((value, j) => (j === i ? e.target.value : value)))
                 }
@@ -56,10 +58,10 @@ export function TextEditor({
             </label>
           ))}
           <div className="text-editor-footer">
-            <span>⌘ / Ctrl + Enter 应用</span>
+            <span>⌘ / Ctrl + Enter {t('应用')}</span>
             <button className="button primary" onClick={save}>
               <Check size={14} />
-              应用
+              {t('应用')}
             </button>
           </div>
         </>
