@@ -1,5 +1,6 @@
 import type { DocumentEngine } from './engine';
 import { isMotionWrapper, motionOriginal } from './motion';
+import { prepareTextFrame, textFrame } from './textFrame';
 
 const matrix = (m: DOMMatrix) => new DOMMatrix([m.a, m.b, m.c, m.d, m.e, m.f]);
 const invertible = (m: DOMMatrix) => Math.abs(m.a * m.d - m.b * m.c) > 1e-12;
@@ -19,7 +20,7 @@ export function prepareResize(engine: DocumentEngine, selection = engine.selecti
   const leaf = (el: SVGGraphicsElement) => {
     const original = engine.matrix(el),
       localToRoot = toRoot(el),
-      box = el.getBBox();
+      box = textFrame(el) || el.getBBox();
     const center = new DOMPoint(box.x + box.width / 2, box.y + box.height / 2).matrixTransform(
       localToRoot,
     );
@@ -67,14 +68,18 @@ export function prepareResize(engine: DocumentEngine, selection = engine.selecti
       rect.setAttribute('height', String(height * sy));
     };
   };
-  const build = (el: SVGGraphicsElement): ((world: DOMMatrix) => void) => {
+  const build = (el: SVGGraphicsElement, preserveText = false): ((world: DOMMatrix) => void) => {
     if (isMotionWrapper(el)) {
       const original = motionOriginal(el);
-      if (original) return build(original);
+      if (original) return build(original, preserveText);
     }
     if (el.localName === 'rect' || el.localName === 'image') return rectangle(el);
+    if (el.localName === 'text' && !preserveText) return prepareTextFrame(engine, el);
     if (el.localName === 'text' || el.localName === 'use') return leaf(el);
-    if (el.localName === 'g' && el.getAttribute('data-monochrome') !== 'true') {
+    if (
+      ['g', 'svg'].includes(el.localName) &&
+      (el.getAttribute('data-monochrome') !== 'true' || el.querySelector('text'))
+    ) {
       const children = engine.children(el),
         bounds = el.getBBox();
       // A dominant background rectangle is the node's frame, not an instruction to scale its content.
@@ -91,7 +96,7 @@ export function prepareResize(engine: DocumentEngine, selection = engine.selecti
       if (frame) return rectangle(frame.child, el);
       if (bounds.width > 0 && bounds.height > 0 && children.length) {
         const updates = children.map((child) =>
-          child.getAttribute('data-monochrome') === 'true' ? leaf(child) : build(child),
+          child.getAttribute('data-monochrome') === 'true' ? leaf(child) : build(child, true),
         );
         return (world) => updates.forEach((update) => update(world));
       }
@@ -148,6 +153,6 @@ export function prepareResize(engine: DocumentEngine, selection = engine.selecti
       }
     };
   };
-  const updates = selection.map(build);
+  const updates = selection.map((el) => build(el));
   return (world: DOMMatrix) => updates.forEach((update) => update(world));
 }

@@ -1125,6 +1125,28 @@ svg {
   right: -4px;
   cursor: nwse-resize;
 }
+.resize-handle.n,
+.resize-handle.s {
+  left: calc(50% - 3.5px);
+  cursor: ns-resize;
+}
+.resize-handle.n {
+  top: -4px;
+}
+.resize-handle.s {
+  bottom: -4px;
+}
+.resize-handle.e,
+.resize-handle.w {
+  top: calc(50% - 3.5px);
+  cursor: ew-resize;
+}
+.resize-handle.e {
+  right: -4px;
+}
+.resize-handle.w {
+  left: -4px;
+}
 .size-tag {
   background: #2563eb;
   color: #fff;

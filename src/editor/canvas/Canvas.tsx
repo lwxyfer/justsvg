@@ -415,11 +415,13 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
         const box = g.bounds,
           h = g.handle || 'se';
         if (box.width < 0.001 || box.height < 0.001) return;
-        let sx = (box.width + (h.includes('w') ? -dx : dx)) / box.width,
-          sy = (box.height + (h.includes('n') ? -dy : dy)) / box.height;
+        const horizontal = h.includes('w') || h.includes('e'),
+          vertical = h.includes('n') || h.includes('s');
+        let sx = horizontal ? (box.width + (h.includes('w') ? -dx : dx)) / box.width : 1,
+          sy = vertical ? (box.height + (h.includes('n') ? -dy : dy)) / box.height : 1;
         sx = Math.max(0.01, sx);
         sy = Math.max(0.01, sy);
-        if (e.shiftKey || ui.aspectLocked) sx = sy = Math.max(sx, sy);
+        if (horizontal && vertical && (e.shiftKey || ui.aspectLocked)) sx = sy = Math.max(sx, sy);
         const anchor = {
           x: h.includes('w') ? box.x + box.width : box.x,
           y: h.includes('n') ? box.y + box.height : box.y,
@@ -615,7 +617,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
               height: selection.height,
             }}
           >
-            {['nw', 'ne', 'sw', 'se'].map((h) => (
+            {['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'].map((h) => (
               <div key={h} data-handle={h} className={`resize-handle ${h}`} />
             ))}
             <span className="size-tag">

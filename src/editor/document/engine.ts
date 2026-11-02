@@ -1,3 +1,4 @@
+import { textFrame, flowingText, prepareTextFrame } from './textFrame';
 import { prepareResize } from './resizing';
 import { sanitizeSvg, SVG_NS, cleanCss } from '../security/sanitize';
 import { rewriteReferences } from './references';
@@ -281,6 +282,8 @@ export class DocumentEngine {
     return this.isDrawable(el) && !this.isLocked(el) ? el : null;
   }
   private localBox(el: SVGGraphicsElement): Bounds {
+    const frameBox = textFrame(el);
+    if (frameBox) return frameBox;
     const frame = isMotionWrapper(el)
       ? motionOriginal(el)
       : el.localName === 'g'
@@ -660,6 +663,7 @@ export class DocumentEngine {
         reason: '复杂文本结构仅支持整体变换；请在源码中编辑内容。',
         parts: [] as Element[],
       };
+    if (flowingText(el)) return { editable: true, reason: '', parts: [el as Element] };
     const spans = [...el.children];
     if (
       spans.length &&
@@ -694,7 +698,16 @@ export class DocumentEngine {
     );
   }
   multiline(el: SVGGraphicsElement, text: string, lineHeight: number) {
-    if (el.children.length) throw new Error('已有 tspan 时请逐段编辑，避免覆盖原始布局。');
+    if (flowingText(el)) {
+      this.transaction('创建多行文字', () => {
+        el.textContent = text;
+        el.style.setProperty('line-height', `${lineHeight}px`, 'important');
+        prepareTextFrame(this, el)(new DOMMatrix());
+      });
+      return;
+    }
+    if (el.children.length && !flowingText(el))
+      throw new Error('已有 tspan 时请逐段编辑，避免覆盖原始布局。');
     this.transaction('创建多行文字', () => {
       const x = el.getAttribute('x') || '0';
       el.textContent = '';
@@ -874,8 +887,7 @@ export class DocumentEngine {
             kind === 'width'
               ? Math.max(...entries.map((e) => e.b.width))
               : Math.max(...entries.map((e) => e.b.height));
-          this.applyWorld(
-            el,
+          prepareResize(this, [el])(
             new DOMMatrix()
               .translate(b.x, b.y)
               .scale(

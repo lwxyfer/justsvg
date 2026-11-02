@@ -1,3 +1,4 @@
+import { flowingText } from './textFrame';
 import type { DocumentEngine } from './engine';
 import { SVG_NS } from '../security/sanitize';
 import { union } from '../geometry/geometry';
@@ -9,7 +10,7 @@ export function element(tag: string, attrs: Record<string, string | number> = {}
 export function lineEditable(engine: DocumentEngine, el: SVGGraphicsElement) {
   const info = engine.textStructure(el);
   if (!info.editable) return false;
-  if (!el.children.length) return true;
+  if (!el.children.length || flowingText(el)) return true;
   return info.parts.every(
     (span, i) =>
       span.localName === 'tspan' &&
@@ -55,9 +56,10 @@ export function wrapText(
   if (!lineEditable(engine, el) || !Number.isFinite(width) || width <= 0)
     throw new Error('请选择可逐行排版的文字，并设置大于 0 的宽度。');
   if (document.fonts?.status === 'loading') throw new Error('字体正在加载，请稍后重试排版。');
-  const content = el.children.length
-    ? [...el.children].map((s) => s.textContent || '').join('\n')
-    : el.textContent || '';
+  const content =
+    el.children.length && !flowingText(el)
+      ? [...el.children].map((s) => s.textContent || '').join('\n')
+      : el.textContent || '';
   const probe = el.cloneNode(false) as SVGTextElement;
   const computed = getComputedStyle(el);
   for (const property of [
