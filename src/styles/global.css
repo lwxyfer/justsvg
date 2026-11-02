@@ -2965,3 +2965,45 @@ svg {
 .document-stage {
   will-change: transform;
 }
+
+/* PWA window title bar: only visible in an installed desktop PWA running with
+   window-controls-overlay; in every other context it stays display:none and
+   --titlebar-h remains 0 so layouts are untouched. */
+:root {
+  --titlebar-h: 0px;
+}
+.pwa-titlebar {
+  display: none;
+}
+@media (display-mode: window-controls-overlay) {
+  :root {
+    --titlebar-h: env(titlebar-area-height, 32px);
+  }
+  .pwa-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--titlebar-h);
+    /* Keep the label clear of the overlaid window controls (macOS traffic lights). */
+    padding-left: env(titlebar-area-x, 0px);
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    color: var(--brand-ink);
+    font-size: 13px;
+    font-weight: 500;
+    user-select: none;
+    app-region: drag;
+    -webkit-app-region: drag;
+  }
+  .pwa-titlebar img {
+    display: block;
+  }
+  /* Full-height flex shells shrink by the title bar height. */
+  .app-shell,
+  .examples-page {
+    height: calc(100dvh - var(--titlebar-h));
+  }
+}

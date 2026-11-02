@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import { App } from './App';
 import { useLocation, examplesHref, homeHref } from './routing';
 import { HomePage } from '../home/HomePage';
+import { TitleBar } from '../components/TitleBar';
 import { LocaleProvider, useLocale } from '../i18n/locale';
 const ExamplesPage = lazy(() => import('../examples/ExamplesPage'));
 export function Application() {
@@ -28,6 +29,7 @@ function ApplicationContent() {
   }, [examples, home, locale, t]);
   return (
     <>
+      <TitleBar />
       <App active={!examples && !home} />
       {home && <HomePage />}
       {examples && (
