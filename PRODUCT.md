@@ -12,7 +12,7 @@ React + TypeScript + Vite, as recommended by the user. Lightweight supporting li
 
 ## Users
 
-Developers, technical writers, product builders and researchers creating architecture diagrams, flowcharts and infographics for systems, frameworks, products and code repositories; including refinement of AI-generated SVG.
+Developers, technical writers, product builders and researchers creating architecture diagrams, flowcharts and infographics for systems, frameworks, products and code repositories; including refinement of AI-generated SVG. Role-based business examples also serve product, finance, operations and project coordination, with shared applicability to design and management.
 
 ## Product Purpose
 
@@ -26,7 +26,7 @@ Desktop browser, local files, no server or account. Choose a scene/style/templat
 
 ## Capabilities and Constraints
 
-Native SVG DOM, sanitization before rendering, isolated editor overlays, transaction history. No full illustration tools, AI integration, or cloud collaboration.
+Native SVG DOM, sanitization before rendering, isolated editor overlays, transaction history. No full illustration tools, AI integration, or cloud collaboration. The first business collection has twelve subjects in two working styles. Native profit-waterfall and budget-comparison groups optionally retain bounded numeric metadata for data/geometry/total updates in one undoable transaction; ordinary SVG rendering never depends on that metadata. Other diagrams remain manually editable rather than live analytics.
 
 ## Brand Commitments
 

@@ -19,7 +19,7 @@ test('Example page previews existing templates and returns without losing editor
   });
   await page.getByRole('link', { name: 'Example 示例', exact: true }).click();
   await expect(page).toHaveURL(/\/examples/);
-  await expect(page.locator('.image-result')).toHaveCount(139);
+  await expect(page.locator('.image-result')).toHaveCount(169);
   await chooseContent(page, 'factory-rag');
   await expect(page.getByLabel('选择视觉风格')).toHaveAttribute('data-value', 'factory-rag');
   await chooseContent(page, 'base-dense-platform');

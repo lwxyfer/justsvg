@@ -42,7 +42,8 @@ The Skill can run independently of the editor. The web app prepares prompts and 
 
 - **Edit native SVG.** Work with text, shapes, groups, gradients and internal references. Inspect and edit the SVG source when you need it.
 - **Keep connections attached.** Bound lines and arrows follow nodes when you move, resize or align them. Imported connections can be linked to nodes in the editor.
-- **Start from a style.** Browse 139 editable examples across 58 styles, including 36 brand-inspired studies. Each example includes a reusable generation prompt.
+- **Start from a style.** Browse 169 editable examples across 66 styles, including 39 brand-inspired studies, fictional worlds and an academic methods figure. Each example includes a reusable generation prompt.
+- **Start from your role.** Product, finance, operations and project shortcuts lead to 12 business subjects in two working styles. Profit bridges and budget comparisons support data editing with synchronized geometry, totals and undo. [Business examples](docs/BUSINESS_EXAMPLES.md).
 - **Build with reusable parts.** Insert 24 composition templates, diagram shapes, bundled Lucide icons or your own SVG components.
 - **Work locally.** Edit without an account or backend. The editor keeps browser-local recovery copies; export SVG files for storage and sharing.
 - **Add SVG motion.** Configure flow effects on connections and opacity effects on objects. Export an animated SVG or a static version for documents.

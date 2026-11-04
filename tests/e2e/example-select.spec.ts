@@ -6,7 +6,7 @@ test('style picker supports real keyboard selection, search, escape and outside 
 }) => {
   await page.goto('/examples?example=work-standard-commerce');
   const trigger = page.getByRole('combobox', { name: '选择视觉风格', exact: true });
-  await expect(page.locator('select')).toHaveCount(0);
+  await expect(page.locator('.examples-page select')).toHaveCount(0);
   await trigger.focus();
   await trigger.press('ArrowDown');
   await expect(
@@ -25,7 +25,7 @@ test('style picker supports real keyboard selection, search, escape and outside 
 
   await page.goto('/examples?example=brand-openai-rag');
   await trigger.click();
-  const search = page.getByRole('searchbox', { name: '搜索选择视觉风格', exact: true });
+  const search = page.getByRole('searchbox', { name: '搜索示例 选择视觉风格', exact: true });
   await expect(search).toBeFocused();
   await search.fill('Notion');
   const option = page.getByRole('option', { name: 'Notion', exact: true });
@@ -37,7 +37,7 @@ test('style picker supports real keyboard selection, search, escape and outside 
   await expect(trigger).toBeFocused();
   await trigger.click();
   await page
-    .getByRole('searchbox', { name: '搜索选择视觉风格', exact: true })
+    .getByRole('searchbox', { name: '搜索示例 选择视觉风格', exact: true })
     .fill('no-such-brand');
   await expect(page.getByText('没有匹配的风格')).toBeVisible();
   await page.getByRole('heading', { name: 'RAG 检索增强生成架构', exact: true }).click();
@@ -77,9 +77,9 @@ test('custom filters use list options and preserve intersections', async ({ page
   await page.goto('/examples');
   await selectExampleOption(page, '筛选图形类型', '架构图');
   await selectExampleOption(page, '筛选风格系列', 'brand');
-  await expect(page.locator('.image-result')).toHaveCount(36);
+  await expect(page.locator('.image-result')).toHaveCount(39);
   await selectExampleOption(page, '筛选风格系列', 'base');
-  await expect(page.locator('.image-result')).not.toHaveCount(36);
+  await expect(page.locator('.image-result')).not.toHaveCount(39);
   await page.getByLabel('搜索示例').fill('commerce');
   await expect(page.locator('.image-result')).toHaveCount(5);
 });

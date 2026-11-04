@@ -3,6 +3,7 @@ import { examples, exampleStyles } from '../../src/examples/catalog';
 import { additionalExamples } from '../../src/examples/styles';
 import { referenceExamples } from '../../src/examples/reference-examples';
 import { baseVariationExamples } from '../../src/examples/base-variations';
+import { academicExamples } from '../../src/examples/academic';
 import { sanitizeSvg } from '../../src/editor/security/sanitize';
 import {
   exampleStorageKey,
@@ -12,6 +13,28 @@ import {
 } from '../../src/examples/storage';
 beforeEach(() => localStorage.clear());
 describe('SVG examples and reusable prompts', () => {
+  it('preserves safe, editable academic panels, math and valid connector references', () => {
+    const example = academicExamples[0];
+    const safe = sanitizeSvg(example.svg);
+    expect(safe.warnings).toEqual([]);
+    expect(safe.root.getAttribute('viewBox')).toBe('0 0 1440 900');
+    expect(safe.root.querySelectorAll('[data-node]')).toHaveLength(9);
+    expect(safe.root.querySelectorAll('[data-sf-start-node]')).toHaveLength(8);
+    expect(safe.root.querySelector('script,foreignObject,image,use,style')).toBeNull();
+    const ids = [...safe.root.querySelectorAll('[id]')].map((node) => node.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const edge of safe.root.querySelectorAll('[data-sf-start-node]'))
+      for (const end of ['start', 'end'])
+        expect(ids).toContain(edge.getAttribute(`data-sf-${end}-node`)!.slice(1));
+    expect(safe.root.querySelector('[baseline-shift="sub"]')).not.toBeNull();
+    const restored = sanitizeSvg(new XMLSerializer().serializeToString(safe.root));
+    expect(restored.warnings).toEqual([]);
+    expect(restored.root.querySelector('#arxiv-decoding-note')!.textContent).toBe(
+      safe.root.querySelector('#arxiv-decoding-note')!.textContent,
+    );
+    expect(example.prompt).toContain('1440×900');
+    expect(example.prompt).toContain('foreignObject');
+  });
   it.each(referenceExamples)(
     'reconstructs $id with editable text and valid node/scope links',
     (example) => {
@@ -36,11 +59,11 @@ describe('SVG examples and reusable prompts', () => {
     },
   );
   it('keeps base content separate from visual styles and preserves all existing diagrams', () => {
-    expect(exampleStyles).toHaveLength(58);
+    expect(exampleStyles).toHaveLength(66);
     expect(examples.filter((e) => e.style === 'base')).toHaveLength(36);
-    expect(examples).toHaveLength(139);
+    expect(examples).toHaveLength(169);
     expect(examples.some((e) => ['orbital-rag', 'folded-rag'].includes(e.id))).toBe(false);
-    expect(new Set(examples.map((e) => e.id)).size).toBe(139);
+    expect(new Set(examples.map((e) => e.id)).size).toBe(169);
     expect(exampleStyles.map((s) => s.id)).not.toEqual(
       expect.arrayContaining(['base-architecture', 'base-flow', 'base-infographic']),
     );

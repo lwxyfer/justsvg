@@ -964,3 +964,38 @@
     display: none;
   }
 }
+
+.image-role-shortcuts {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.image-role-shortcuts > span {
+  font-size: 12px;
+  color: #536176;
+  margin-right: 4px;
+}
+.image-role-shortcuts button {
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #536176;
+  font-size: 12px;
+  cursor: pointer;
+}
+.image-role-shortcuts button:hover {
+  background: #f0f3f8;
+  color: #24354c;
+}
+.image-role-shortcuts button[aria-pressed='true'] {
+  background: #edf3ff;
+  border-color: #d2dff8;
+  color: #2457a0;
+}
+.image-role-shortcuts button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}

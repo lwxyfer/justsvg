@@ -58,12 +58,16 @@ test('preview uses panel width and expands into an entire page with fitted artwo
       .toBe(true);
   }
 });
-test('image search starts with every visual variant visible and opens a side preview', async ({
+test('image search defaults to OpenAI and retains all variants after closing the preview', async ({
   page,
 }) => {
   await page.goto('/examples');
-  await expect(page.locator('.image-result')).toHaveCount(139);
+  await expect(page).toHaveURL(/\/examples\?example=brand-openai-rag$/);
+  await expect(page.locator('.image-result')).toHaveCount(169);
+  await expect(page.getByLabel('选择视觉风格')).toHaveAttribute('data-value', 'brand-openai-rag');
+  await page.getByRole('button', { name: '关闭预览', exact: true }).click();
   await expect(page.getByLabel('图片预览')).toBeHidden();
+  await expect(page).toHaveURL(/\/examples$/);
   await page.getByLabel('搜索示例').fill('Mistral');
   await expect(page.locator('.image-result')).toHaveCount(1);
   await page.locator('#result-brand-mistral-rag').click();
@@ -74,7 +78,12 @@ test('image search starts with every visual variant visible and opens a side pre
   await selectExampleOption(page, '筛选图形类型', '时序图');
   await expect(page.getByText('没有找到匹配的 SVG')).toBeVisible();
   await page.getByRole('button', { name: '显示全部示例', exact: true }).click();
-  await expect(page.locator('.image-result')).toHaveCount(139);
+  await expect(page.locator('.image-result')).toHaveCount(169);
+  await page.getByRole('link', { name: '返回编辑器', exact: true }).click();
+  await page.getByRole('link', { name: '示例库', exact: true }).click();
+  await expect(page).toHaveURL(/\/examples\?example=brand-openai-rag$/);
+  await page.reload();
+  await expect(page.getByLabel('选择视觉风格')).toHaveAttribute('data-value', 'brand-openai-rag');
 });
 test('full-page preview retains drafts, grid geometry and navigation with an escape-first exit', async ({
   page,
@@ -88,7 +97,7 @@ test('full-page preview retains drafts, grid geometry and navigation with an esc
   const pickerBox = await picker.boundingBox(),
     titleBox = await title.boundingBox();
   expect(pickerBox!.y + pickerBox!.height).toBeLessThanOrEqual(titleBox!.y);
-  await page.getByLabel('示例生成 Prompt').fill('全屏测试：页面草稿保留');
+  await page.getByRole('textbox', { name: '生成 Prompt', exact: true }).fill('全屏测试：页面草稿保留');
   const gridBefore = await page
     .locator('.image-results')
     .evaluate((el) => [el.clientWidth, el.scrollTop]);
@@ -111,7 +120,7 @@ test('full-page preview retains drafts, grid geometry and navigation with an esc
   await page.keyboard.press('Escape');
   await expect(page.getByLabel('图片预览')).not.toHaveClass(/is-expanded/);
   await expect(page.getByRole('button', { name: '全屏预览', exact: true })).toBeFocused();
-  await expect(page.getByLabel('示例生成 Prompt')).toHaveValue('全屏测试：页面草稿保留');
+  await expect(page.getByRole('textbox', { name: '生成 Prompt', exact: true })).toHaveValue('全屏测试：页面草稿保留');
   await expect(page.locator('.image-results')).not.toHaveAttribute('inert');
   await page.getByRole('button', { name: '全屏预览', exact: true }).click();
   await page.getByRole('button', { name: '关闭预览', exact: true }).click();
@@ -204,13 +213,12 @@ test('touch devices can use image navigation without hover', async ({ browser })
 });
 test('preview navigation and close preserve result scroll and filters', async ({ page }) => {
   await page.goto('/examples');
+  await page.getByRole('button', { name: '关闭预览', exact: true }).click();
   await selectExampleOption(page, '筛选风格系列', 'brand');
   await page.locator('.image-results').evaluate((el) => {
     el.scrollTop = 500;
   });
-  const first = page
-    .locator('.image-result')
-    .filter({ has: page.locator('[aria-label="brand-mistral-rag缩略图"]') });
+  const first = page.locator('#result-brand-mistral-rag');
   await first.evaluate((el) => el.scrollIntoView({ block: 'center' }));
   const before = await page.locator('.image-results').evaluate((el) => el.scrollTop);
   await first.click();
@@ -225,6 +233,9 @@ test('preview navigation and close preserve result scroll and filters', async ({
 test('mobile opens a full preview then returns to the grid with its search', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/examples');
+  await expect(page).toHaveURL(/\/examples\?example=brand-openai-rag$/);
+  await expect(page.getByLabel('选择视觉风格')).toHaveAttribute('data-value', 'brand-openai-rag');
+  await page.getByRole('button', { name: '关闭预览', exact: true }).click();
   await page.getByLabel('搜索示例').fill('work-standard');
   await page.locator('#result-work-standard-entity').click();
   await expect(page.getByLabel('图片预览')).toBeVisible();

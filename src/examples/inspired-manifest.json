@@ -1,0 +1,154 @@
+[
+  {
+    "key": "starwars",
+    "id": "starwars-rag",
+    "name": "星战 · 银河指挥部",
+    "summary": "星空战术台 · 镂空黄字 · 战斗空间站",
+    "tags": [
+      "星球大战",
+      "Star Wars",
+      "电影",
+      "趣味风格"
+    ],
+    "palette": [
+      "#060a12",
+      "#ffe34b",
+      "#8ee7ed",
+      "#101c2a"
+    ],
+    "brand": false,
+    "note": "参考Star Wars官方Databank的黑色、切角信息面板与战斗空间站几何，原创转译成RAG战术图；非官方同人风格研究，不复刻影片字幕或官方徽记。",
+    "sources": [
+      {
+        "title": "Star Wars · Databank",
+        "url": "https://www.starwars.com/databank/"
+      },
+      {
+        "title": "Star Wars · Death Star",
+        "url": "https://www.starwars.com/databank/death-star"
+      }
+    ]
+  },
+  {
+    "key": "bikini",
+    "id": "bikini-bottom-rag",
+    "name": "比奇堡 · 海底知识工厂",
+    "summary": "菠萝档案 · 海绵模块 · 舷窗检索",
+    "tags": [
+      "海绵宝宝",
+      "SpongeBob",
+      "Bikini Bottom",
+      "动画",
+      "趣味风格"
+    ],
+    "palette": [
+      "#9ee6df",
+      "#ffe265",
+      "#f4b4c5",
+      "#f4de9b"
+    ],
+    "brand": false,
+    "note": "参考Nickelodeon官方海绵宝宝视觉及比奇堡环境；使用海底花、菠萝、海绵和舷窗等原创几何节点，不嵌入角色图片。非官方趣味风格研究。",
+    "sources": [
+      {
+        "title": "Nickelodeon · SpongeBob",
+        "url": "https://www.nick.com/fan-hub/spongebob-squarepants"
+      },
+      {
+        "title": "Paramount · SpongeBob About",
+        "url": "https://www.paramountpressexpress.com/nickelodeon/shows/spongebob-squarepants/about/"
+      }
+    ]
+  },
+  {
+    "key": "goldman",
+    "id": "brand-goldman-sachs-rag",
+    "name": "Goldman Sachs · 高盛",
+    "summary": "研究报告 · 蓝色刊头 · 衬线编辑排版",
+    "tags": [
+      "投行",
+      "金融",
+      "高盛",
+      "Goldman Sachs"
+    ],
+    "palette": [
+      "#7599be",
+      "#ffffff",
+      "#142e47",
+      "#d4e2ef"
+    ],
+    "brand": true,
+    "note": "依据Goldman Sachs官方Insights的蓝色刊头、白色编辑页面、衬线大题与细规则线进行原创架构转译。2026-11-03实际查看官方页面；Georgia为本地衬线近似，不分发品牌字体。非官方示例。",
+    "sources": [
+      {
+        "title": "Goldman Sachs · Insights",
+        "url": "https://www.goldmansachs.com/insights"
+      },
+      {
+        "title": "Goldman Sachs · Home",
+        "url": "https://www.goldmansachs.com/"
+      }
+    ]
+  },
+  {
+    "key": "morgan",
+    "id": "brand-morgan-stanley-rag",
+    "name": "Morgan Stanley · 摩根士丹利",
+    "summary": "白底分析框架 · 炭黑知识栏 · 浅青研究面",
+    "tags": [
+      "投行",
+      "金融",
+      "摩根",
+      "Morgan Stanley"
+    ],
+    "palette": [
+      "#ffffff",
+      "#252b30",
+      "#d2edf5",
+      "#236c90"
+    ],
+    "brand": true,
+    "note": "参照Morgan Stanley官方企业/研究页面的信息层级和黑白编辑框架，结合公开页面预览的浅青研究方向。官网正文可读取，本轮实时浏览器因网络协议超时未获得有效截图；本机Helvetica回退为近似，不声称精确品牌字体或完整官方规范。非官方示例。",
+    "sources": [
+      {
+        "title": "Morgan Stanley · Home",
+        "url": "https://www.morganstanley.com/"
+      },
+      {
+        "title": "Morgan Stanley · Insights",
+        "url": "https://www.morganstanley.com/insights"
+      }
+    ]
+  },
+  {
+    "key": "jpmorgan",
+    "id": "brand-jpmorgan-rag",
+    "name": "J.P. Morgan · 摩根大通",
+    "summary": "暖纸机构简报 · 深棕衬线 · 三列运营模型",
+    "tags": [
+      "投行",
+      "金融",
+      "摩根",
+      "JPMorgan",
+      "J.P. Morgan"
+    ],
+    "palette": [
+      "#faf7f2",
+      "#3b3029",
+      "#e9ded0",
+      "#875f38"
+    ],
+    "brand": true,
+    "note": "以J.P. Morgan机构站的暖中性色、衬线研究叙事为原创转译方向，不采用Chase零售蓝。官方站本轮返回403/区域重定向且浏览截图空白，不能作为已核验的逐项品牌规范；本图为非官方风格近似，未使用官方标志或专有字体。",
+    "sources": [
+      {
+        "title": "J.P. Morgan · Institutional site",
+        "url": "https://www.jpmorgan.com/"
+      },
+      {
+        "title": "J.P. Morgan · About",
+        "url": "https://www.jpmorgan.com/about-us"
+      }
+    ]
+  }
+]

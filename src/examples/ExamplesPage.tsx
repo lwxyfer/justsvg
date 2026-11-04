@@ -39,6 +39,7 @@ import { importDocument } from '../app/actions';
 import { useLocale } from '../i18n/locale';
 import { LanguageSwitch } from '../components/LanguageSwitch';
 import './examples.css';
+import { exampleRoles } from './business';
 interface Draft {
   svg: string;
   prompt: string;
@@ -53,8 +54,12 @@ export default function ExamplesPage() {
     examples.find((e) => e.style === exampleStyles[0].id)!;
   const style = exampleStyles.find((s) => s.id === selected.style)!;
   const sameContent = examples.filter((e) => contentKey(e) === contentKey(selected));
+  const openDefaultOnEntry = useRef(!requested);
   useEffect(() => {
-    if (requested && requested !== selected.id)
+    if (!requested && openDefaultOnEntry.current) {
+      openDefaultOnEntry.current = false;
+      navigate(`${examplesHref}?example=brand-openai-rag`, true);
+    } else if (requested && requested !== selected.id)
       navigate(`${examplesHref}?example=${encodeURIComponent(selected.id)}`, true);
   }, [requested, selected.id]);
   const [initial] = useState(() => {
@@ -92,7 +97,8 @@ export default function ExamplesPage() {
   const [family, setFamily] = useState<VisualFamily>('all');
   const [typeFilter, setTypeFilter] = useState('');
   const [search, setSearch] = useState('');
-  const groups = browseContents(typeFilter, family, search);
+  const [role, setRole] = useState('');
+  const groups = browseContents(typeFilter, family, search, role);
   const results = groups.flatMap((group) => group.variants);
   const detailOpen = !!requested;
   const fullPreview = detailOpen && expanded;
@@ -100,6 +106,7 @@ export default function ExamplesPage() {
   const resultIndex = results.findIndex((e) => e.id === selected.id);
   const currentVisible = resultIndex >= 0;
   const clearFilters = () => {
+    setRole('');
     setFamily('all');
     setTypeFilter('');
     setSearch('');
@@ -292,6 +299,19 @@ export default function ExamplesPage() {
           )}
         </label>
         <div className="image-search-filters">
+          <div className="image-role-shortcuts" role="group" aria-label="岗位快捷筛选">
+            <span>岗位</span>
+            {['', ...exampleRoles].map((value) => (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={role === value}
+                onClick={() => setRole(value)}
+              >
+                {value || '全部岗位'}
+              </button>
+            ))}
+          </div>
           <div className="image-filter">
             <span>{t('图形类型')}</span>
             <ExampleSelect
@@ -314,6 +334,7 @@ export default function ExamplesPage() {
                 { value: 'all', label: t('全部系列') },
                 { value: 'base', label: t('基础风格') },
                 { value: 'brand', label: t('品牌风格') },
+                { value: 'work', label: '工作风格' },
                 { value: 'special', label: t('专题风格') },
               ]}
             />
@@ -321,7 +342,7 @@ export default function ExamplesPage() {
           <span role="status" aria-label={t('筛选结果')}>
             {results.length} SVG
           </span>
-          {(search || typeFilter || family !== 'all') && (
+          {(role || search || typeFilter || family !== 'all') && (
             <button className="text-button" onClick={clearFilters}>
               {t('清除筛选')}
             </button>
@@ -329,7 +350,12 @@ export default function ExamplesPage() {
         </div>
       </section>
       <div className="examples-workbench">
-        <section ref={gridRef} className="image-results" aria-label={t('图片结果')} inert={modalPreview}>
+        <section
+          ref={gridRef}
+          className="image-results"
+          aria-label={t('图片结果')}
+          inert={modalPreview}
+        >
           <div className="image-grid">
             {results.map((example) => (
               <button
@@ -386,7 +412,7 @@ export default function ExamplesPage() {
                   palette: styleById.get(item.style)!.palette,
                 }))}
               />
-            <h2 title={t(selected.name)}>{t(selected.name)}</h2>
+              <h2 title={t(selected.name)}>{t(selected.name)}</h2>
             </div>
             <div className="image-detail-actions">
               <button
@@ -409,7 +435,7 @@ export default function ExamplesPage() {
               </button>
             </div>
           </div>
-            <section className="example-main" aria-label={t('示例预览区')}>
+          <section className="example-main" aria-label={t('示例预览区')}>
             <div
               className="example-preview-stage"
               style={{
@@ -487,9 +513,7 @@ export default function ExamplesPage() {
           <aside className="example-source-panel" aria-label={t('复用与调试')}>
             <div className="example-source-heading">
               <h2>{t('复用与调试')}</h2>
-              <span>
-                {modified ? t('本页草稿') : saved ? t('历史本地版本') : t('内置示例')}
-              </span>
+              <span>{modified ? t('本页草稿') : saved ? t('历史本地版本') : t('内置示例')}</span>
             </div>
             <div
               className="example-source-tabs"
@@ -554,7 +578,9 @@ export default function ExamplesPage() {
                 </>
               ) : (
                 <>
-                  <p>{t('修改源码后先预览，再打开编辑器。无效或不安全的 SVG 不会替换当前预览。')}</p>
+                  <p>
+                    {t('修改源码后先预览，再打开编辑器。无效或不安全的 SVG 不会替换当前预览。')}
+                  </p>
                   <textarea
                     className="example-code"
                     aria-label={t('SVG 源码')}
@@ -577,14 +603,18 @@ export default function ExamplesPage() {
                 {notice}
               </p>
             )}
-            {pending && <p className="example-pending">{t('源码有未预览的修改，请先预览后再使用。')}</p>}
+            {pending && (
+              <p className="example-pending">{t('源码有未预览的修改，请先预览后再使用。')}</p>
+            )}
             <div className="example-reset-actions">
               <button className="text-button" onClick={reset}>
                 <RotateCcw size={13} />
                 {t('恢复内置')}
               </button>
             </div>
-            <p className="example-storage-note">{t('修改仅在本页保留，需要保存时请在编辑器中继续。')}</p>
+            <p className="example-storage-note">
+              {t('修改仅在本页保留，需要保存时请在编辑器中继续。')}
+            </p>
           </aside>
         </aside>
       </div>

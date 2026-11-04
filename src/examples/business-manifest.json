@@ -1,0 +1,372 @@
+[
+  {
+    "id": "business-review-capability",
+    "sourceId": "business-capability",
+    "style": "business-review",
+    "name": "产品能力地图",
+    "diagramType": "能力地图",
+    "roles": [
+      "产品",
+      "管理层"
+    ],
+    "task": "按用户任务组织协作产品的能力边界",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-review-journey",
+    "sourceId": "business-journey",
+    "style": "business-review",
+    "name": "新团队用户旅程",
+    "diagramType": "用户旅程",
+    "roles": [
+      "产品",
+      "设计",
+      "运营"
+    ],
+    "task": "从发现需求到持续使用的触点、阻碍与机会",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-review-roadmap",
+    "sourceId": "business-roadmap",
+    "style": "business-review",
+    "name": "Now / Next / Later 产品路线图",
+    "diagramType": "路线图",
+    "roles": [
+      "产品",
+      "项目协作",
+      "管理层"
+    ],
+    "task": "用投入和确定性表达产品方向与验证顺序",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-review-priority",
+    "sourceId": "business-priority",
+    "style": "business-review",
+    "name": "需求价值与投入矩阵",
+    "diagramType": "优先级矩阵",
+    "roles": [
+      "产品",
+      "设计",
+      "管理层"
+    ],
+    "task": "用价值和投入讨论六项产品需求的推进顺序",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-review-profit",
+    "sourceId": "business-profit",
+    "style": "business-review",
+    "name": "营业利润变化分析",
+    "diagramType": "瀑布图",
+    "roles": [
+      "财务",
+      "管理层"
+    ],
+    "task": "从期初利润解释销量、价格、成本与费用的增减",
+    "width": 1600,
+    "height": 1000,
+    "editableData": true
+  },
+  {
+    "id": "business-review-budget",
+    "sourceId": "business-budget",
+    "style": "business-review",
+    "name": "部门预算与实际对比",
+    "diagramType": "对比图",
+    "roles": [
+      "财务",
+      "管理层"
+    ],
+    "task": "同一期间、同一单位的部门费用执行与偏差",
+    "width": 1600,
+    "height": 1000,
+    "editableData": true
+  },
+  {
+    "id": "business-review-procurement",
+    "sourceId": "business-procurement",
+    "style": "business-review",
+    "name": "采购到付款控制流程",
+    "diagramType": "泳道图",
+    "roles": [
+      "财务",
+      "项目协作"
+    ],
+    "task": "业务、财务审批与供应商交付的职责及单据控制",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-review-metrics",
+    "sourceId": "business-metrics",
+    "style": "business-review",
+    "name": "协作产品业务指标树",
+    "diagramType": "指标树",
+    "roles": [
+      "运营",
+      "产品",
+      "管理层"
+    ],
+    "task": "以周活跃协作团队为目标拆解新增、留存和回流",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-review-activation",
+    "sourceId": "business-activation",
+    "style": "business-review",
+    "name": "新用户激活转化漏斗",
+    "diagramType": "漏斗图",
+    "roles": [
+      "运营",
+      "产品"
+    ],
+    "task": "同一批用户从访问到完成团队交付的逐步转化",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-review-campaign",
+    "sourceId": "business-campaign",
+    "style": "business-review",
+    "name": "营销活动全链路",
+    "diagramType": "泳道图",
+    "roles": [
+      "运营",
+      "项目协作"
+    ],
+    "task": "目标、内容、渠道上线、线索承接与复盘闭环",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-review-raci",
+    "sourceId": "business-raci",
+    "style": "business-review",
+    "name": "产品上线职责矩阵",
+    "diagramType": "职责矩阵",
+    "roles": [
+      "项目协作",
+      "产品",
+      "管理层"
+    ],
+    "task": "明确产品、研发、测试与项目经理的协作职责",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-review-milestones",
+    "sourceId": "business-milestones",
+    "style": "business-review",
+    "name": "跨团队项目里程碑",
+    "diagramType": "依赖图",
+    "roles": [
+      "项目协作",
+      "产品"
+    ],
+    "task": "沿范围、方案、开发、验收到发布标出依赖",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-capability",
+    "sourceId": "business-capability",
+    "style": "business-report",
+    "name": "产品能力地图",
+    "diagramType": "能力地图",
+    "roles": [
+      "产品",
+      "管理层"
+    ],
+    "task": "按用户任务组织协作产品的能力边界",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-journey",
+    "sourceId": "business-journey",
+    "style": "business-report",
+    "name": "新团队用户旅程",
+    "diagramType": "用户旅程",
+    "roles": [
+      "产品",
+      "设计",
+      "运营"
+    ],
+    "task": "从发现需求到持续使用的触点、阻碍与机会",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-roadmap",
+    "sourceId": "business-roadmap",
+    "style": "business-report",
+    "name": "Now / Next / Later 产品路线图",
+    "diagramType": "路线图",
+    "roles": [
+      "产品",
+      "项目协作",
+      "管理层"
+    ],
+    "task": "用投入和确定性表达产品方向与验证顺序",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-priority",
+    "sourceId": "business-priority",
+    "style": "business-report",
+    "name": "需求价值与投入矩阵",
+    "diagramType": "优先级矩阵",
+    "roles": [
+      "产品",
+      "设计",
+      "管理层"
+    ],
+    "task": "用价值和投入讨论六项产品需求的推进顺序",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-profit",
+    "sourceId": "business-profit",
+    "style": "business-report",
+    "name": "营业利润变化分析",
+    "diagramType": "瀑布图",
+    "roles": [
+      "财务",
+      "管理层"
+    ],
+    "task": "从期初利润解释销量、价格、成本与费用的增减",
+    "width": 1600,
+    "height": 1000,
+    "editableData": true
+  },
+  {
+    "id": "business-report-budget",
+    "sourceId": "business-budget",
+    "style": "business-report",
+    "name": "部门预算与实际对比",
+    "diagramType": "对比图",
+    "roles": [
+      "财务",
+      "管理层"
+    ],
+    "task": "同一期间、同一单位的部门费用执行与偏差",
+    "width": 1600,
+    "height": 1000,
+    "editableData": true
+  },
+  {
+    "id": "business-report-procurement",
+    "sourceId": "business-procurement",
+    "style": "business-report",
+    "name": "采购到付款控制流程",
+    "diagramType": "泳道图",
+    "roles": [
+      "财务",
+      "项目协作"
+    ],
+    "task": "业务、财务审批与供应商交付的职责及单据控制",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-metrics",
+    "sourceId": "business-metrics",
+    "style": "business-report",
+    "name": "协作产品业务指标树",
+    "diagramType": "指标树",
+    "roles": [
+      "运营",
+      "产品",
+      "管理层"
+    ],
+    "task": "以周活跃协作团队为目标拆解新增、留存和回流",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-activation",
+    "sourceId": "business-activation",
+    "style": "business-report",
+    "name": "新用户激活转化漏斗",
+    "diagramType": "漏斗图",
+    "roles": [
+      "运营",
+      "产品"
+    ],
+    "task": "同一批用户从访问到完成团队交付的逐步转化",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-campaign",
+    "sourceId": "business-campaign",
+    "style": "business-report",
+    "name": "营销活动全链路",
+    "diagramType": "泳道图",
+    "roles": [
+      "运营",
+      "项目协作"
+    ],
+    "task": "目标、内容、渠道上线、线索承接与复盘闭环",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-raci",
+    "sourceId": "business-raci",
+    "style": "business-report",
+    "name": "产品上线职责矩阵",
+    "diagramType": "职责矩阵",
+    "roles": [
+      "项目协作",
+      "产品",
+      "管理层"
+    ],
+    "task": "明确产品、研发、测试与项目经理的协作职责",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  },
+  {
+    "id": "business-report-milestones",
+    "sourceId": "business-milestones",
+    "style": "business-report",
+    "name": "跨团队项目里程碑",
+    "diagramType": "依赖图",
+    "roles": [
+      "项目协作",
+      "产品"
+    ],
+    "task": "沿范围、方案、开发、验收到发布标出依赖",
+    "width": 1600,
+    "height": 1000,
+    "editableData": false
+  }
+]

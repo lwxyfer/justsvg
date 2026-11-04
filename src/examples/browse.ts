@@ -1,6 +1,6 @@
 import { templates } from '../editor/insert/templates';
 import { examples, exampleStyles, type SvgExample } from './catalog';
-export type VisualFamily = 'all' | 'base' | 'brand' | 'special';
+export type VisualFamily = 'all' | 'base' | 'brand' | 'special' | 'work';
 export const styleById = new Map(exampleStyles.map((style) => [style.id, style]));
 export function contentKey(example: SvgExample) {
   // The authored RAG studies share a subject, not geometry or a production architecture.
@@ -27,6 +27,7 @@ export function diagramType(example: SvgExample): string {
   return '架构图';
 }
 export function visualFamily(example: SvgExample): Exclude<VisualFamily, 'all'> {
+  if (example.style.startsWith('business-')) return 'work';
   return styleById.get(example.style)?.brand
     ? 'brand'
     : example.style.startsWith('base')
@@ -40,16 +41,30 @@ export interface ContentGroup {
   type: string;
   variants: SvgExample[];
 }
-export function browseContents(type: string, family: VisualFamily, query: string): ContentGroup[] {
+export function browseContents(
+  type: string,
+  family: VisualFamily,
+  query: string,
+  role = '',
+): ContentGroup[] {
   const groups = new Map<string, ContentGroup>();
   const search = query.trim().toLocaleLowerCase();
   for (const example of examples) {
+    if (role && !example.roles?.includes(role)) continue;
     if (type && diagramType(example) !== type) continue;
     if (family !== 'all' && visualFamily(example) !== family) continue;
     const style = styleById.get(example.style)!;
     if (
       search &&
-      ![example.name, example.id, style.name, style.summary, ...style.tags]
+      ![
+        example.name,
+        example.id,
+        style.name,
+        style.summary,
+        ...style.tags,
+        ...(example.roles || []),
+        example.task || '',
+      ]
         .join(' ')
         .toLocaleLowerCase()
         .includes(search)

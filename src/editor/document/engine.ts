@@ -651,6 +651,12 @@ export class DocumentEngine {
     } else this.transaction('修改属性', apply);
   }
   textStructure(el: SVGGraphicsElement) {
+    if (el.hasAttribute('data-sf-chart-managed') && el.closest('[data-sf-chart]'))
+      return {
+        editable: false,
+        reason: '请在“图表数据”面板修改数值，以同步比例和合计。',
+        parts: [] as Element[],
+      };
     if (el.localName !== 'text')
       return { editable: false, reason: '请选择文字元素。', parts: [] as Element[] };
     if (

@@ -12,7 +12,7 @@ it('groups every saved example exactly once without losing old IDs', () => {
     examples.map((e) => e.id).sort(),
   );
   expect(groups.filter((g) => g.key === 'rag-studies')).toHaveLength(1);
-  expect(groups.find((g) => g.key === 'rag-studies')!.variants).toHaveLength(53);
+  expect(groups.find((g) => g.key === 'rag-studies')!.variants).toHaveLength(59);
 });
 it('combines type, family and search rather than silently broadening filters', () => {
   expect(browseContents('实体关系图', 'brand', '')).toEqual([]);

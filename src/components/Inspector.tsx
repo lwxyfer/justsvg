@@ -11,6 +11,7 @@ import {
   Link,
   Unlink,
   Sparkles,
+  ChartColumn,
 } from 'lucide-react';
 import {
   resizeRect,
@@ -31,6 +32,7 @@ import { connectionElement, connectionNodes } from '../editor/document/connectio
 import { MotionProperties } from './MotionProperties';
 import { motionOriginal, motionWrapper, isMotionWrapper } from '../editor/document/motion';
 import { useLocale } from '../i18n/locale';
+import { FinancialChartProperties } from './FinancialChartProperties';
 function Field({
   label,
   value,
@@ -239,6 +241,12 @@ export const Inspector = memo(function Inspector() {
   const attr = (name: string) =>
     el ? (['id', 'transform'].includes(name) ? el : styleTarget(el)).getAttribute(name) || '' : '';
   const connector = engine.selection.length === 1 && el ? connectionElement(el) : null;
+  const nestedCharts = el?.querySelectorAll<SVGGraphicsElement>('[data-sf-chart]');
+  const chart =
+    engine.selection.length === 1 && el
+      ? el.closest<SVGGraphicsElement>('[data-sf-chart]') ||
+        (nestedCharts?.length === 1 ? nestedCharts[0] : null)
+      : null;
   const common = (name: string) => {
     if (!el) return '';
     const value = getComputedStyle(styleTarget(el)).getPropertyValue(name);
@@ -274,6 +282,11 @@ export const Inspector = memo(function Inspector() {
             </span>
             <span>{el.getAttribute('data-label') || el.id || t('未命名')}</span>
           </div>
+          {chart && (
+            <Section title="图表数据" icon={<ChartColumn size={14} />}>
+              <FinancialChartProperties chart={chart} />
+            </Section>
+          )}
           {bounds && (
             <Section title="布局" icon={<Move size={14} />}>
               <div className="property-grid">
