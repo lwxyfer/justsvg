@@ -18,6 +18,7 @@
 </p>
 
 <p align="center">
+  <a href="https://justsvg.vercel.app/">Live demo</a> ·
   <a href="#quickstart">Quickstart</a> ·
   <a href="#svg-diagram-skill">SVG Skill</a> ·
   <a href="#style-library">Style library</a> ·
@@ -34,7 +35,7 @@ JustSVG pairs a browser-based SVG editor with SVG Diagram Skill. Generate archit
 | Component             | What you do                                                                                                            | Start here                          |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
 | **SVG Diagram Skill** | Give your AI agent a diagram brief and a visual reference. Get native SVG, the generation prompt and validation notes. | [Use the Skill](#svg-diagram-skill) |
-| **SVG editor**        | Open the SVG, edit text and shapes, move nodes and refine connections. Save the result as SVG.                         | [Run the editor](#quickstart)       |
+| **SVG editor**        | Open the SVG, edit text and shapes, move nodes and refine connections. Save the result as SVG.                         | [Open the editor](https://justsvg.vercel.app/editor) |
 
 The Skill can run independently of the editor. The web app prepares prompts and edits files; generation happens in your AI tool.
 
@@ -50,22 +51,7 @@ The Skill can run independently of the editor. The web app prepares prompts and 
 
 ## Quickstart
 
-Requires **Node.js 22.12+** and npm. CI uses Node.js 24.
-
-```sh
-git clone https://github.com/lwxyfer/justsvg.git
-cd justsvg
-npm ci
-npm run dev
-```
-
-Open [http://127.0.0.1:5173](http://127.0.0.1:5173). Vite prints the active address if that port is in use.
-
-| Route       | Purpose                                                                |
-| ----------- | ---------------------------------------------------------------------- |
-| `/`         | Product overview, interactive style previews and a small editable demo |
-| `/editor`   | Full SVG editor                                                        |
-| `/examples` | Searchable style and example library                                   |
+For local setup, see the [development guide](development.md#local-development).
 
 To edit your first diagram:
 
@@ -122,60 +108,13 @@ Brand studies are original JustSVG examples inspired by public visual references
 Current version: **1.0.0-beta.1**.
 
 - SVG import, editing, export and re-import are available. `.drawio` project files are not supported.
-- The homepage supports English and Chinese. The editor and example-library interface currently use Chinese.
-- The editor targets desktop browsers. Chrome automation is in place; Safari and physical trackpad/input-method acceptance remain open.
+- The homepage, editor and example library support switching between English and Chinese.
+- The editor targets desktop browsers.
 - Automatic obstacle routing, full-graph layout, pen/path-node drawing and cloud collaboration are outside the current editor's capabilities.
 - Browser recovery restores documents and views, but does not preserve undo history across reloads. Export files for lasting copies.
 - Imports are sanitized. Scripts, external resources and unsupported SVG features may be removed; complex third-party SVGs can have compatibility limits.
 
-See the [editor compatibility notes](docs/EDITOR_GUIDE.zh-CN.md#安全与兼容性), [1.0 scope](docs/V1.0_REQUIREMENTS.md) and [implementation notes](docs/V1.0_PROGRESS.md) for details.
-
-## Development
-
-```sh
-npm run lint
-npm test
-npm run build
-```
-
-End-to-end tests default to an installed Google Chrome. To use Playwright Chromium:
-
-```sh
-npx playwright install chromium
-PW_CHANNEL=chromium npm run test:e2e
-```
-
-In PowerShell, set `$env:PW_CHANNEL="chromium"` before running `npm run test:e2e`.
-
-The E2E runner starts or reuses the local Vite server on port 5173. Failures retain screenshots and traces in `test-results/`; the HTML report is in `playwright-report/`. [CI](.github/workflows/ci.yml) runs lint, unit tests, the production build and Chromium E2E tests.
-
-<details>
-<summary>Repository structure</summary>
-
-```text
-src/home/              Product homepage and SVG demonstrations
-src/app/               Routing, document tabs and local recovery
-src/editor/document/   Native SVG editing, transactions and history
-src/editor/canvas/     Viewport, pointer interaction and overlays
-src/editor/security/   SVG parsing, sanitization and input limits
-src/editor/insert/     Shapes, icons and composition templates
-src/examples/          SVG examples, styles and paired prompts
-skills/svg-diagram/    Standalone SVG Diagram Skill
-tests/                 Unit and browser regression tests
-```
-
-</details>
-
-## Self-hosting
-
-```sh
-npm run build
-npm run preview
-```
-
-`npm run preview` serves the production build locally. Deploy `dist/` to a static host for sharing. Configure `/editor` and `/examples` to fall back to `index.html`. For a subdirectory deployment, set Vite's `base` in `vite.config.ts` before building.
-
-The app needs no backend or AI API key. AI generation runs in the user's separate AI tool.
+See the [editor compatibility notes](docs/EDITOR_GUIDE.zh-CN.md#安全与兼容性) for details.
 
 ## Documentation
 
@@ -185,21 +124,15 @@ Detailed guides are currently in Chinese.
 | ---------------------------------------------------- | ----------------------------------------------------------- |
 | [Editor guide](docs/EDITOR_GUIDE.zh-CN.md)           | Editing, shortcuts, document recovery and SVG compatibility |
 | [SVG Diagram Skill](skills/svg-diagram/README.md)    | Installation, prompts, examples and validation              |
-| [Example library](docs/EXAMPLES.md)                  | SVG/prompt structure and library maintenance                |
 | [Composition templates](docs/COMPOSITE_TEMPLATES.md) | Reusable architectures, flows and components                |
 | [Brand studies](docs/BRAND_EXAMPLES.md)              | Visual references, compositions and attribution             |
 | [Working diagrams](docs/WORKPLACE_EXAMPLES.md)       | Eight diagram types and their base-style variants           |
-| [Validation notes](docs/VALIDATION.md)               | Recorded checks and their limits                            |
 
 ## Contributing
 
 Bug reports, SVG compatibility cases, diagram examples and documentation improvements are welcome.
 
-- [Report a bug](https://github.com/lwxyfer/justsvg/issues/new): include a small reproducing SVG, steps, browser version and expected behavior.
-- [Propose a change](https://github.com/lwxyfer/justsvg/issues): discuss changes to the SVG contract or editing model before a large implementation.
-- Submit a pull request with focused changes and relevant checks. Include screenshots for UI changes; diagram examples should include editable SVG, a complete prompt and source references where applicable.
-
-The [development commands](#development) match the repository's CI checks. For example contributions, start with the [library guide](docs/EXAMPLES.md).
+[Report a bug](https://github.com/lwxyfer/justsvg/issues/new) · [Development and contribution guide](development.md)
 
 ## License
 

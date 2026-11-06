@@ -2,7 +2,7 @@
 
 [项目介绍](../README.zh-CN.md) · [English overview](../README.md)
 
-本指南介绍当前 beta 编辑器的具体操作、文件恢复和 SVG 兼容边界。先按 [快速开始](../README.zh-CN.md#快速开始) 启动项目，再进入 `/editor`。
+本指南介绍当前 beta 编辑器的具体操作、文件恢复和 SVG 兼容边界。先按 [本地开发指南](../development.md#local-development) 启动项目，再进入 `/editor`。
 
 ## 使用方法
 
