@@ -1,0 +1,46 @@
+{
+  "file": "linear-release-flow.svg",
+  "renderer": "Chromium 156.0.8078.80",
+  "structure": {
+    "file": "linear-release-flow.svg",
+    "errors": [],
+    "warnings": [],
+    "profile": "static-presentation-attributes",
+    "counts": {
+      "ids": 21,
+      "nodes": 8,
+      "edges": 9,
+      "texts": 49
+    }
+  },
+  "geometry": {
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "nodes": 8,
+      "edges": 9,
+      "texts": 49
+    },
+    "fonts": [
+      "Menlo, Consolas, monospace",
+      "Arial, \"Helvetica Neue\", \"PingFang SC\", sans-serif"
+    ],
+    "textEditXmlRoundtrip": true,
+    "limits": [
+      "Axis-aligned envelopes; stroke/marker extents and clipping require visual inspection.",
+      "Routes sampled at ~2 root units, capped at 4000 samples per edge; narrow collisions can escape.",
+      "Font stacks reported, not proof that the first font is installed.",
+      "No automated contrast, brand fidelity, editor binding or user acceptance verdict."
+    ]
+  },
+  "textEditBrowserReopen": true,
+  "blockedRequests": [],
+  "status": "technical-checks-passed",
+  "visualReview": "required",
+  "checkedOn": "2026-11-06",
+  "artifactSha256": {
+    "linear-release-flow.svg": "bac1131f75f689ad69fa62bb96dbcc6366f0c81a9611095ec3bb4ae4e12ce9ef",
+    "linear-release-flow.prompt.md": "027ff237bd5652c2def1612e2bcf124351f1b0a18584146fa06850e6e926e9d7",
+    "release-flow.graph.json": "9f8b5832c9586faa891d3b925213acb25329962db9ad57153ce45f0a0ce9cd4e"
+  }
+}

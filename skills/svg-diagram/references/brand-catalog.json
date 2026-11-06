@@ -1,0 +1,727 @@
+[
+  {
+    "id": "apple",
+    "name": "Apple",
+    "aliases": ["Apple Intelligence", "苹果"],
+    "surface": "Apple · Mac 产品叙事",
+    "references": [
+      {
+        "title": "Apple · Mac 产品叙事",
+        "url": "https://www.apple.com/mac/"
+      },
+      {
+        "title": "Apple · Intelligence 视觉",
+        "url": "https://www.apple.com/apple-intelligence/"
+      }
+    ],
+    "design": "用发布页式大字和大留白建立序幕，选择一个精细器件作为主焦点，以小尺度阶段模块和金属/光泽层次衬托。",
+    "recordedEvidence": "依据产品页的不等尺度焦点与留白，以及Apple Intelligence/Apple silicon的技术对象语言。此图为RAG内容转译，不复刻Apple的真实系统；Helvetica Neue近似本机字体，不分发SF字体。",
+    "exampleId": "brand-apple-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "microsoft",
+    "name": "Microsoft",
+    "aliases": ["Fluent 2", "Fluent", "微软"],
+    "surface": "Fluent 2 · 图标",
+    "references": [
+      {
+        "title": "Fluent 2 · 图标",
+        "url": "https://fluent2.microsoft.design/iconography"
+      },
+      {
+        "title": "Fluent 2 · 层级",
+        "url": "https://fluent2.microsoft.design/elevation"
+      },
+      {
+        "title": "Fluent 2 · 字体",
+        "url": "https://fluent2.microsoft.design/typography/"
+      }
+    ],
+    "design": "用浅色叠层工作面划分职责，按表面深度排序信息，双色体块图标和局部蓝紫材质标识少数关键角色。",
+    "recordedEvidence": "以Fluent工作面、空间层次和双色图标而非色板为依据；体块与工作区是本图原创适配，Segoe不可用时系统回退。",
+    "exampleId": "brand-microsoft-rag",
+    "localFontStack": "Segoe UI, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "google",
+    "name": "Google",
+    "aliases": ["Material You", "谷歌"],
+    "surface": "Google · 品牌几何",
+    "references": [
+      {
+        "title": "Google · 品牌几何",
+        "url": "https://design.google/library/evolving-google-identity"
+      },
+      {
+        "title": "Google · Material You",
+        "url": "https://design.google/library/making-material-you"
+      }
+    ],
+    "design": "用可辨轮廓区分语义角色，四原色固定映射角色，以显著大小差和留白组织几何对象。",
+    "recordedEvidence": "把Google的简单几何、四色与Material的表达性形状落实为节点轮廓、语义映射和不同尺度；不是Google官方架构图标准。",
+    "exampleId": "brand-google-rag",
+    "localFontStack": "Google Sans, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "openai",
+    "name": "OpenAI",
+    "aliases": ["OpenAI Developers Blog", "OpenAI Dev Blog"],
+    "surface": "Developer Blog · 暖色封面参考",
+    "references": [
+      {
+        "title": "Developer Blog · 暖色封面参考",
+        "url": "https://developers.openai.com/images/blog/designing-failover-across-openai-model-providers/cover.webp"
+      },
+      {
+        "title": "OpenAI Developers · Blog（用户指定）",
+        "url": "https://developers.openai.com/blog"
+      }
+    ],
+    "design": "用白色编辑式页头和宽幅珊瑚橙粉场域，局部留奶油亮区，叠半透明技术平面、细图标与淡同心弧。用深色信息线支撑可读性。",
+    "recordedEvidence": "直接观察用户指定博客的页面与首篇封面：暖橙珊瑚粉氛围、透明圆角技术图形、白色细线和同心弧线，而非笼统套用OpenAI企业色板。原封面的细腻纹理以原生SVG渐变和细点pattern近似；为架构图的可读性，将文字与实际依赖线加深。OpenAI Sans只在本机可用时使用，不分发专有字体，缺失时回退Helvetica Neue/Arial；不声称逐像素复刻。",
+    "exampleId": "brand-openai-rag",
+    "localFontStack": "OpenAI Sans, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "claude",
+    "name": "Claude",
+    "aliases": [],
+    "surface": "Claude · 官方产品视觉",
+    "references": [
+      {
+        "title": "Claude · 官方产品视觉",
+        "url": "https://claude.com/"
+      },
+      {
+        "title": "Anthropic · 编辑与研究视觉",
+        "url": "https://www.anthropic.com/"
+      }
+    ],
+    "design": "用暖纸、衬线大标题和稿纸式回答营造阅读顺序，陶土色聚焦核心，知识材料与正文有不同密度。",
+    "recordedEvidence": "官网的暖纸色、燕麦色、陶土色及衬线/无衬线对照作为材料与阅读层级依据；本图采用知识手册和回答稿纸重新组织RAG，不声称复刻专有字体。",
+    "exampleId": "brand-claude-rag",
+    "localFontStack": "Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "notion",
+    "name": "Notion",
+    "aliases": [],
+    "surface": "Notion · Projects 数据库与看板",
+    "references": [
+      {
+        "title": "Notion · Projects 数据库与看板",
+        "url": "https://www.notion.com/product/projects"
+      },
+      {
+        "title": "Notion · 官方产品视觉与插画",
+        "url": "https://www.notion.com/"
+      }
+    ],
+    "design": "用厚黑线、纸张叠层、格窗和少量亮黄组织对象，重点采用展开纸页而非密集界面格子。当前纸墨稿仍有用户指出的差距。",
+    "recordedEvidence": "用户已明确选择Notion官网品牌视觉。参考官方Projects页纸墨插画的有分量黑线、纸张与格窗对象和少量黄色；据此创作知识链、勾选清单、稿纸与展开的知识册对象。图中不再模拟数据库和编辑器控件，不使用官方标志或真实产品数据；这是原生SVG品牌风格转译，不是官方插画原稿。",
+    "exampleId": "brand-notion-rag",
+    "localFontStack": "Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "stripe",
+    "name": "Stripe",
+    "aliases": [],
+    "surface": "Stripe · 基础设施视觉",
+    "references": [
+      {
+        "title": "Stripe · 基础设施视觉",
+        "url": "https://stripe.com/"
+      },
+      {
+        "title": "Stripe · 品牌资源",
+        "url": "https://stripe.com/newsroom/brand-assets"
+      }
+    ],
+    "design": "用深蓝标题、斜切渐变层和亮色内容面组织基础设施叙事，把深色技术核心与精密白色数据模块拉开。",
+    "recordedEvidence": "以Stripe官网的斜切渐变、深蓝排版、产品与开发者基础设施层级为参考；转译为RAG数据流，不是支付生产架构或官方模板。字体采用本机近似。",
+    "exampleId": "brand-stripe-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "linear",
+    "name": "Linear",
+    "aliases": ["Linear Issues", "Linear Issue"],
+    "surface": "Linear · 2026界面更新",
+    "references": [
+      {
+        "title": "Linear · 2026界面更新",
+        "url": "https://linear.app/now/behind-the-latest-design-refresh"
+      },
+      {
+        "title": "Linear · 品牌指南",
+        "url": "https://linear.app/brand"
+      }
+    ],
+    "design": "用退后的暖灰近黑侧区与独立位置栏和视图栏，紧凑任务行分阶段阅读，浅色正文字阶优先。小面积低饱和蓝标示当前重点，中性线承担关系。",
+    "recordedEvidence": "依据官方2026界面更新对位置栏/视图栏、分隔与密度的调整，以及官方品牌页的Mercury White #F4F5F8/Nordic Gray #222326和低饱和蓝原则；暖灰表面颜色为图示适配值；本图是原创RAG任务视图，未使用Linear商标素材。",
+    "exampleId": "brand-linear-rag",
+    "localFontStack": "Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "figma",
+    "name": "Figma",
+    "aliases": ["FigJam"],
+    "surface": "Figma · FigJam 协作画布",
+    "references": [
+      {
+        "title": "Figma · FigJam 协作画布",
+        "url": "https://www.figma.com/figjam/"
+      },
+      {
+        "title": "Figma · 品牌使用指南",
+        "url": "https://www.figma.com/using-the-figma-brand/"
+      }
+    ],
+    "design": "用暖白点阵画布、多人协作色块和内容类型不同的形状组织讨论，少量静态指针提示阅读焦点。",
+    "recordedEvidence": "转译FigJam的协作、组件、连线和色块组织。画面中的指针/名字是说明素材，不是实时协作者；不用logo或假选框替代品牌构图，字体采用本机近似。",
+    "exampleId": "brand-figma-rag",
+    "localFontStack": "Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "vercel",
+    "name": "Vercel",
+    "aliases": ["Geist", "Vercel Geist"],
+    "surface": "Vercel · Geist 设计系统",
+    "references": [
+      {
+        "title": "Vercel · Geist 设计系统",
+        "url": "https://vercel.com/geist/introduction"
+      },
+      {
+        "title": "Vercel · 网格",
+        "url": "https://vercel.com/geist/grid"
+      },
+      {
+        "title": "Vercel · 表面材料",
+        "url": "https://vercel.com/geist/materials"
+      },
+      {
+        "title": "Vercel · 字体层级",
+        "url": "https://vercel.com/geist/typography"
+      }
+    ],
+    "design": "用高对比黑白网格与表面等级区分范围，等宽标识承载代码与状态，小面积状态色辅助读图。",
+    "recordedEvidence": "官方Geist明确以高对比色彩、网格及开发者字体组织视觉；本图按Materials的6/12px表面角色、字体的标题/标签/代码层级和色彩分工细化部署DAG。项目、分支和Preview均为图示，不是真实Vercel部署或运行状态。",
+    "exampleId": "brand-vercel-rag",
+    "localFontStack": "Geist, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "dropbox",
+    "name": "Dropbox",
+    "aliases": [],
+    "surface": "Dropbox · Typography",
+    "references": [
+      {
+        "title": "Dropbox · Typography",
+        "url": "https://brand.dropbox.com/typography"
+      },
+      {
+        "title": "Dropbox · Color",
+        "url": "https://brand.dropbox.com/color"
+      }
+    ],
+    "design": "以高对比大字和不对称色块形成编辑拼版，石墨与浅纸作底，蓝、青柠、粉按内容角色分配。",
+    "recordedEvidence": "依据实际打开的官方字体页面与官方色板：石墨、蓝、青柠、粉色、浅纸色构成编辑式拼版。专有DB Sharp Grotesk只优先本机可用字体，Helvetica Neue/Arial回退；本图不分发字体、不使用标志，不声称逐像素或字形一致。",
+    "exampleId": "brand-dropbox-rag",
+    "localFontStack": "DB Sharp Grotesk, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "spotify",
+    "name": "Spotify",
+    "aliases": ["Spotify Web Player"],
+    "surface": "Spotify · Web Player",
+    "references": [
+      {
+        "title": "Spotify · Web Player",
+        "url": "https://open.spotify.com/"
+      },
+      {
+        "title": "Spotify · Design guidelines",
+        "url": "https://developer.spotify.com/documentation/design"
+      }
+    ],
+    "design": "用暗色播放区、密集队列与唱片式圆形焦点形成主从，亮绿只强调当前焦点或状态。",
+    "recordedEvidence": "参考实际Web Player的音乐浏览层级及官方设计指南中的色彩/字体说明。唱片和队列是RAG语义的原创静态转译，不是Spotify服务、真实曲库或可播放控件。Spotify Mix不分发，使用本机字体回退。",
+    "exampleId": "brand-spotify-rag",
+    "localFontStack": "Spotify Mix, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "duolingo",
+    "name": "Duolingo",
+    "aliases": ["多邻国"],
+    "surface": "Duolingo · Official homepage",
+    "references": [
+      {
+        "title": "Duolingo · Official homepage",
+        "url": "https://www.duolingo.com/"
+      },
+      {
+        "title": "Duolingo · Design articles",
+        "url": "https://blog.duolingo.com/hub/design/"
+      }
+    ],
+    "design": "以连续学习站点组织进度，用圆润轮廓、白底和带实体底边的绿色节点突出当前阶段。",
+    "recordedEvidence": "实际官网可见白底、绿色按钮、圆润标题与清晰底边；旧design.duolingo.com指南已跳转设计博客，因此不冒称读取了仍有效的旧token页。图中无官方吉祥物/人物，字形本机近似，学习站点仅为知识流的原创图示隐喻。",
+    "exampleId": "brand-duolingo-rag",
+    "localFontStack": "Arial Rounded MT Bold, Trebuchet MS, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "ibm",
+    "name": "IBM",
+    "aliases": ["IBM 2x Grid"],
+    "surface": "IBM · Technical diagrams",
+    "references": [
+      {
+        "title": "IBM · Technical diagrams",
+        "url": "https://www.ibm.com/design/language/infographics/technical-diagrams/design/"
+      },
+      {
+        "title": "IBM · 2x Grid",
+        "url": "https://www.ibm.com/design/language/2x-grid/"
+      }
+    ],
+    "design": "以 2x 网格确定间距和对齐，按职责嵌套分区，给正交连接预留走线通道，维护技术文档的线宽层级。",
+    "recordedEvidence": "官方技术图规范直接提供节点类型、嵌套、正交连接、字体与8px基础网格依据。本图为1600px画布的放大适配，非官方生产架构；IBM Plex Sans仅本机可用时使用，未打包字体或官方产品标志。",
+    "exampleId": "brand-ibm-rag",
+    "localFontStack": "IBM Plex Sans, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "ramp",
+    "name": "Ramp",
+    "aliases": [],
+    "surface": "Ramp · Official product site",
+    "references": [
+      {
+        "title": "Ramp · Official product site",
+        "url": "https://ramp.com/"
+      }
+    ],
+    "design": "用浅石色工作面和黑色产品核心形成对照，酸柠黄指引重点，细点阵退到背景。",
+    "recordedEvidence": "依据2026-10-26实际官网截图的黑白/浅石色、酸柠黄、点阵技术场和黑色产品材料观察。色号是页面观察近似，Lausanne以本机无衬线回退；不声称金融事实、真实产品状态或完整品牌token一致。",
+    "exampleId": "brand-ramp-rag",
+    "localFontStack": "Lausanne, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "github",
+    "name": "GitHub",
+    "aliases": ["GitHub Actions"],
+    "surface": "GitHub · Actions 产品与工作流视觉",
+    "references": [
+      {
+        "title": "GitHub · Actions 产品与工作流视觉",
+        "url": "https://github.com/features/actions"
+      },
+      {
+        "title": "GitHub · 官方网站",
+        "url": "https://github.com/"
+      }
+    ],
+    "design": "以任务依赖和提交轨道安排阅读，深色工作面承载紧凑代码层级，状态点跟随任务节点。",
+    "recordedEvidence": "官方Actions页面的工作流示例提供job依赖图依据，官网实际打开确认深色表面与无衬线层级。图中是RAG流程的原创适配，不是实际仓库或运行状态；Mona Sans仅优先本机字体，不分发字体和Octocat标志。",
+    "exampleId": "brand-github-rag",
+    "localFontStack": "Mona Sans, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "slack",
+    "name": "Slack",
+    "aliases": [],
+    "surface": "Slack · 当前官网与产品工作区",
+    "references": [
+      {
+        "title": "Slack · 当前官网与产品工作区",
+        "url": "https://slack.com/"
+      },
+      {
+        "title": "Slack · Media Kit 产品截图",
+        "url": "https://slack.com/media-kit"
+      }
+    ],
+    "design": "用深紫侧区与明亮内容面区分导航和工作，按消息串和附件组织层级，人物线索只作语义辅助。",
+    "recordedEvidence": "依据实际官网中的紫色产品框架、白色工作面和粗字标题，不把历史茄紫当作唯一当前规范。头像/消息/附件为原创图示，无真实团队数据。当前官网显示Salesforce字体，SVG用本机字体近似并回退，不分发专有字体。",
+    "exampleId": "brand-slack-rag",
+    "localFontStack": "Salesforce Sans, Lato, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "cloudflare",
+    "name": "Cloudflare",
+    "aliases": [],
+    "surface": "Cloudflare · 官方首页与Region: Earth网络视觉",
+    "references": [
+      {
+        "title": "Cloudflare · 官方首页与Region: Earth网络视觉",
+        "url": "https://www.cloudflare.com/"
+      }
+    ],
+    "design": "用橙色技术场和细线网络环表达边缘拓扑，近白外场和黑色标题托住技术焦点。",
+    "recordedEvidence": "根据实际官网橙色大幅技术场、近白页面、细网络图与黑色无衬线观察；色号/环形几何为RAG图解适配，不是官方token清单或真实部署。STK Bureau Sans仅本机优先，使用系统回退。",
+    "exampleId": "brand-cloudflare-rag",
+    "localFontStack": "STK Bureau Sans, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "miro",
+    "name": "Miro",
+    "aliases": ["Intelligent Canvas"],
+    "surface": "Miro · 当前官网 Intelligent Canvas 视觉",
+    "references": [
+      {
+        "title": "Miro · 当前官网 Intelligent Canvas 视觉",
+        "url": "https://miro.com/"
+      }
+    ],
+    "design": "在暖白点阵画布上组合便签和流程对象，以衬线大题建立层级，蓝紫连接贯穿协作工作面。",
+    "recordedEvidence": "实际官网已采用Apris衬线标题、暖白点阵工作面和蓝紫连接，不能只沿用旧版蓝黄印象。本图为原生图解转译，Georgia/Roobert系统回退，不复制品牌标志或照片，不声称专有字形一致。",
+    "exampleId": "brand-miro-rag",
+    "localFontStack": "Roobert PRO, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "airbnb",
+    "name": "Airbnb",
+    "aliases": ["爱彼迎"],
+    "surface": "Airbnb · 官方搜索与探索界面",
+    "references": [
+      {
+        "title": "Airbnb · 官方搜索与探索界面",
+        "url": "https://www.airbnb.com/"
+      }
+    ],
+    "design": "用分段搜索胶囊作为入口，以目的地卡和地图形成探索节奏，让莓红只标注主要动作。",
+    "recordedEvidence": "实际官网重定向至地区站，可见Cereal字体、白色页面、分段搜索胶囊与莓红动作；本图从这些产品材料构建原创知识旅程。地区页未加载完整房源列表，图中封面是几何知识图示而非官方房源照片；不声称完整页面复刻。字体本机回退，不嵌入外部资源。",
+    "exampleId": "brand-airbnb-rag",
+    "localFontStack": "Airbnb Cereal VF, Circular, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "cursor",
+    "name": "Cursor",
+    "aliases": ["Cursor IDE"],
+    "surface": "Cursor · 当前官网与智能体工作台",
+    "references": [
+      {
+        "title": "Cursor · 当前官网与智能体工作台",
+        "url": "https://cursor.com/"
+      }
+    ],
+    "design": "用暖白纸面和开放文件列组织内容，以清晰源码层级和独立上下文区域表达技术职责。",
+    "recordedEvidence": "当前官网暖白#f7f7f4及任务/文件/上下文结构是参考；官网画作与专有CursorGothic不复制。图为原创RAG技术结构，代码/文件均为示意，不代表真实Cursor配置或执行状态。此次重画取代被用户否定的稀疏伪界面。",
+    "exampleId": "brand-cursor-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "lovable",
+    "name": "Lovable",
+    "aliases": ["Lovable Brand Hub"],
+    "surface": "Lovable · 官方Brand Hub色彩",
+    "references": [
+      {
+        "title": "Lovable · 官方Brand Hub色彩",
+        "url": "https://lovablebrand.lovable.app/brand/colors"
+      },
+      {
+        "title": "Lovable · 官方Brand Hub字体与字阶",
+        "url": "https://lovablebrand.lovable.app/brand/typography"
+      }
+    ],
+    "design": "从 Brand Hub 的柔和全谱色场、浅色间隔与字阶出发，以清楚的白色综合对象收束阅读。",
+    "recordedEvidence": "主站仍为安全验证页，未用它推断产品界面。有效依据是官网链接的Brand Hub色彩、渐变背景与Typography，非主站布局复制。Camera Plain仅本机优先，使用系统回退，不分发专有字体。所有节点造型和RAG构图为原创转译；没有真实产品会话、发送功能或生成性能。",
+    "exampleId": "brand-lovable-rag",
+    "localFontStack": "Camera Plain, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "supabase",
+    "name": "Supabase",
+    "aliases": [],
+    "surface": "Supabase · 当前官网",
+    "references": [
+      {
+        "title": "Supabase · 当前官网",
+        "url": "https://supabase.com/"
+      }
+    ],
+    "design": "用干净白底、深绿语义点和精细向量几何组织数据对象，把模式或索引置于视线焦点。",
+    "recordedEvidence": "实际官网为浅色Manrope和深绿，Oct28补采的Vector/Storage/Data APIs几何作为对象语言参考。伪代码及模式是RAG机制示意，不是可直接部署的官方Supabase架构。Manrope本机优先系统回退；不分发闪电、大象或字体。2026社区活动选取依据沿用。",
+    "exampleId": "brand-supabase-rag",
+    "localFontStack": "Manrope, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "n8n",
+    "name": "n8n",
+    "aliases": [],
+    "surface": "n8n · 当前官网",
+    "references": [
+      {
+        "title": "n8n · 当前官网",
+        "url": "https://n8n.io/"
+      }
+    ],
+    "design": "用深色点阵承托工作流，节点内部居中图形，侧边显式端口，粉色集中于综合或输出重点。",
+    "recordedEvidence": "Oct28补采官网工作流区能看到深色点阵、图标居中节点和侧边端口；不是把先前浅色首屏当完整工作流编辑器。n8n Baumer字体不分发，系统回退。原生端口属于图示，不是选择辅助框；无真实执行状态、星数或第三方服务集成。",
+    "exampleId": "brand-n8n-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "raycast",
+    "name": "Raycast",
+    "aliases": [],
+    "surface": "Raycast · 官方产品视觉",
+    "references": [
+      {
+        "title": "Raycast · 官方产品视觉",
+        "url": "https://www.raycast.com/"
+      }
+    ],
+    "design": "用红色斜向汇聚线带动阅读，以精细键帽、紧凑命令文字和受控渐变表达动作。",
+    "recordedEvidence": "官网首屏实际主导斜向红色，补采产品细节可见命令/键帽材质；不复制官方背景颗粒或斜条商标。几何渐变是原生材料近似，不是假快捷键执行或剪贴板。Inter本机优先；无真实集成、使用量或性能。",
+    "exampleId": "brand-raycast-rag",
+    "localFontStack": "Inter, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "bytedance",
+    "name": "字节跳动",
+    "aliases": ["ByteDance", "字节"],
+    "surface": "字节跳动 · 官方中文视觉",
+    "references": [
+      {
+        "title": "字节跳动 · 官方中文视觉",
+        "url": "https://www.bytedance.com/"
+      }
+    ],
+    "design": "用蔚蓝场与大转角白面形成非对称版式，宋体大字分层，青色强调集中于综合区。",
+    "recordedEvidence": "实际中文官网的蓝场/白色大转角/宋体为结构依据，不复制办公楼照片、四根柱状标志或抖音品牌。字体本机Songti SC/SimSun回退；原生对象为原创技术转译。独角兽口径沿用胡润2026公开快照，不宣称实时状态。",
+    "exampleId": "brand-bytedance-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "xiaohongshu",
+    "name": "小红书",
+    "aliases": ["Xiaohongshu", "小红书 REDnote", "REDnote"],
+    "surface": "小红书 · 官方招聘与品牌故事",
+    "references": [
+      {
+        "title": "小红书 · 官方招聘与品牌故事",
+        "url": "https://job.xiaohongshu.com/"
+      }
+    ],
+    "design": "借招聘故事页的内容封面与粗中文字阶组织阅读，轻红作为关系线和重点标记。",
+    "recordedEvidence": "主站访问限制仍保留，视觉来源为实际官方招聘/故事页而非登录后信息流；新封面全部原创原生几何，不复制照片/UGC/字标。字阶和内容关系是主要参考，不把红白配色等同于全品牌规范。胡润2026选择口径不变。",
+    "exampleId": "brand-xiaohongshu-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "dji",
+    "name": "DJI 大疆",
+    "aliases": ["DJI", "Mavic", "大疆"],
+    "surface": "DJI · 当前官网Mavic产品视觉",
+    "references": [
+      {
+        "title": "DJI · 当前官网Mavic产品视觉",
+        "url": "https://www.dji.com/cn"
+      }
+    ],
+    "design": "用精密三孔光学对象统领焦点，深蓝地平线和有节制的高光衬出部件，支持模块按功能归位。",
+    "recordedEvidence": "有效官网截图展示三摄光学对象与深色产品光域。新图的壳体和镜腔为原创技术类比，没有复制无人机、相机照片或具体产品形状；不含真实焦距/飞行参数/硬件性能。字体本机无衬线；独角兽选择沿用胡润2026发布口径。",
+    "exampleId": "brand-dji-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "kimi",
+    "name": "Kimi（月之暗面）",
+    "aliases": ["Kimi", "月之暗面", "Moonshot AI"],
+    "surface": "Kimi · 当前官网任务界面",
+    "references": [
+      {
+        "title": "Kimi · 当前官网任务界面",
+        "url": "https://www.kimi.com/"
+      }
+    ],
+    "design": "用极简黑白和暖白附层组织清晰的主导问题、开放文档与可追踪引用。",
+    "recordedEvidence": "参考当前实际Kimi任务界面的黑白与暖白附层，不沿用早期荧绿宇宙印象，不分发K标志。文档名、引用正文均为原创RAG机制说明，不是真实会话、检索结果或性能。月之暗面独角兽资格沿用胡润2026快照，字体本机回退。",
+    "exampleId": "brand-kimi-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "stepfun",
+    "name": "阶跃星辰",
+    "aliases": ["StepFun", "Step Fun"],
+    "surface": "阶跃星辰 · 当前官网学术拼版",
+    "references": [
+      {
+        "title": "阶跃星辰 · 当前官网学术拼版",
+        "url": "https://www.stepfun.com/"
+      }
+    ],
+    "design": "以错落研究纸页、衬线层级和少量青蓝信息点组织材料，通过不对称留白引导阅读。",
+    "recordedEvidence": "有效官网截图为历史材料/学术图拼版，本图不复制手稿、人物、蝴蝶照片或编辑器控制点。用可以精确描述的研究几何适配为可编辑Diagram，字体Lora本机优先、Georgia/宋体回退。独角兽选取沿用胡润2026发布口径；图不是官方模型架构。",
+    "exampleId": "brand-stepfun-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "mistral",
+    "name": "Mistral",
+    "aliases": ["Mistral AI"],
+    "surface": "Mistral · 官方品牌与像素模型视觉",
+    "references": [
+      {
+        "title": "Mistral · 官方品牌与像素模型视觉",
+        "url": "https://mistral.ai/brand/"
+      },
+      {
+        "title": "Mistral · 当前官网",
+        "url": "https://mistral.ai/"
+      }
+    ],
+    "design": "以暖色像素阶梯表达过程，选用原创块面几何，形成由输入到分层综合的尺度差。",
+    "recordedEvidence": "实际Brand页已打开，Models部分明确采用像素插图。图中对象是原创技术几何，不复用像素猫、商标、官方模型图、照片、选择控制点或协作者指针；暖色按实际品牌材料近似。专有字体不分发，本机无衬线回退；内容不是Mistral生产架构或实际模型能力。",
+    "exampleId": "brand-mistral-rag",
+    "localFontStack": "Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity",
+    "aliases": [],
+    "surface": "Perplexity · 品牌色彩指南",
+    "references": [
+      {
+        "title": "Perplexity · 品牌色彩指南",
+        "url": "https://live.standards.site/perplexity/color"
+      },
+      {
+        "title": "Perplexity · 品牌字体指南",
+        "url": "https://live.standards.site/perplexity/type"
+      },
+      {
+        "title": "Perplexity · 官方品牌入口（页尾Brand Guidelines）",
+        "url": "https://www.perplexity.ai/hub"
+      }
+    ],
+    "design": "以纸白编辑版式、青绿关系提示与清晰引用条目表达可追溯信息，按文档层次组织阅读。",
+    "recordedEvidence": "官方Hub页尾确认链接至该品牌指南；指南色号和字体层级由公开网页索引正文读取。Chrome主站为验证页、指南连接失败，未将这些页面当作有效截图；本图仅是经确认的色彩/字体原则下原创研究排版，不宣称复刻产品UI。专有字体本机优先、系统与Georgia回退，未分发；无真实引用文章或生成效果。",
+    "exampleId": "brand-perplexity-rag",
+    "localFontStack": "Perplexity Sans, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "cohere",
+    "name": "Cohere",
+    "aliases": ["Cohere North"],
+    "surface": "Cohere · 当前官网与North展示",
+    "references": [
+      {
+        "title": "Cohere · 当前官网与North展示",
+        "url": "https://cohere.com/"
+      }
+    ],
+    "design": "用大字和深绿企业工作域建立层级，以金绿几何材料组成集中知识面。",
+    "recordedEvidence": "有效截图已等待字形动画稳定，显示白色巨幅标题、深色工作域、金绿材料和North知识组织。原纹理、照片和应用截图不复制，几何知识场为明确原创转译；CohereText不可用时以Georgia/系统字近似。图只说明RAG，不含真实企业文档、部署安全认证或性能。",
+    "exampleId": "brand-cohere-rag",
+    "localFontStack": "CohereText, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "huggingface",
+    "name": "Hugging Face",
+    "aliases": ["Hugging Face", "HF"],
+    "surface": "Hugging Face · 当前社区与模型视觉",
+    "references": [
+      {
+        "title": "Hugging Face · 当前社区与模型视觉",
+        "url": "https://huggingface.co/"
+      },
+      {
+        "title": "Hugging Face · 官方品牌色板",
+        "url": "https://huggingface.co/brand"
+      }
+    ],
+    "design": "以白色外场托住深色模型或任务区，用开源仓库的紧凑元数据和少量黄点建立层级。",
+    "recordedEvidence": "当前首页实际是白色外场中的深色模型与任务图，不沿用“黄底吉祥物”印象。图中仓库名全部example示意，无真实第三方模型/指标/状态或品牌表情。Source Sans Pro本机优先、系统回退；不引入图片、字体文件或外部内容。",
+    "exampleId": "brand-huggingface-rag",
+    "localFontStack": "Source Sans Pro, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "elevenlabs",
+    "name": "ElevenLabs",
+    "aliases": ["ElevenAgents", "Eleven Labs Agents"],
+    "surface": "ElevenLabs · 官方品牌规范（ElevenAgents）",
+    "references": [
+      {
+        "title": "ElevenLabs · 官方品牌规范（ElevenAgents）",
+        "url": "https://elevenlabs.io/brand"
+      }
+    ],
+    "design": "采用 Agents 分支的蓝绿声球焦点，周围用较小技术对象串起清楚关系，保持声球次要细节简洁。",
+    "recordedEvidence": "官方规范明确Agents为蓝色/圆球，Creative为橙色/Chladni，API为黑白；本图只采Agents分支，不声称整个品牌只有一种色板。原生几何适配不复制声球纹理或照片。仍为同9节点RAG内容，不是语音产品真实架构；Waldenburg本机优先，系统回退。",
+    "exampleId": "brand-elevenlabs-rag",
+    "localFontStack": "Waldenburg, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "replicate",
+    "name": "Replicate",
+    "aliases": [],
+    "surface": "Replicate · 当前官网色场与API代码展示",
+    "references": [
+      {
+        "title": "Replicate · 当前官网色场与API代码展示",
+        "url": "https://replicate.com/"
+      }
+    ],
+    "design": "用洋红到橙红的网点色场强调主区，叠白色代码工作面与简洁等宽标签，建立 API 阅读层级。",
+    "recordedEvidence": "有效官网截图显示大幅洋红/橙红渐变网点和白色代码面，和旧黑白印象不同。此图为RAG机制伪代码，不是Replicate SDK用法；不复制生成照片、官方标志、真实模型/调用数或性能。Basier Square及Freigeist仅本机优先，系统回退，无额外运行依赖。",
+    "exampleId": "brand-replicate-rag",
+    "localFontStack": "Basier Square, Helvetica Neue, Arial, PingFang SC, sans-serif"
+  },
+  {
+    "id": "goldman-sachs",
+    "name": "Goldman Sachs · 高盛",
+    "aliases": ["Goldman Sachs", "Goldman", "高盛"],
+    "surface": "Goldman Sachs · Insights",
+    "references": [
+      {
+        "title": "Goldman Sachs · Insights",
+        "url": "https://www.goldmansachs.com/insights"
+      }
+    ],
+    "design": "用蓝色刊头、白色研究页、衬线大题与细规则线做层级，先给编辑式结论再展开分析框架。",
+    "recordedEvidence": "依据Goldman Sachs官方Insights的蓝色刊头、白色编辑页面、衬线大题与细规则线进行原创架构转译。2026-11-03实际查看官方页面；Georgia为本地衬线近似，不分发品牌字体。非官方示例。",
+    "exampleId": "brand-goldman-sachs-rag"
+  },
+  {
+    "id": "morgan-stanley",
+    "name": "Morgan Stanley · 摩根士丹利",
+    "aliases": ["Morgan Stanley", "摩根士丹利", "大摩"],
+    "surface": "Morgan Stanley · Insights",
+    "references": [
+      {
+        "title": "Morgan Stanley · Insights",
+        "url": "https://www.morganstanley.com/insights"
+      },
+      {
+        "title": "Morgan Stanley · Home",
+        "url": "https://www.morganstanley.com/"
+      }
+    ],
+    "design": "用白底分析面与炭黑知识栏划分角色，浅青集中在研究工作面，正文采用紧凑报告层级。",
+    "recordedEvidence": "参照Morgan Stanley官方企业/研究页面的信息层级和黑白编辑框架，结合公开页面预览的浅青研究方向。官网正文可读取，本轮实时浏览器因网络协议超时未获得有效截图；本机Helvetica回退为近似，不声称精确品牌字体或完整官方规范。非官方示例。",
+    "exampleId": "brand-morgan-stanley-rag"
+  },
+  {
+    "id": "jpmorgan",
+    "name": "J.P. Morgan · 摩根大通",
+    "aliases": ["J.P. Morgan", "JP Morgan", "摩根大通", "小摩"],
+    "surface": "J.P. Morgan · Institutional site",
+    "references": [
+      {
+        "title": "J.P. Morgan · Institutional site",
+        "url": "https://www.jpmorgan.com/"
+      },
+      {
+        "title": "J.P. Morgan · About",
+        "url": "https://www.jpmorgan.com/about-us"
+      }
+    ],
+    "design": "以暖纸底和深棕衬线组织机构简报，采用清晰的分栏运营结构与有分量的标题层级。",
+    "recordedEvidence": "以J.P. Morgan机构站的暖中性色、衬线研究叙事为原创转译方向，不采用Chase零售蓝。官方站本轮返回403/区域重定向且浏览截图空白，不能作为已核验的逐项品牌规范；本图为非官方风格近似，未使用官方标志或专有字体。",
+    "exampleId": "brand-jpmorgan-rag"
+  }
+]

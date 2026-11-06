@@ -1,0 +1,46 @@
+{
+  "file": "claude.svg",
+  "renderer": "Chromium 156.0.8078.80",
+  "structure": {
+    "file": "claude.svg",
+    "errors": [],
+    "warnings": [],
+    "profile": "static-presentation-attributes",
+    "counts": {
+      "ids": 22,
+      "nodes": 9,
+      "edges": 9,
+      "texts": 37
+    }
+  },
+  "geometry": {
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "nodes": 9,
+      "edges": 9,
+      "texts": 37
+    },
+    "fonts": [
+      "Arial, \"Helvetica Neue\", sans-serif",
+      "Georgia, \"Times New Roman\", serif"
+    ],
+    "textEditXmlRoundtrip": true,
+    "limits": [
+      "Axis-aligned envelopes; stroke/marker extents and clipping require visual inspection.",
+      "Routes sampled at ~2 root units, capped at 4000 samples per edge; narrow collisions can escape.",
+      "Font stacks reported, not proof that the first font is installed.",
+      "No automated contrast, brand fidelity, editor binding or user acceptance verdict."
+    ]
+  },
+  "textEditBrowserReopen": true,
+  "blockedRequests": [],
+  "status": "technical-checks-passed",
+  "visualReview": "required",
+  "checkedOn": "2026-11-06",
+  "artifactSha256": {
+    "claude.svg": "49b0bce60bafe18aac6903f41b1bd63e5c729e55f302a7825c0f2754b1d5a531",
+    "claude.prompt.md": "20cf6cf5f4487de0a71e6b45d45c18dfdfc837dacad09f2122c125e1a4f96652",
+    "graph.json": "c4a17433f152d27d631c20bdf37acb9468af34ea2c4bd25a3bb0cffbe66df48e"
+  }
+}

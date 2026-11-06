@@ -77,6 +77,12 @@ The [editor guide](docs/EDITOR_GUIDE.zh-CN.md) covers shortcuts, grouping, linke
 
 ## SVG Diagram Skill
 
+Install it with the Skills CLI:
+
+```sh
+npx skills add lwxyfer/justsvg --skill svg-diagram
+```
+
 Use the Skill in an AI agent that can read local files. From this repository, give it a task such as:
 
 ```text

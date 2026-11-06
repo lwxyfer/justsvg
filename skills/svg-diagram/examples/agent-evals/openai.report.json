@@ -1,0 +1,45 @@
+{
+  "file": "openai.svg",
+  "renderer": "Chromium 156.0.8078.80",
+  "structure": {
+    "file": "openai.svg",
+    "errors": [],
+    "warnings": [],
+    "profile": "static-presentation-attributes",
+    "counts": {
+      "ids": 30,
+      "nodes": 9,
+      "edges": 9,
+      "texts": 34
+    }
+  },
+  "geometry": {
+    "errors": [],
+    "warnings": [],
+    "counts": {
+      "nodes": 9,
+      "edges": 9,
+      "texts": 34
+    },
+    "fonts": [
+      "Arial, \"Helvetica Neue\", sans-serif"
+    ],
+    "textEditXmlRoundtrip": true,
+    "limits": [
+      "Axis-aligned envelopes; stroke/marker extents and clipping require visual inspection.",
+      "Routes sampled at ~2 root units, capped at 4000 samples per edge; narrow collisions can escape.",
+      "Font stacks reported, not proof that the first font is installed.",
+      "No automated contrast, brand fidelity, editor binding or user acceptance verdict."
+    ]
+  },
+  "textEditBrowserReopen": true,
+  "blockedRequests": [],
+  "status": "technical-checks-passed",
+  "visualReview": "required",
+  "checkedOn": "2026-11-06",
+  "artifactSha256": {
+    "openai.svg": "8ef805ebedf5e3240c9c3fe03a22c870ff5b9be82283eb1812e7926324288568",
+    "openai.prompt.md": "ae397ad2a4a1c0c86a09eed1d3076371696b6e53da0a3aaa637faf8bb56417a7",
+    "graph.json": "c4a17433f152d27d631c20bdf37acb9468af34ea2c4bd25a3bb0cffbe66df48e"
+  }
+}

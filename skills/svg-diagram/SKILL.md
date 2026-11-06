@@ -1,6 +1,6 @@
 ---
 name: svg-diagram
-description: Create or restyle editable native SVG architecture diagrams, flowcharts, infographics, and system or repository maps. Use for concrete visual references or brand-inspired diagrams, including source calibration and browser verification. Excludes logo design, general illustration, and raster mockups.
+description: Create or restyle editable native SVG diagrams, including architecture, flows, infographics, and repository maps. Use when asked to draw in a named brand's style or from a visual reference. Resolve the visual source, adapt it to the content, and verify the SVG in a browser.
 ---
 
 # SVG Diagram
@@ -11,11 +11,13 @@ Deliver a useful diagram as portable SVG, with a reproducible prompt and evidenc
 
 Extract the audience, communication goal, required facts and relationships, output location, language, and visual reference. Infer routine layout choices. Ask only when a missing fact changes meaning or the reference cannot be identified; continue independent work while waiting. With no reference, choose an unbranded diagram language appropriate to the medium and state that choice.
 
-For a brand or supplied visual, read [references/style-calibration.md](references/style-calibration.md). Pin a **specific surface**: website, product interface, article cover, or supplied screenshot. Record source URL/file, capture date, visible observations and access limits. Inspect valid visual evidence before claiming fidelity. Treat blocked pages as unavailable evidence. A broad brand name alone does not select a surface; name a reasonable candidate as provisional when clarification is unavailable. The historical OpenAI case in the reference is a dated observation, not a universal brand preset.
+For a named brand, follow [brand lookup and discovery](references/brand-lookup.md). Use the user's exact screenshot or URL first. With a brand name alone, resolve its catalog profile or find a relevant official surface for the requested diagram. Ask only when competing interpretations materially change the result or usable evidence is missing and fidelity matters.
+
+For branded work or a supplied visual, apply [style calibration](references/style-calibration.md). Pin the exact surface and record which evidence was inspected, when it was captured or read, and what could not be verified.
 
 ## Separate meaning from presentation
 
-Write a compact semantic graph of node IDs, labels, groups, directed relations and branch meanings. For repository maps, ground claims in inspected files; label inferred responsibilities. Distinguish illustrative examples from production facts. Preserve this graph when comparing styles; choose geometry independently. For same-style new content, reuse the visual rules and re-layout the graph.
+Record the semantic structure appropriate to the diagram. Use nodes, directions and branch labels for flows, ordered messages for sequence diagrams, row/column assignments for matrices, and values, units and scales for charts. Preserve this structure across styles. For repository maps, ground claims in inspected files and label inferred responsibilities.
 
 Choose composition, focal scale, type hierarchy, line language, silhouette, material, icon vocabulary and reading rhythm from the reference and the actual content. Allocate node/text boxes and connector corridors before drawing details. Place branch labels beside the route they explain. A style comparison needs structural visual differences beyond a recolored template; a content comparison need not invent a new style.
 
@@ -40,4 +42,4 @@ Collect concrete defects, fix them in one batch, and re-render affected views. D
 
 Provide the `.svg`, full `.prompt.md`, and a concise check record with sources, completed checks, visual gaps and renderer/font limits. Keep the semantic graph as a sidecar when it aids reuse or comparison. If the user requests only XML, return only the complete SVG and keep supporting artifacts in the requested workspace when available. Distinguish technical success, visual review, and explicit user approval.
 
-For installation and executable examples see [README.md](README.md). The examples are a seven-node event architecture and an eight-node release flow; neither defines the skill's content scope.
+See [README.md](README.md) for installation and runnable examples, including the Linear release-flow transfer.

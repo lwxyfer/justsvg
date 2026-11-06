@@ -1,0 +1,107 @@
+{
+  "title": "Agent Evals",
+  "status": "illustrative",
+  "nodes": [
+    {
+      "id": "suite",
+      "label": "Eval suite",
+      "detail": "Tasks \u00b7 fixtures \u00b7 rubric"
+    },
+    {
+      "id": "spec",
+      "label": "Run spec",
+      "detail": "Candidate \u00b7 tool policy / Environment \u00b7 trial count"
+    },
+    {
+      "id": "runner",
+      "label": "Eval runner",
+      "detail": "Schedule isolated trials"
+    },
+    {
+      "id": "agent",
+      "label": "Agent sandbox",
+      "detail": "Run the candidate / with controlled tools"
+    },
+    {
+      "id": "artifacts",
+      "label": "Trial artifacts",
+      "detail": "Trace \u00b7 output \u00b7 end state"
+    },
+    {
+      "id": "graders",
+      "label": "Graders",
+      "detail": "Checks \u00b7 model judges / Human review when needed"
+    },
+    {
+      "id": "baseline",
+      "label": "Baseline",
+      "detail": "Reference run scores"
+    },
+    {
+      "id": "compare",
+      "label": "Compare runs",
+      "detail": "Aggregate across trials / Measure baseline delta"
+    },
+    {
+      "id": "gate",
+      "label": "Release decision",
+      "detail": "Promote \u00b7 hold \u00b7 investigate"
+    }
+  ],
+  "edges": [
+    {
+      "id": "cases",
+      "from": "suite",
+      "to": "runner",
+      "label": ""
+    },
+    {
+      "id": "configure",
+      "from": "spec",
+      "to": "runner",
+      "label": ""
+    },
+    {
+      "id": "execute",
+      "from": "runner",
+      "to": "agent",
+      "label": ""
+    },
+    {
+      "id": "record",
+      "from": "agent",
+      "to": "artifacts",
+      "label": ""
+    },
+    {
+      "id": "score",
+      "from": "artifacts",
+      "to": "graders",
+      "label": ""
+    },
+    {
+      "id": "rubric",
+      "from": "suite",
+      "to": "graders",
+      "label": "rubric"
+    },
+    {
+      "id": "aggregate",
+      "from": "graders",
+      "to": "compare",
+      "label": ""
+    },
+    {
+      "id": "reference",
+      "from": "baseline",
+      "to": "compare",
+      "label": "reference scores"
+    },
+    {
+      "id": "decide",
+      "from": "compare",
+      "to": "gate",
+      "label": ""
+    }
+  ]
+}
