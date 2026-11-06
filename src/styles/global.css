@@ -1093,6 +1093,10 @@ svg {
 .individual-box {
   border-color: #a1bfff;
 }
+.selection-box,
+.individual-box {
+  border-style: dashed;
+}
 .selection-box {
   border-color: #2563eb;
 }
