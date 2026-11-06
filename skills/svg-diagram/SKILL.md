@@ -43,3 +43,19 @@ Collect concrete defects, fix them in one batch, and re-render affected views. D
 Provide the `.svg`, full `.prompt.md`, and a concise check record with sources, completed checks, visual gaps and renderer/font limits. Keep the semantic graph as a sidecar when it aids reuse or comparison. If the user requests only XML, return only the complete SVG and keep supporting artifacts in the requested workspace when available. Distinguish technical success, visual review, and explicit user approval.
 
 See [README.md](README.md) for installation and runnable examples, including the Linear release-flow transfer.
+
+## Example previews
+
+One Agent Evals architecture, composed in three styles. [Open the editable SVGs, prompts and validation reports](https://github.com/lwxyfer/justsvg/tree/111b20dfee17f0c849a27d349248082ef717871b/skills/svg-diagram/examples/agent-evals).
+
+**OpenAI Developer Blog**
+
+![Agent Evals in the OpenAI Developer Blog style, with a coral field and translucent panels](https://raw.githubusercontent.com/lwxyfer/justsvg/111b20dfee17f0c849a27d349248082ef717871b/skills/svg-diagram/examples/agent-evals/openai.png)
+
+**Claude**
+
+![Agent Evals in Claude's editorial style, with warm paper and a terracotta sandbox](https://raw.githubusercontent.com/lwxyfer/justsvg/111b20dfee17f0c849a27d349248082ef717871b/skills/svg-diagram/examples/agent-evals/claude.png)
+
+**Vercel Geist**
+
+![Agent Evals in the Vercel Geist style, with an engineering grid and a black decision panel](https://raw.githubusercontent.com/lwxyfer/justsvg/111b20dfee17f0c849a27d349248082ef717871b/skills/svg-diagram/examples/agent-evals/vercel.png)
