@@ -1,6 +1,6 @@
 import { useHomeLocale } from './homeLocale';
 import { useRef, useState } from 'react';
-import { ArrowDown, ArrowUp, ArrowUpRight, FileCode2, Palette } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpRight, Copy, FileCode2, Palette } from 'lucide-react';
 import { NativeDiagram } from './NativeDiagram';
 import { themes } from './diagramModel';
 import type { DiagramEdits, HomeTheme } from './diagramModel';
@@ -9,6 +9,9 @@ import { ConstructionConnections } from './ConstructionConnections';
 import { ChapterBackdrop } from './ChapterBackdrop';
 
 export const skillHref = `${import.meta.env.BASE_URL}skills/svg-diagram-skill.zip`;
+const installCommand = 'npx skills add lwxyfer/justsvg --skill svg-diagram';
+const skillGuide = 'https://github.com/lwxyfer/justsvg/tree/main/skills/svg-diagram#直接调用与安装';
+
 export function SkillStage({ theme, edits }: { theme: HomeTheme; edits: DiagramEdits }) {
   const { locale, t } = useHomeLocale();
   const [taskEdit, setTask] = useState<string | null>(null);
@@ -16,6 +19,23 @@ export function SkillStage({ theme, edits }: { theme: HomeTheme; edits: DiagramE
   const [message, setMessage] = useState('');
   const [showPrompt, setShowPrompt] = useState(false);
   const fallback = useRef<HTMLTextAreaElement>(null);
+  const installCode = useRef<HTMLElement>(null);
+  const [installCopied, setInstallCopied] = useState<boolean | null>(null);
+  const copyInstall = async () => {
+    try {
+      await navigator.clipboard.writeText(installCommand);
+      setInstallCopied(true);
+    } catch {
+      if (installCode.current) {
+        const range = document.createRange();
+        range.selectNodeContents(installCode.current);
+        const selection = window.getSelection();
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+      }
+      setInstallCopied(false);
+    }
+  };
   const styleNotes = {
     native: t('简洁的技术文档风格，白底蓝线、原生文字与清晰分组。'),
     figma: t(
@@ -59,11 +79,37 @@ export function SkillStage({ theme, edits }: { theme: HomeTheme; edits: DiagramE
           </h2>
           <p>{t('安装 SVG Skill 后，将任务复制到你的 AI 工具，生成可编辑的 SVG。')}</p>
         </div>
-        <div className="chapter-actions">
-          <a className="home-text-link" href={skillHref} download>
-            {t('下载 SVG Skill')}
-            <ArrowUpRight size={17} />
-          </a>
+      </div>
+      <div className="skill-install home-width">
+        <div>
+          <h3>{t('安装 SVG Skill')}</h3>
+          <ol>
+            <li>{t('在终端运行以下命令，并在提示时选择你的 AI 工具。')}</li>
+            <li>{t('在 AI 工具中开启新会话，复制下方绘图任务，请它使用 svg-diagram。')}</li>
+          </ol>
+        </div>
+        <div>
+          <div className="skill-install-command">
+            <code ref={installCode}>{installCommand}</code>
+            <button className="home-text-link" type="button" onClick={() => void copyInstall()}>
+              <Copy size={15} aria-hidden="true" />
+              {t('复制安装命令')}
+            </button>
+          </div>
+          {installCopied !== null && (
+            <p role="status">{t(installCopied ? '安装命令已复制。' : '已选中安装命令，请手动复制。')}</p>
+          )}
+          <p>{t('也可以解压 ZIP，让 AI 工具直接读取其中的 svg-diagram/SKILL.md。')}</p>
+          <div className="skill-install-links">
+            <a className="home-text-link" href={skillHref} download>
+              {t('下载 SVG Skill')}
+              <ArrowDown size={15} aria-hidden="true" />
+            </a>
+            <a className="home-text-link" href={skillGuide}>
+              {t('查看安装指南')}
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </a>
+          </div>
         </div>
       </div>
       <div className="skill-visual home-width">

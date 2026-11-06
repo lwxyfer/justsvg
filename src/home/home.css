@@ -379,6 +379,53 @@
 .skill-chapter .chapter-heading h2 {
   font-size: clamp(36px, 4.6vw, 68px);
 }
+.skill-install {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 12px clamp(20px, 4vw, 56px);
+  border-block: 1px solid var(--home-line, currentColor);
+  padding: 20px clamp(12px, 2vw, 28px);
+  margin-bottom: 32px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.skill-install h3 {
+  font-size: 22px;
+  font-weight: 750;
+}
+.skill-install ol {
+  padding-inline-start: 1.4em;
+  margin-block: 10px;
+  max-width: 70ch;
+  list-style: decimal;
+}
+.skill-install-command,
+.skill-install-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
+.skill-install-command {
+  margin-bottom: 12px;
+}
+.skill-install-command code {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  padding: 8px 12px;
+  border: 1px solid var(--home-line, currentColor);
+  font-size: 13px;
+}
+.skill-install-links {
+  margin-top: 8px;
+}
+@media (max-width: 760px) {
+  .skill-install {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 .desktop-break {
   display: none;
 }

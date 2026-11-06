@@ -1,4 +1,12 @@
 {
+  "安装 SVG Skill": "Install SVG Skill",
+  "在终端运行以下命令，并在提示时选择你的 AI 工具。": "Run this command in your terminal and select your AI tool when prompted.",
+  "在 AI 工具中开启新会话，复制下方绘图任务，请它使用 svg-diagram。": "Start a new session in your AI tool. Copy the diagram task below and ask it to use svg-diagram.",
+  "复制安装命令": "Copy install command",
+  "安装命令已复制。": "Install command copied.",
+  "已选中安装命令，请手动复制。": "Install command selected. Copy it manually.",
+  "也可以解压 ZIP，让 AI 工具直接读取其中的 svg-diagram/SKILL.md。": "You can also unzip the Skill and ask your AI tool to read svg-diagram/SKILL.md directly.",
+  "查看安装指南": "Installation guide",
   "图稿尚未就绪，请稍后重试。": "The diagram is not ready. Please try again.",
   "请先处理编辑器中的导入提示，再重试。": "Resolve the import notice in the editor, then try again.",
   "打开失败，请重试。": "Could not open the diagram. Please try again.",

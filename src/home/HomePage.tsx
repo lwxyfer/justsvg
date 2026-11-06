@@ -96,7 +96,7 @@ function HomeContent() {
         </a>
         <nav aria-label={t('首页导航')}>
           <a href="#brand-styles">{t('品牌风格')}</a>
-          <a href="#skill">SVG Skill</a>
+          <a href="#skill">{t('安装 SVG Skill')}</a>
         </nav>
         <LanguageSwitch />
         <a
@@ -133,7 +133,7 @@ function HomeContent() {
                 <ArrowUpRight size={22} />
               </a>
               <a className="native-scroll" href="#skill">
-                {t('了解 SVG Skill')}
+                {t('安装 SVG Skill')}
                 <ArrowDown size={16} />
               </a>
             </div>
