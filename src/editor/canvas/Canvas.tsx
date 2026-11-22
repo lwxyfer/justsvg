@@ -50,6 +50,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
   const container = useRef<HTMLDivElement>(null),
     host = useRef<HTMLDivElement>(null);
   const gesture = useRef<Gesture | null>(null);
+  const clickHits = useRef<(SVGGraphicsElement | null)[]>([]);
   const space = useRef(false);
   const overCanvas = useRef(false);
   useMotionPreview(host, engine.root, engine.documentRevision, ui.motionPreview);
@@ -266,7 +267,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
   };
   const down = (e: ReactPointerEvent<HTMLDivElement>) => {
     if ((e.target as Element).closest('[data-ui]') || e.button === 2) return;
-    if (ui.textEdit) return;
+    if (useUI.getState().textEdit) return;
     if (gesture.current) return;
     const start = { x: e.clientX, y: e.clientY };
     const handle = (e.target as Element).getAttribute('data-handle');
@@ -275,11 +276,29 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
     const actual = e.nativeEvent
       .composedPath()
       .find((v) => v instanceof Element && engine.root?.contains(v)) as Element | undefined;
-    let hit = forcePan
-      ? null
-      : engine.hitAt(point({ x: e.clientX, y: e.clientY }), actual || null, e.altKey);
+    const location = point({ x: e.clientX, y: e.clientY });
+    let hit = forcePan ? null : engine.hitAt(location, actual || null, e.altKey);
+    // A group is an editing context, not a trap: clicks beyond it can select siblings.
+    while (!forcePan && !handle && endpoint === null && !hit && engine.scope) {
+      const bounds = engine.bounds(engine.scope);
+      if (
+        bounds &&
+        location.x >= bounds.x &&
+        location.y >= bounds.y &&
+        location.x <= bounds.x + bounds.width &&
+        location.y <= bounds.y + bounds.height
+      )
+        break;
+      let parent: Element | null = engine.scope.parentElement;
+      while (parent && parent !== engine.root && !engine.isDrawable(parent))
+        parent = parent.parentElement;
+      engine.scope = parent && parent !== engine.root ? (parent as SVGGraphicsElement) : null;
+      hit = engine.hitAt(location, actual || null, e.altKey);
+    }
     if (hit && getComputedStyle(hit).display === 'none') hit = null;
     if (!e.altKey && isBackground(hit)) hit = null;
+    clickHits.current =
+      forcePan || handle || endpoint !== null ? [] : [...clickHits.current.slice(-1), hit];
     const pan = forcePan;
     const previous = [...engine.selection];
     if (!pan && !handle && endpoint === null) {
@@ -357,6 +376,7 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
     const distance = Math.hypot(current.x - g.start.x, current.y - g.start.y);
     if (distance > 2 && !g.moved) {
       g.moved = true;
+      clickHits.current = [];
       if (g.type === 'marquee' && !g.additive) engine.select([]);
     }
     if (!g.moved) return;
@@ -478,6 +498,10 @@ export function Canvas({ fitOnMount = true }: { fitOnMount?: boolean }) {
       .composedPath()
       .find((v) => v instanceof Element && engine.root?.contains(v)) as Element | undefined;
     const hit = engine.hitAt(point({ x: e.clientX, y: e.clientY }), actual || null);
+    // Browsers can report a double-click on a shared ancestor after two different
+    // objects were pressed. Only enter/edit the object that received both presses.
+    if (!hit || clickHits.current.length !== 2 || clickHits.current.some((el) => el !== hit))
+      return;
     let text = hit && actual && (hit === actual || hit.contains(actual)) ? actual : undefined;
     while (text && text !== engine.root && text.localName !== 'text')
       text = text.parentElement || undefined;

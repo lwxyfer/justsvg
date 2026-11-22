@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { X, Check } from 'lucide-react';
 import { engine } from '../editor/document/engine';
+import { textValue } from '../editor/document/textContent';
 import { useChromeUI } from '../store/ui';
 import { IconButton, run } from './shared';
 import { useLocale } from '../i18n/locale';
@@ -13,8 +14,9 @@ export function TextEditor({
 }) {
   const { t } = useLocale();
   const info = engine.textStructure(element);
-  const [values, setValues] = useState(info.parts.map((p) => p.textContent || ''));
+  const [values, setValues] = useState(info.parts.map(textValue));
   const ui = useChromeUI();
+  const dialog = useRef<HTMLDivElement>(null);
   const save = () =>
     run(() => {
       if (info.parts.length === 1 && values[0].includes('\n'))
@@ -22,8 +24,23 @@ export function TextEditor({
       else engine.updateText(element, values);
       ui.set({ textEdit: false });
     });
+  useEffect(() => {
+    const finishOnCanvas = (event: PointerEvent) => {
+      if (dialog.current?.contains(event.target as Node)) return;
+      if (
+        !event.composedPath().some((el) => el instanceof Element && el.hasAttribute('data-canvas'))
+      )
+        return;
+      if (info.editable) save();
+      else ui.set({ textEdit: false });
+    };
+    // Finish before the canvas handles the same press so it can select the next node.
+    document.addEventListener('pointerdown', finishOnCanvas, true);
+    return () => document.removeEventListener('pointerdown', finishOnCanvas, true);
+  });
   return (
     <div
+      ref={dialog}
       className="text-editor"
       data-ui
       style={{ left: position.x, top: position.y }}
@@ -46,7 +63,11 @@ export function TextEditor({
         <>
           {values.map((v, i) => (
             <label key={i}>
-              {values.length > 1 && <span>{t('段落')} {i + 1} · {t('保留原始位置')}</span>}
+              {values.length > 1 && (
+                <span>
+                  {t('段落')} {i + 1} · {t('保留原始位置')}
+                </span>
+              )}
               <textarea
                 autoFocus={i === 0}
                 value={v}

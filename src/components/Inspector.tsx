@@ -23,6 +23,7 @@ import {
   markerStyle,
 } from '../editor/document/editing';
 import { engine } from '../editor/document/engine';
+import { textChildren, textValue } from '../editor/document/textContent';
 import { useChromeUI } from '../store/ui';
 import { run, useDocument } from './shared';
 import { CanvasSettings } from './CanvasSettings';
@@ -163,13 +164,13 @@ function TextProperties({ el }: { el: SVGGraphicsElement }) {
             <span>{info.parts.length > 1 ? `${t('段落')} ${i + 1}` : t('内容')}</span>
             <textarea
               aria-label={`${t('属性文字')} ${i + 1}`}
-              defaultValue={p.textContent || ''}
-              key={`${i}-${p.textContent}`}
+              defaultValue={textValue(p)}
+              key={`${i}-${textValue(p)}`}
               onBlur={(e) => {
-                if (e.target.value !== p.textContent)
+                if (e.target.value !== textValue(p))
                   run(() => {
                     const values = info.parts.map((part, j) =>
-                      j === i ? e.target.value : part.textContent || '',
+                      j === i ? e.target.value : textValue(part),
                     );
                     if (values.length === 1 && values[0].includes('\n'))
                       engine.multiline(el, values[0], parseFloat(computed.fontSize) * 1.35);
@@ -612,9 +613,7 @@ function TextLayout({ el }: { el: SVGGraphicsElement }) {
     ),
     [minimum, setMinimum] = useState('8');
   const changeLines = (add: boolean) => {
-    const parts = el.children.length
-      ? [...el.children].map((p) => p.textContent || '')
-      : [el.textContent || ''];
+    const parts = textChildren(el).length ? textChildren(el).map(textValue) : [textValue(el)];
     if (add) parts.push(t('新的一行'));
     else parts.pop();
     setLines(engine, el, parts.length ? parts : [''], Number(height));
@@ -627,7 +626,7 @@ function TextLayout({ el }: { el: SVGGraphicsElement }) {
         </button>
         <button
           className="button"
-          disabled={el.children.length < 2}
+          disabled={textChildren(el).length < 2}
           onClick={() => run(() => changeLines(false))}
         >
           {t('删除末行')}

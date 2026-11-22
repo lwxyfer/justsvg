@@ -25,7 +25,7 @@ test('template categories, search and insert keep the working diagram and one un
     .evaluate((el) => el.outerHTML);
   await page.getByLabel('搜索素材').fill('RAG');
   await expect(page.locator('.template-card')).toHaveCount(1);
-  await page.getByRole('button', { name: '插入RAG 检索增强生成', exact: true }).click();
+  await page.getByRole('button', { name: '插入 RAG 检索增强生成', exact: true }).click();
   const inserted = page.locator('[data-svg-host] [data-label="RAG 检索增强生成"]');
   await expect(inserted).toHaveCount(1);
   await expect(inserted.locator('svg')).toHaveCount(0);
@@ -127,7 +127,7 @@ test('composite nodes and text edit directly, export as standard SVG and reimpor
     );
   }, bridge);
   await page.getByLabel('搜索素材').fill('双节点');
-  await page.getByRole('button', { name: '插入双节点连接', exact: true }).click();
+  await page.getByRole('button', { name: '插入 双节点连接', exact: true }).click();
   const node = page.locator('[data-svg-host] [data-node]').first();
   await node.locator('rect').dblclick({ position: { x: 8, y: 8 } });
   await expect(page.locator('.scope-bar')).toBeVisible();

@@ -1,4 +1,5 @@
 import { flowingText } from './textFrame';
+import { textChildren, textValue, replaceTextContent } from './textContent';
 import type { DocumentEngine } from './engine';
 import { SVG_NS } from '../security/sanitize';
 import { union } from '../geometry/geometry';
@@ -10,7 +11,7 @@ export function element(tag: string, attrs: Record<string, string | number> = {}
 export function lineEditable(engine: DocumentEngine, el: SVGGraphicsElement) {
   const info = engine.textStructure(el);
   if (!info.editable) return false;
-  if (!el.children.length || flowingText(el)) return true;
+  if (!textChildren(el).length || flowingText(el)) return true;
   return info.parts.every(
     (span, i) =>
       span.localName === 'tspan' &&
@@ -28,12 +29,13 @@ export function setLines(
     throw new Error('仅支持普通 text 或无混合样式的逐行 tspan，请使用逐段编辑或源码。');
   if (!Number.isFinite(height) || height <= 0 || lines.length > 500)
     throw new Error('行距必须大于 0，文字不超过 500 行。');
-  const old = [...el.children];
+  const old = textChildren(el);
   const x = old[0]?.getAttribute('x') || el.getAttribute('x') || '0';
   const firstY = old[0]?.getAttribute('y'),
     firstDy = old[0]?.getAttribute('dy');
   engine.transaction('修改文本行', () => {
-    el.replaceChildren(
+    replaceTextContent(
+      el,
       ...lines.map((line, i) => {
         const span = element('tspan', { x });
         if (i) span.setAttribute('dy', String(height));
@@ -57,9 +59,9 @@ export function wrapText(
     throw new Error('请选择可逐行排版的文字，并设置大于 0 的宽度。');
   if (document.fonts?.status === 'loading') throw new Error('字体正在加载，请稍后重试排版。');
   const content =
-    el.children.length && !flowingText(el)
-      ? [...el.children].map((s) => s.textContent || '').join('\n')
-      : el.textContent || '';
+    textChildren(el).length && !flowingText(el)
+      ? textChildren(el).map(textValue).join('\n')
+      : textValue(el);
   const probe = el.cloneNode(false) as SVGTextElement;
   const computed = getComputedStyle(el);
   for (const property of [

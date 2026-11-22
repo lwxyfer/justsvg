@@ -1,4 +1,5 @@
 import type { DocumentEngine } from './engine';
+import { textChildren, textValue, replaceTextContent } from './textContent';
 import type { Bounds } from '../geometry/geometry';
 const frameAttribute = 'data-sf-text-frame';
 const flowAttribute = 'data-sf-text-flow';
@@ -40,7 +41,7 @@ export function textFrame(el: Element): Bounds | null {
 export function flowingText(el: Element) {
   return (
     el.hasAttribute(flowAttribute) &&
-    [...el.children].every((span) => span.localName === 'tspan' && span.hasAttribute(lineAttribute))
+    textChildren(el).every((span) => span.localName === 'tspan' && span.hasAttribute(lineAttribute))
   );
 }
 export function prepareTextFrame(engine: DocumentEngine, el: SVGGraphicsElement) {
@@ -54,9 +55,9 @@ export function prepareTextFrame(engine: DocumentEngine, el: SVGGraphicsElement)
   const box = textFrame(el) || el.getBBox();
   const origin = new DOMPoint(box.x, box.y).matrixTransform(localToRoot);
   const style = getComputedStyle(el),
-    source = el.textContent || '';
+    source = textValue(el);
   const simple =
-    (!el.children.length || flowingText(el)) &&
+    (!textChildren(el).length || flowingText(el)) &&
     !['dx', 'dy', 'rotate', 'textLength'].some((key) => el.hasAttribute(key)) &&
     !/vertical/.test(style.writingMode) &&
     ['x', 'y'].every(
@@ -131,7 +132,8 @@ export function prepareTextFrame(engine: DocumentEngine, el: SVGGraphicsElement)
     const end =
       style.textAnchor === 'end' || (style.textAnchor === 'start' && style.direction === 'rtl');
     const x = box.x + (style.textAnchor === 'middle' ? width / 2 : end ? width : 0);
-    el.replaceChildren(
+    replaceTextContent(
+      el,
       ...lines.map((content, index) => {
         const span = document.createElementNS(ns, 'tspan');
         span.setAttribute(lineAttribute, '');

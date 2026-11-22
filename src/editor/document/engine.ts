@@ -1,4 +1,5 @@
 import { textFrame, flowingText, prepareTextFrame } from './textFrame';
+import { isTextDescription, textChildren, replaceTextContent } from './textContent';
 import { prepareResize } from './resizing';
 import { sanitizeSvg, SVG_NS, cleanCss } from '../security/sanitize';
 import { rewriteReferences } from './references';
@@ -661,7 +662,7 @@ export class DocumentEngine {
       return { editable: false, reason: '请选择文字元素。', parts: [] as Element[] };
     if (
       el.querySelector('textPath') ||
-      [...el.querySelectorAll('*')].some((n) => n.localName !== 'tspan') ||
+      [...el.querySelectorAll('*')].some((n) => n.localName !== 'tspan' && !isTextDescription(n)) ||
       el.querySelector('tspan tspan')
     )
       return {
@@ -670,7 +671,7 @@ export class DocumentEngine {
         parts: [] as Element[],
       };
     if (flowingText(el)) return { editable: true, reason: '', parts: [el as Element] };
-    const spans = [...el.children];
+    const spans = textChildren(el);
     if (
       spans.length &&
       [...el.childNodes].some((n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim())
@@ -699,24 +700,24 @@ export class DocumentEngine {
       throw new Error('请保留原有 tspan 数量，逐段修改文字。');
     this.transaction('编辑文字', () =>
       info.parts.forEach((part, i) => {
-        part.textContent = values[i];
+        replaceTextContent(part, values[i]);
       }),
     );
   }
   multiline(el: SVGGraphicsElement, text: string, lineHeight: number) {
     if (flowingText(el)) {
       this.transaction('创建多行文字', () => {
-        el.textContent = text;
+        replaceTextContent(el, text);
         el.style.setProperty('line-height', `${lineHeight}px`, 'important');
         prepareTextFrame(this, el)(new DOMMatrix());
       });
       return;
     }
-    if (el.children.length && !flowingText(el))
+    if (textChildren(el).length && !flowingText(el))
       throw new Error('已有 tspan 时请逐段编辑，避免覆盖原始布局。');
     this.transaction('创建多行文字', () => {
       const x = el.getAttribute('x') || '0';
-      el.textContent = '';
+      replaceTextContent(el);
       text.split('\n').forEach((line, i) => {
         const span = document.createElementNS(SVG_NS, 'tspan');
         span.setAttribute('x', x);
@@ -1096,9 +1097,15 @@ export class DocumentEngine {
         if (options.label !== '自定义 SVG 图标' && options.flatten === false)
           target.setAttribute('data-monochrome', 'true');
       }
-      const title = document.createElementNS(SVG_NS, 'title');
-      title.textContent = options.label || 'SVG 图标';
-      target.prepend(title);
+      // A title inside <text> becomes part of its textContent and makes a plain
+      // label look like complex text to the text editor. Keep its name in an attribute.
+      if (target.localName === 'text') {
+        target.setAttribute('aria-label', options.label || 'SVG 图标');
+      } else {
+        const title = document.createElementNS(SVG_NS, 'title');
+        title.textContent = options.label || 'SVG 图标';
+        target.prepend(title);
+      }
       this.selection = [target];
       const bounds = this.bounds(target);
       if (!bounds) throw new Error('插入图形没有有效边界。');

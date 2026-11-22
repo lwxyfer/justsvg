@@ -1,12 +1,57 @@
 import { beforeEach, describe, it, expect } from 'vitest';
 import { DocumentEngine } from '../../src/editor/document/engine';
 import { fixtures } from '../../src/fixtures';
+import { textValue } from '../../src/editor/document/textContent';
 let engine: DocumentEngine;
 beforeEach(() => {
   engine = new DocumentEngine();
   engine.importSvg(fixtures.architecture);
 });
 describe('document operations and transactions', () => {
+  it('edits restored text with title/desc without including or losing the descriptions', () => {
+    engine.importSvg(
+      '<svg xmlns="http://www.w3.org/2000/svg"><text x="20" y="30"><title>旧标签名称</title><desc>说明</desc>文字标签</text></svg>',
+    );
+    let el = engine.root!.querySelector('text') as SVGGraphicsElement;
+    const original = engine.exportSvg();
+    expect(engine.textStructure(el).editable).toBe(true);
+    expect(textValue(el)).toBe('文字标签');
+    expect(engine.exportSvg()).toBe(original);
+    engine.updateText(el, ['修改成功']);
+    expect(textValue(el)).toBe('修改成功');
+    expect(el.querySelector('title')?.textContent).toBe('旧标签名称');
+    expect(el.querySelector('desc')?.textContent).toBe('说明');
+    engine.undo();
+    expect(engine.exportSvg()).toBe(original);
+    engine.redo();
+    el = engine.root!.querySelector('text') as SVGGraphicsElement;
+    engine.multiline(el, '第一行\n第二行', 32);
+    expect(engine.textStructure(el).parts.map(textValue)).toEqual(['第一行', '第二行']);
+    expect(el.querySelector('title')?.textContent).toBe('旧标签名称');
+    expect(el.querySelector('desc')?.textContent).toBe('说明');
+  });
+  it('edits positioned spans with descriptions while retaining positions and styles', () => {
+    engine.importSvg(
+      '<svg xmlns="http://www.w3.org/2000/svg"><text><title>标题</title><desc>说明</desc><tspan x="20" y="30" fill="red">第一行</tspan><tspan x="20" dy="32">第二行</tspan></text></svg>',
+    );
+    const el = engine.root!.querySelector('text') as SVGGraphicsElement;
+    expect(engine.textStructure(el).parts.map(textValue)).toEqual(['第一行', '第二行']);
+    engine.updateText(el, ['新第一行', '新第二行']);
+    expect(el.querySelector('tspan')?.getAttribute('fill')).toBe('red');
+    expect(el.querySelector('tspan')?.getAttribute('x')).toBe('20');
+    expect(el.querySelector('title')?.textContent).toBe('标题');
+    expect(el.querySelector('desc')?.textContent).toBe('说明');
+  });
+  it.each([
+    '<title>标题</title><textPath href="#path">曲线文字</textPath>',
+    '<title>标题</title><tspan><tspan>嵌套文字</tspan></tspan>',
+    '<desc>说明</desc>混合<tspan>样式</tspan>',
+  ])('still rejects unsafe text structures with descriptions: %s', (content) => {
+    engine.importSvg(`<svg xmlns="http://www.w3.org/2000/svg"><text>${content}</text></svg>`);
+    expect(
+      engine.textStructure(engine.root!.querySelector('text') as SVGGraphicsElement).editable,
+    ).toBe(false);
+  });
   it('changes one tspan without changing siblings or positions', () => {
     const el = engine.root!.querySelector('#client-card text:last-child') as SVGGraphicsElement;
     const spans = [...el.children],
