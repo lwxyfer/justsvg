@@ -24,7 +24,7 @@ JustSVG is an open-source editor for architecture diagrams, flowcharts and infog
 
 ## Edit your first diagram
 
-Download the [diagram starter kit](https://github.com/lwxyfer/justsvg/releases/download/v1.0.0-beta.1/justsvg-starter-kit.zip): architecture, release-flow and infographic examples with English and Chinese labels. [Beta release notes and downloads](https://github.com/lwxyfer/justsvg/releases/tag/v1.0.0-beta.1)
+Download the [diagram starter kit](https://github.com/lwxyfer/justsvg/releases/download/v1.0.0-beta.1/justsvg-starter-kit.zip): architecture, release-flow and infographic examples with English and Chinese labels. [Release notes and downloads](https://github.com/lwxyfer/justsvg/releases/tag/v1.0.0-beta.1)
 
 Open an [editable RAG example](https://justsvg.vercel.app/examples?example=brand-openai-rag) and choose **Open in editor**. Double-click a label, move a node to see its bound connectors follow, then export the SVG for your README, article or slides. You can also start with an SVG you already have. [Editor guide](docs/EDITOR_GUIDE.zh-CN.md)
 
@@ -51,7 +51,7 @@ You can also [download the Skill ZIP](https://justsvg.vercel.app/skills/svg-diag
 
 [![The JustSVG example library showing a RAG diagram with style and example navigation](docs/images/examples.png)](https://justsvg.vercel.app/examples)
 
-JustSVG is in beta and designed for desktop browsers. It imports, edits and exports SVG. Browser-local recovery helps restore your workspace. Export SVG files for long-term storage. See the [SVG compatibility notes](docs/EDITOR_GUIDE.zh-CN.md#安全与兼容性) for supported imports.
+JustSVG imports, edits and exports SVG. Browser-local recovery helps restore your workspace. Export SVG files for long-term storage. See the [SVG compatibility notes](docs/EDITOR_GUIDE.zh-CN.md#安全与兼容性) for supported imports.
 
 Bug reports, compatibility cases and diagram contributions are welcome. [Report an issue](https://github.com/lwxyfer/justsvg/issues/new) · [Development and contribution guide](development.md)
 

@@ -24,7 +24,7 @@ JustSVG 是开源的技术图编辑器，适合画架构图、流程图和信息
 
 ## 试着改一张图
 
-下载[可编辑图表入门包](https://github.com/lwxyfer/justsvg/releases/download/v1.0.0-beta.1/justsvg-starter-kit.zip)：架构图、发布流程图、信息图各有中英文版，共 6 个 SVG。[Beta 发布说明与下载](https://github.com/lwxyfer/justsvg/releases/tag/v1.0.0-beta.1)
+下载[可编辑图表入门包](https://github.com/lwxyfer/justsvg/releases/download/v1.0.0-beta.1/justsvg-starter-kit.zip)：架构图、发布流程图、信息图各有中英文版，共 6 个 SVG。[发布说明与下载](https://github.com/lwxyfer/justsvg/releases/tag/v1.0.0-beta.1)
 
 打开[可编辑的 RAG 示例](https://justsvg.vercel.app/examples?example=brand-openai-rag)，选择「在编辑器中打开」。双击文字修改标签，拖动节点看看已关联的连线如何跟随，再导出 SVG 放进 README、技术文章或演示文稿。也可以从自己的 SVG 文件开始。[编辑器使用指南](docs/EDITOR_GUIDE.zh-CN.md)
 
@@ -51,7 +51,7 @@ npx skills add lwxyfer/justsvg --skill svg-diagram
 
 [![JustSVG 中文示例库中的 RAG 架构图及风格选择](docs/images/examples.zh-CN.png)](https://justsvg.vercel.app/examples)
 
-JustSVG 当前处于 Beta，面向桌面浏览器。支持导入、编辑和导出 SVG，图稿恢复副本保存在浏览器中。长期保存请导出 SVG。可导入文件的范围见[编辑器兼容性说明](docs/EDITOR_GUIDE.zh-CN.md#安全与兼容性)。
+JustSVG 支持导入、编辑和导出 SVG，图稿恢复副本保存在浏览器中。长期保存请导出 SVG。可导入文件的范围见[编辑器兼容性说明](docs/EDITOR_GUIDE.zh-CN.md#安全与兼容性)。
 
 欢迎提交可复现问题、兼容性案例或新图稿。[报告问题](https://github.com/lwxyfer/justsvg/issues/new) · [开发与贡献指南](development.md)
 
