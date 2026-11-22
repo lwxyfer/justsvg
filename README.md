@@ -7,7 +7,9 @@
 
 <h1 align="center">JustSVG</h1>
 
-<p align="center"><strong>Generate technical diagrams with AI. Refine them as native SVG.</strong></p>
+<p align="center"><strong>Create, edit, and share technical diagrams as native SVG.</strong></p>
+
+<p align="center">An open-source draw.io alternative for architecture diagrams, flowcharts, and infographics.</p>
 
 <p align="center">
   <a href="https://justsvg.vercel.app/editor"><strong>Open the editor</strong></a> ·
@@ -16,11 +18,13 @@
   <a href="README.zh-CN.md">简体中文</a>
 </p>
 
-JustSVG is an open-source editor for architecture diagrams, flowcharts and infographics. Generate a first draft in your AI tool with SVG Diagram Skill. Then edit labels, move nodes and refine connections in the browser. Export standard SVG with editable text, shapes and groups. The online editor requires no account.
+JustSVG is an open-source editor for architecture diagrams, flowcharts and infographics. Start from a blank canvas, an editable example or an SVG you already have. Edit labels, move nodes and refine connections in the browser. Export standard SVG with editable text, shapes and groups. The online editor requires no account. The optional SVG Diagram Skill can generate a first draft in your own AI tool.
 
 [![Editing a RAG architecture diagram in JustSVG, with the canvas between the insert and properties panels](docs/images/editor.png)](https://justsvg.vercel.app/editor)
 
 ## Edit your first diagram
+
+Download the [diagram starter kit](https://github.com/lwxyfer/justsvg/releases/download/v1.0.0-beta.1/justsvg-starter-kit.zip): architecture, release-flow and infographic examples with English and Chinese labels. [Beta release notes and downloads](https://github.com/lwxyfer/justsvg/releases/tag/v1.0.0-beta.1)
 
 Open an [editable RAG example](https://justsvg.vercel.app/examples?example=brand-openai-rag) and choose **Open in editor**. Double-click a label, move a node to see its bound connectors follow, then export the SVG for your README, article or slides. You can also start with an SVG you already have. [Editor guide](docs/EDITOR_GUIDE.zh-CN.md)
 
@@ -40,10 +44,10 @@ You can also [download the Skill ZIP](https://justsvg.vercel.app/skills/svg-diag
 
 ## Start from a worked example
 
-- [Agent Evals](skills/svg-diagram/examples/agent-evals/README.md) shows one evaluation workflow in three layouts. Each includes editable SVG, a prompt and a validation report.
 - The [example library](https://justsvg.vercel.app/examples) has 169 editable diagrams across 66 styles. Browse layouts, adapt a diagram or reuse its prompt. Brand-inspired diagrams are visual studies based on public references.
 - [Business examples](docs/BUSINESS_EXAMPLES.md) cover product, finance, operations and project coordination. Profit waterfalls and budget comparisons recalculate when you edit their data.
 - [Composition templates](docs/COMPOSITE_TEMPLATES.md) give you reusable architecture, flow and chart components.
+- [Agent Evals](skills/svg-diagram/examples/agent-evals/README.md) shows one evaluation workflow in three layouts. Each includes editable SVG, a prompt and a validation report.
 
 [![The JustSVG example library showing a RAG diagram with style and example navigation](docs/images/examples.png)](https://justsvg.vercel.app/examples)
 
