@@ -28,6 +28,8 @@ Download the [diagram starter kit](https://github.com/lwxyfer/justsvg/releases/d
 
 Open an [editable RAG example](https://justsvg.vercel.app/examples?example=brand-openai-rag) and choose **Open in editor**. Double-click a label, move a node to see its bound connectors follow, then export the SVG for your README, article or slides. You can also start with an SVG you already have. [Editor guide](docs/EDITOR_GUIDE.zh-CN.md)
 
+[Walkthrough: edit, export and maintain a diagram beside your README](docs/guides/editable-svg-workflow.en.md), with an individual SVG download.
+
 ## Install SVG Diagram Skill
 
 Run this command in your terminal and select your AI tool when prompted.

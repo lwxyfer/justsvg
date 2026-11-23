@@ -28,6 +28,8 @@ JustSVG 是开源的技术图编辑器，适合画架构图、流程图和信息
 
 打开[可编辑的 RAG 示例](https://justsvg.vercel.app/examples?example=brand-openai-rag)，选择「在编辑器中打开」。双击文字修改标签，拖动节点看看已关联的连线如何跟随，再导出 SVG 放进 README、技术文章或演示文稿。也可以从自己的 SVG 文件开始。[编辑器使用指南](docs/EDITOR_GUIDE.zh-CN.md)
 
+[实践：修改、导出并维护 README 中的图稿](docs/guides/editable-svg-workflow.zh-CN.md)，附可单独下载的 SVG。
+
 ## 安装 SVG Diagram Skill
 
 在终端运行以下命令，按提示选择支持 Skill 的 AI 工具。
